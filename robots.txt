@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /service/
+
+Sitemap: https://n120525.github.io/freeforge/sitemap.xml
