@@ -159,7 +159,7 @@ function ServicePage() {
   }
 
   function parseCurl(cmd) {
-    const result = { method: 'GET', url: '', headers: {}, body: '' };
+    const result = { method: 'GET', url: '', headers: {}, body: '', cookies: '', user: '', compressed: false, insecure: false, followRedirects: false };
     let rest = cmd.trim();
     rest = rest.replace(/^curl\s+/i, '');
     const parts = [];
@@ -167,7 +167,6 @@ function ServicePage() {
     let m;
     while ((m = re.exec(rest)) !== null) parts.push(m[0]);
     let i = 0;
-    const peek = () => parts[i];
     const shift = () => parts[i++];
     while (i < parts.length) {
       const token = shift();
@@ -177,14 +176,36 @@ function ServicePage() {
         const colon = h.indexOf(':');
         if (colon > 0) result.headers[h.slice(0, colon).trim()] = h.slice(colon + 1).trim();
       }
-      else if (token === '-d' || token === '--data' || token === '--data-raw' || token === '--data-binary') {
+      else if (token === '-d' || token === '--data' || token === '--data-raw' || token === '--data-binary' || token === '--data-urlencode') {
         result.body = (shift() || '').replace(/^['"]|['"]$/g, '');
         if (!result.method || result.method === 'GET') result.method = 'POST';
       }
+      else if (token === '-b' || token === '--cookie') { result.cookies = (shift() || '').replace(/^['"]|['"]$/g, ''); }
+      else if (token === '-u' || token === '--user') { result.user = (shift() || '').replace(/^['"]|['"]$/g, ''); }
+      else if (token === '-A' || token === '--user-agent') { result.headers['User-Agent'] = (shift() || '').replace(/^['"]|['"]$/g, ''); }
+      else if (token === '--compressed') { result.compressed = true; }
+      else if (token === '-k' || token === '--insecure') { result.insecure = true; }
+      else if (token === '-L' || token === '--follow') { result.followRedirects = true; }
+      else if (token === '--connect-timeout' || token === '-m' || token === '--max-time') { shift(); }
       else if (token.startsWith('-')) { shift(); }
       else { result.url = token.replace(/^['"]|['"]$/g, ''); }
     }
     return result;
+  }
+
+  function curlToFetch(parsed) {
+    let code = `fetch("${parsed.url}"`;
+    const opts = [];
+    if (parsed.method !== 'GET') opts.push(`method: "${parsed.method}"`);
+    if (Object.keys(parsed.headers).length > 0) {
+      const h = Object.entries(parsed.headers).map(([k, v]) => `    "${k}": "${v}"`).join(',\n');
+      opts.push(`headers: {\n${h}\n  }`);
+    }
+    if (parsed.body) opts.push(`body: JSON.stringify(${parsed.body})`);
+    if (parsed.followRedirects) opts.push(`redirect: "follow"`);
+    if (opts.length > 0) code += `, {\n  ${opts.join(',\n  ')}\n}`;
+    code += `);`;
+    return code;
   }
 
   function getTzOffsetMinutes(tz, date = new Date()) {
@@ -1156,7 +1177,7 @@ function ServicePage() {
             <div className="tool-options">
               <h3 className="options-title">cURL Parser</h3>
             </div>
-            <textarea className="json-textarea" value={curlInput} onChange={e => setCurlInput(e.target.value)} placeholder="Paste a cURL command&#10;e.g. curl -X POST https://api.example.com -H 'Content-Type: application/json' -d '{&quot;key&quot;: &quot;value&quot;}'" rows={4} />
+            <textarea className="json-textarea" value={curlInput} onChange={e => setCurlInput(e.target.value)} placeholder={"Paste a cURL command, e.g.\ncurl -X POST https://api.example.com/users -H \"Content-Type: application/json\" -d '{\"name\": \"John\"}'"} rows={5} />
             <div className="service-actions">
               <button className="process-btn" onClick={() => {
                 if (!curlInput.trim()) return;
@@ -1166,14 +1187,33 @@ function ServicePage() {
             {curlParsed && (
               <div className="utility-result">
                 <div className="curl-result">
-                  <div className="curl-row"><span className="curl-label">URL</span><span className="curl-value">{curlParsed.url}</span></div>
-                  <div className="curl-row"><span className="curl-label">Method</span><span className="curl-value curl-method">{curlParsed.method}</span></div>
+                  <div className="curl-section">
+                    <div className="curl-row"><span className="curl-label">Method</span><span className={`curl-method curl-method-${curlParsed.method.toLowerCase()}`}>{curlParsed.method}</span></div>
+                    <div className="curl-row"><span className="curl-label">URL</span><span className="curl-value curl-url">{curlParsed.url}</span></div>
+                  </div>
                   {Object.keys(curlParsed.headers).length > 0 && (
-                    <div className="curl-row"><span className="curl-label">Headers</span>
-                      <div className="curl-value">{Object.entries(curlParsed.headers).map(([k, v]) => <div key={k} className="curl-header-line"><span className="curl-hk">{k}</span>: {v}</div>)}</div>
+                    <div className="curl-section">
+                      <div className="curl-section-title">Headers</div>
+                      <div className="curl-kv-list">
+                        {Object.entries(curlParsed.headers).map(([k, v]) => (
+                          <div key={k} className="curl-kv"><span className="curl-hk">{k}</span><span className="curl-hv">{v}</span></div>
+                        ))}
+                      </div>
                     </div>
                   )}
-                  {curlParsed.body && <div className="curl-row"><span className="curl-label">Body</span><pre className="curl-value curl-body">{curlParsed.body}</pre></div>}
+                  {curlParsed.body && (
+                    <div className="curl-section">
+                      <div className="curl-section-title">Body</div>
+                      <pre className="curl-body">{(() => { try { return JSON.stringify(JSON.parse(curlParsed.body), null, 2); } catch { return curlParsed.body; } })()}</pre>
+                    </div>
+                  )}
+                  {curlParsed.user && <div className="curl-section"><div className="curl-row"><span className="curl-label">Auth</span><span className="curl-value">{curlParsed.user}</span></div></div>}
+                  {curlParsed.cookies && <div className="curl-section"><div className="curl-row"><span className="curl-label">Cookies</span><span className="curl-value">{curlParsed.cookies}</span></div></div>}
+                  <div className="curl-section">
+                    <div className="curl-section-title">JavaScript Fetch</div>
+                    <pre className="curl-fetch-code">{curlToFetch(curlParsed)}</pre>
+                    <button className="process-btn" style={{ marginTop: '8px' }} onClick={() => navigator.clipboard.writeText(curlToFetch(curlParsed))}>Copy Fetch Code</button>
+                  </div>
                 </div>
               </div>
             )}

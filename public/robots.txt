@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /service/
+
+Sitemap: https://durgarajtagulla.github.io/freeforge/sitemap.xml
