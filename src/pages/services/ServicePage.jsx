@@ -6,6 +6,9 @@ import { jsPDF } from 'jspdf';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { getDocument } from 'pdfjs-dist';
 import Cropper from 'react-easy-crop';
+import SnakeGame from '../games/SnakeGame';
+import Game2048 from '../games/Game2048';
+import SudokuGame from '../games/SudokuGame';
 import './Services.css';
 
 const tools = {
@@ -34,6 +37,9 @@ const tools = {
   'json-compare': { title: 'JSON Compare', desc: 'Compare two JSON objects side by side', category: 'utility', accepts: null, multiple: false },
   'json-parser': { title: 'JSON Parser', desc: 'Format, validate and beautify JSON', category: 'utility', accepts: null, multiple: false },
   'curl-parser': { title: 'cURL Parser', desc: 'Parse cURL commands into readable request data', category: 'utility', accepts: null, multiple: false },
+  'snake-game': { title: 'Snake Game', desc: 'Classic snake game with obstacles and levels', category: 'game', accepts: null, multiple: false },
+  'game-2048': { title: '2048', desc: 'Slide tiles and merge numbers to reach 2048', category: 'game', accepts: null, multiple: false },
+  'sudoku': { title: 'Sudoku', desc: 'Logic puzzle with hints and difficulty levels', category: 'game', accepts: null, multiple: false },
 };
 
 function ServicePage() {
@@ -547,7 +553,7 @@ function ServicePage() {
         </div>
       </div>
       <div className="service-body">
-        {tool.category !== 'utility' && (
+        {tool.category !== 'utility' && tool.category !== 'game' && (
           <div className="service-upload">
             <div className="upload-area" onClick={() => inputRef.current?.click()}>
               <Upload size={40} />
@@ -1326,9 +1332,18 @@ function ServicePage() {
           </div>
         )}
 
+        {/* --- Snake Game --- */}
+        {toolId === 'snake-game' && <SnakeGame />}
+
+        {/* --- 2048 Game --- */}
+        {toolId === 'game-2048' && <Game2048 />}
+
+        {/* --- Sudoku --- */}
+        {toolId === 'sudoku' && <SudokuGame />}
+
         <canvas ref={canvasRef} hidden />
 
-        {tool.category !== 'utility' && (
+        {tool.category !== 'utility' && tool.category !== 'game' && (
         <div className="service-actions">
           <button className="process-btn" onClick={handleProcess} disabled={!files.length || loading}>
             {loading ? <Loader2 className="spin" size={20} /> : null}
