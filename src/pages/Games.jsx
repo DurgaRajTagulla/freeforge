@@ -1,15 +1,38 @@
 import { useNavigate } from 'react-router-dom';
+import { Zap, Brain, Puzzle, Hash } from 'lucide-react';
 import '../pages/games/Games.css';
 
-const games = [
-  { id: 'snake-game', title: 'Snake Game', icon: '🐍', desc: 'Classic snake game with obstacles, 3 difficulty levels and high scores' },
-  { id: 'game-2048', title: '2048', icon: '🔢', desc: 'Slide and merge tiles to reach 2048. Undo support and best score tracking' },
-  { id: 'sudoku', title: 'Sudoku', icon: '🧩', desc: 'Logic puzzle with 3 difficulty levels, hints and error highlighting' },
-  { id: 'minesweeper', title: 'Minesweeper', icon: '💣', desc: 'Flag all the mines without detonating them. 3 difficulty levels' },
-  { id: 'hangman', title: 'Hangman', icon: '🎯', desc: 'Guess the word letter by letter. Categories, hints and keyboard support' },
-  { id: 'word-search', title: 'Word Search', icon: '🔤', desc: 'Find hidden words in the grid. Click and drag to select' },
-  { id: 'simon-says', title: 'Simon Says', icon: '🎨', desc: 'Remember and repeat the color sequence. Normal and strict modes' },
-  { id: 'whack-a-mole', title: 'Whack-a-Mole', icon: '🔨', desc: 'Tap the moles as they pop up! 30 seconds of fast-paced fun' },
+const categories = [
+  {
+    name: 'Fun Games', icon: Zap, iconColor: '#22c55e',
+    games: [
+      { id: 'snake-game', icon: '🐍', desc: 'Obstacles, 3 levels, high scores' },
+      { id: 'whack-a-mole', icon: '🔨', desc: 'Tap moles as they pop up in 30s' },
+      { id: 'simon-says', icon: '🎨', desc: 'Remember and repeat color sequences' },
+      { id: 'tic-tac-toe', icon: '❌', desc: 'Classic X vs O with score tracking' },
+    ],
+  },
+  {
+    name: 'Mind Games', icon: Brain, iconColor: '#60a5fa',
+    games: [
+      { id: 'memory-cards', icon: '🃏', desc: 'Flip and match pairs. 3 grid sizes' },
+      { id: 'minesweeper', icon: '💣', desc: 'Flag mines, 3 difficulties, timer' },
+      { id: 'hangman', icon: '🎯', desc: 'Guess words, 4 categories, hints' },
+    ],
+  },
+  {
+    name: 'Logic Games', icon: Puzzle, iconColor: '#a78bfa',
+    games: [
+      { id: 'sudoku', icon: '🧩', desc: '3 difficulties, hints, timer' },
+      { id: 'word-search', icon: '🔤', desc: 'Find hidden words, click-drag' },
+    ],
+  },
+  {
+    name: 'Number Games', icon: Hash, iconColor: '#facc15',
+    games: [
+      { id: 'game-2048', icon: '🔢', desc: 'Merge tiles to 2048, undo support' },
+    ],
+  },
 ];
 
 export default function Games() {
@@ -22,17 +45,28 @@ export default function Games() {
         <p>Fun browser games — play instantly, no downloads needed</p>
       </div>
 
-      <div className="tools-grid" style={{ maxWidth: '900px', margin: '0 auto' }}>
-        {games.map(game => (
-          <button key={game.id} className="tool-card" onClick={() => navigate(`/service/${game.id}`)}>
-            <div className="tool-icon" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', fontSize: '28px' }}>
-              {game.icon}
+      {categories.map((cat, ci) => {
+        const CatIcon = cat.icon;
+        return (
+          <section key={ci} className="tool-category">
+            <h2 className="category-title">
+              <CatIcon className="category-icon" style={{ color: cat.iconColor }} />
+              {cat.name}
+            </h2>
+            <div className="tools-grid">
+              {cat.games.map(game => (
+                <button key={game.id} className="tool-card" onClick={() => navigate(`/service/${game.id}`)}>
+                  <div className="tool-icon" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', fontSize: '28px' }}>
+                    {game.icon}
+                  </div>
+                  <h3 className="tool-title" style={{ textTransform: 'capitalize' }}>{game.id.replace(/-/g, ' ')}</h3>
+                  <p className="tool-desc">{game.desc}</p>
+                </button>
+              ))}
             </div>
-            <h3 className="tool-title">{game.title}</h3>
-            <p className="tool-desc">{game.desc}</p>
-          </button>
-        ))}
-      </div>
+          </section>
+        );
+      })}
     </div>
   );
 }

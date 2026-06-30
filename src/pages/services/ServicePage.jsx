@@ -14,6 +14,8 @@ import HangmanGame from '../games/HangmanGame';
 import WordSearchGame from '../games/WordSearchGame';
 import SimonGame from '../games/SimonGame';
 import WhackGame from '../games/WhackGame';
+import TicTacToeGame from '../games/TicTacToeGame';
+import MemoryGame from '../games/MemoryGame';
 import './Services.css';
 
 const tools = {
@@ -50,6 +52,8 @@ const tools = {
   'word-search': { title: 'Word Search', desc: 'Find hidden words in the grid', category: 'game', accepts: null, multiple: false },
   'simon-says': { title: 'Simon Says', desc: 'Remember and repeat color sequences', category: 'game', accepts: null, multiple: false },
   'whack-a-mole': { title: 'Whack-a-Mole', desc: 'Tap moles as they pop up', category: 'game', accepts: null, multiple: false },
+  'tic-tac-toe': { title: 'Tic-Tac-Toe', desc: 'Classic X vs O game', category: 'game', accepts: null, multiple: false },
+  'memory-cards': { title: 'Memory Cards', desc: 'Flip cards and find matching pairs', category: 'game', accepts: null, multiple: false },
 };
 
 function ServicePage() {
@@ -1365,6 +1369,12 @@ function ServicePage() {
 
         {/* --- Whack-a-Mole --- */}
         {toolId === 'whack-a-mole' && <WhackGame />}
+
+        {/* --- Tic-Tac-Toe --- */}
+        {toolId === 'tic-tac-toe' && <TicTacToeGame />}
+
+        {/* --- Memory Cards --- */}
+        {toolId === 'memory-cards' && <MemoryGame />}
 
         <canvas ref={canvasRef} hidden />
 
