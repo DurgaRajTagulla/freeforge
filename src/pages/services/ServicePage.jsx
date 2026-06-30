@@ -344,7 +344,7 @@ function ServicePage() {
       <div className="service-page">
         <div className="service-error">
           <h1>Tool not found</h1>
-          <button className="back-btn" onClick={() => navigate('/services')}><ArrowLeft size={20} /></button>
+          <button className="back-btn" onClick={() => navigate('/')}><ArrowLeft size={20} /></button>
         </div>
       </div>
     );
@@ -554,7 +554,7 @@ function ServicePage() {
   return (
     <div className="service-page">
       <div className="service-page-header">
-        <button className="back-btn" onClick={() => navigate('/services')}>
+        <button className="back-btn" onClick={() => navigate(tool.category === 'game' ? '/games' : '/services')}>
           <ArrowLeft size={20} />
         </button>
         <div>
