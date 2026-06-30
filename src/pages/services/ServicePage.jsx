@@ -16,6 +16,14 @@ import SimonGame from '../games/SimonGame';
 import WhackGame from '../games/WhackGame';
 import TicTacToeGame from '../games/TicTacToeGame';
 import MemoryGame from '../games/MemoryGame';
+import SpinWheelGame from '../games/SpinWheelGame';
+import DiceRollerGame from '../games/DiceRollerGame';
+import CoinTossGame from '../games/CoinTossGame';
+import TruthDareGame from '../games/TruthDareGame';
+import RPSGame from '../games/RPSGame';
+import CountdownTimer from '../tools/CountdownTimer';
+import StopwatchTool from '../tools/StopwatchTool';
+import CompassTool from '../tools/CompassTool';
 import './Services.css';
 
 const tools = {
@@ -54,6 +62,14 @@ const tools = {
   'whack-a-mole': { title: 'Whack-a-Mole', desc: 'Tap moles as they pop up', category: 'game', accepts: null, multiple: false },
   'tic-tac-toe': { title: 'Tic-Tac-Toe', desc: 'Classic X vs O game', category: 'game', accepts: null, multiple: false },
   'memory-cards': { title: 'Memory Cards', desc: 'Flip cards and find matching pairs', category: 'game', accepts: null, multiple: false },
+  'spin-wheel': { title: 'Spin Wheel', desc: 'Custom spin wheel with any items', category: 'game', accepts: null, multiple: false },
+  'dice-roller': { title: 'Dice Roller', desc: 'Roll 1-6 dice with history', category: 'game', accepts: null, multiple: false },
+  'coin-toss': { title: 'Coin Toss', desc: 'Heads or tails with streak stats', category: 'game', accepts: null, multiple: false },
+  'truth-or-dare': { title: 'Truth or Dare', desc: 'Truth or Dare challenges for groups', category: 'game', accepts: null, multiple: false },
+  'rock-paper-scissors': { title: 'Rock Paper Scissors', desc: 'Beat the computer', category: 'game', accepts: null, multiple: false },
+  'countdown-timer': { title: 'Countdown Timer', desc: 'Set a countdown alarm', category: 'utility', accepts: null, multiple: false },
+  'stopwatch': { title: 'Stopwatch', desc: 'Precision stopwatch with laps', category: 'utility', accepts: null, multiple: false },
+  'compass': { title: 'Compass', desc: 'Digital compass using device orientation', category: 'utility', accepts: null, multiple: false },
 };
 
 function ServicePage() {
@@ -1375,6 +1391,30 @@ function ServicePage() {
 
         {/* --- Memory Cards --- */}
         {toolId === 'memory-cards' && <MemoryGame />}
+
+        {/* --- Spin Wheel --- */}
+        {toolId === 'spin-wheel' && <SpinWheelGame />}
+
+        {/* --- Dice Roller --- */}
+        {toolId === 'dice-roller' && <DiceRollerGame />}
+
+        {/* --- Coin Toss --- */}
+        {toolId === 'coin-toss' && <CoinTossGame />}
+
+        {/* --- Truth or Dare --- */}
+        {toolId === 'truth-or-dare' && <TruthDareGame />}
+
+        {/* --- Rock Paper Scissors --- */}
+        {toolId === 'rock-paper-scissors' && <RPSGame />}
+
+        {/* --- Countdown Timer --- */}
+        {toolId === 'countdown-timer' && <CountdownTimer />}
+
+        {/* --- Stopwatch --- */}
+        {toolId === 'stopwatch' && <StopwatchTool />}
+
+        {/* --- Compass --- */}
+        {toolId === 'compass' && <CompassTool />}
 
         <canvas ref={canvasRef} hidden />
 

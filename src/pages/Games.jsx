@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Zap, Brain, Puzzle, Hash } from 'lucide-react';
+import { Zap, Brain, Puzzle, Hash, Sparkles } from 'lucide-react';
 import '../pages/games/Games.css';
 
 const categories = [
@@ -10,6 +10,16 @@ const categories = [
       { id: 'whack-a-mole', icon: '🔨', desc: 'Tap moles as they pop up in 30s' },
       { id: 'simon-says', icon: '🎨', desc: 'Remember and repeat color sequences' },
       { id: 'tic-tac-toe', icon: '❌', desc: 'Classic X vs O with score tracking' },
+      { id: 'rock-paper-scissors', icon: '✊', desc: 'Beat the computer, streak tracker' },
+    ],
+  },
+  {
+    name: 'Party Games', icon: Sparkles, iconColor: '#f97316',
+    games: [
+      { id: 'spin-wheel', icon: '🎡', desc: 'Custom spin wheel with any items' },
+      { id: 'truth-or-dare', icon: '🎭', desc: 'Truth or Dare challenges for groups' },
+      { id: 'coin-toss', icon: '🪙', desc: 'Heads or tails with streak stats' },
+      { id: 'dice-roller', icon: '🎲', desc: 'Roll 1-6 dice with history log' },
     ],
   },
   {

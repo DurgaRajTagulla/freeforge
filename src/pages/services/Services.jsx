@@ -4,7 +4,7 @@ import {
   Droplets, Merge, Split,
   Unlock, Hash, Crop, Calendar,
   Calculator, DollarSign, Clock, Ruler,
-  Edit3, Code, Terminal
+  Edit3, Code, Terminal, Timer, Compass
 } from 'lucide-react';
 import './Services.css';
 
@@ -25,6 +25,9 @@ const utilityTools = [
   { id: 'timezone-converter', title: 'Time Zone Converter', icon: Clock, desc: 'Convert time between different time zones' },
   { id: 'unit-converter', title: 'Unit Converter', icon: Ruler, desc: 'Convert length, weight, temperature, area and more' },
   { id: 'bmi-calculator', title: 'BMI Calculator', icon: Calculator, desc: 'Calculate Body Mass Index from weight and height' },
+  { id: 'countdown-timer', title: 'Countdown Timer', icon: Timer, desc: 'Set a countdown alarm with hours, minutes, seconds' },
+  { id: 'stopwatch', title: 'Stopwatch', icon: Timer, desc: 'Precision stopwatch with lap tracking' },
+  { id: 'compass', title: 'Compass', icon: Compass, desc: 'Digital compass using device orientation' },
 ];
 
 const devTools = [

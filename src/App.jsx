@@ -7,7 +7,7 @@ import Services from './pages/services/Services';
 import ServicePage from './pages/services/ServicePage';
 import './App.css';
 
-const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards'];
+const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare','rock-paper-scissors'];
 
 function Navbar() {
   const location = useLocation();

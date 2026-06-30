@@ -691,6 +691,522 @@
   .ttt-mark { font-size: 32px; }
 }
 
+/* Spin Wheel */
+.spin-wheel-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+}
+
+.spin-pointer {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  color: #f1f5f9;
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.spin-wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid #334155;
+  position: relative;
+  overflow: hidden;
+}
+
+.spin-segment {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 0;
+  right: 0;
+  transform-origin: bottom left;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spin-seg-text {
+  position: absolute;
+  top: 30%;
+  right: 10%;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.spin-result {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #4ade80;
+  margin: 12px 0;
+}
+
+.spin-editor {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 14px;
+  width: 100%;
+}
+
+.spin-add-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.spin-add-row .option-input { flex: 1; }
+
+.spin-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.spin-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.spin-tag button {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+}
+
+.spin-tag button:hover { color: #fff; }
+
+.spin-history {
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Dice Roller */
+.dice-count-select {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.dice-results {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.dice-container {
+  transition: transform 0.1s;
+}
+
+.dice-container.rolling {
+  animation: diceShake 0.1s infinite alternate;
+}
+
+@keyframes diceShake {
+  from { transform: rotate(-10deg) scale(0.95); }
+  to { transform: rotate(10deg) scale(1.05); }
+}
+
+.dice-face {
+  background: #f1f5f9;
+  border-radius: 10px;
+  border: 2px solid #cbd5e1;
+  position: relative;
+}
+
+.dice-dot {
+  position: absolute;
+  width: 14%;
+  height: 14%;
+  background: #1e293b;
+  border-radius: 50%;
+}
+
+.dice-sum {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  color: #f1f5f9;
+  margin-bottom: 8px;
+}
+
+.dice-history {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.dice-history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #0f172a;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.dice-history-rolls { color: #94a3b8; }
+.dice-history-sum { color: #60a5fa; font-weight: 600; }
+
+/* Coin Toss */
+.coin {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  perspective: 600px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.coin-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.coin-flipping .coin-inner {
+  animation: coinFlip 1s ease-out;
+}
+
+.coin-heads .coin-inner { transform: rotateY(1800deg); }
+.coin-tails .coin-inner { transform: rotateY(1980deg); }
+
+@keyframes coinFlip {
+  0% { transform: rotateY(0); }
+  100% { transform: rotateY(1800deg); }
+}
+
+.coin-front, .coin-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 800;
+  backface-visibility: hidden;
+}
+
+.coin-front {
+  background: linear-gradient(135deg, #facc15, #eab308);
+  color: #78350f;
+}
+
+.coin-back {
+  background: linear-gradient(135deg, #94a3b8, #64748b);
+  color: #1e293b;
+  transform: rotateY(180deg);
+}
+
+.coin-result {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.coin-result-heads { color: #facc15; }
+.coin-result-tails { color: #94a3b8; }
+
+.coin-stats {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.coin-stat {
+  text-align: center;
+}
+
+.coin-stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.coin-stat-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Truth or Dare */
+.td-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.td-btn {
+  padding: 16px 32px;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #fff;
+}
+
+.td-truth { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.td-dare { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.td-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+.td-card {
+  background: #0f172a;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+  border: 1px solid #334155;
+}
+
+.td-card.td-truth { border-color: rgba(239,68,68,0.3); }
+.td-card.td-dare { border-color: rgba(34,197,94,0.3); }
+
+.td-type {
+  font-size: 14px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.td-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+  line-height: 1.5;
+}
+
+.td-history { max-height: 120px; overflow-y: auto; }
+.td-history-item { font-size: 12px; color: #64748b; padding: 3px 0; border-bottom: 1px solid #1e293b; }
+
+/* Rock Paper Scissors */
+.rps-arena {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.rps-player { text-align: center; }
+
+.rps-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.rps-choice {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #0f172a;
+  border: 2px solid #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  transition: all 0.3s;
+}
+
+.rps-chosen { border-color: #3b82f6; background: rgba(59,130,246,0.1); }
+.rps-winner { border-color: #22c55e; background: rgba(34,197,94,0.15); box-shadow: 0 0 20px rgba(34,197,94,0.3); }
+.rps-loser { border-color: #ef4444; background: rgba(239,68,68,0.15); }
+
+.rps-vs {
+  font-size: 18px;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.rps-result {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.rps-win { color: #4ade80; }
+.rps-lose { color: #f87171; }
+.rps-draw { color: #facc15; }
+
+.rps-choices {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.rps-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 2px solid #334155;
+  background: #0f172a;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #e2e8f0;
+}
+
+.rps-btn:hover { border-color: #3b82f6; background: rgba(59,130,246,0.1); transform: translateY(-2px); }
+.rps-btn:active { transform: scale(0.95); }
+
+.rps-btn-emoji { font-size: 28px; }
+.rps-btn-name { font-size: 11px; font-weight: 600; text-transform: capitalize; color: #94a3b8; }
+
+/* Utility: Countdown Timer */
+.countdown-display {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.countdown-time {
+  font-size: 48px;
+  font-weight: 800;
+  color: #f1f5f9;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  margin-bottom: 12px;
+}
+
+.countdown-bar {
+  height: 6px;
+  background: #1e293b;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.countdown-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #3b82f6);
+  border-radius: 3px;
+  transition: width 1s linear;
+}
+
+/* Utility: Stopwatch */
+.stopwatch-display {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stopwatch-time {
+  font-size: 48px;
+  font-weight: 800;
+  color: #f1f5f9;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.stopwatch-laps {
+  margin-top: 16px;
+}
+
+.stopwatch-lap {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #0f172a;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.stopwatch-lap-num { font-size: 13px; color: #94a3b8; }
+.stopwatch-lap-time { font-size: 13px; color: #60a5fa; font-weight: 600; font-family: monospace; }
+
+/* Utility: Compass */
+.compass-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+}
+
+.compass-ring {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 4px solid #334155;
+  background: #0f172a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compass-needle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.compass-north {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.compass-arrow { color: #ef4444; }
+
+.compass-degrees {
+  font-size: 36px;
+  font-weight: 800;
+  color: #f1f5f9;
+  font-family: monospace;
+}
+
+.compass-direction {
+  font-size: 18px;
+  font-weight: 600;
+  color: #60a5fa;
+}
+
+@media (max-width: 480px) {
+  .spin-wheel-wrapper { width: 240px; height: 240px; }
+  .coin { width: 100px; height: 100px; }
+  .coin-front, .coin-back { font-size: 28px; }
+  .td-btn { padding: 14px 24px; font-size: 16px; }
+  .rps-choice { width: 64px; height: 64px; font-size: 32px; }
+  .countdown-time, .stopwatch-time { font-size: 36px; }
+  .compass-ring { width: 160px; height: 160px; }
+}
+
 /* Mobile Responsive */
 @media (max-width: 480px) {
   .game-container { gap: 12px; padding: 0 4px; }
