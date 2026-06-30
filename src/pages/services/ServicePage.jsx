@@ -9,6 +9,11 @@ import Cropper from 'react-easy-crop';
 import SnakeGame from '../games/SnakeGame';
 import Game2048 from '../games/Game2048';
 import SudokuGame from '../games/SudokuGame';
+import MinesweeperGame from '../games/MinesweeperGame';
+import HangmanGame from '../games/HangmanGame';
+import WordSearchGame from '../games/WordSearchGame';
+import SimonGame from '../games/SimonGame';
+import WhackGame from '../games/WhackGame';
 import './Services.css';
 
 const tools = {
@@ -40,6 +45,11 @@ const tools = {
   'snake-game': { title: 'Snake Game', desc: 'Classic snake game with obstacles and levels', category: 'game', accepts: null, multiple: false },
   'game-2048': { title: '2048', desc: 'Slide tiles and merge numbers to reach 2048', category: 'game', accepts: null, multiple: false },
   'sudoku': { title: 'Sudoku', desc: 'Logic puzzle with hints and difficulty levels', category: 'game', accepts: null, multiple: false },
+  'minesweeper': { title: 'Minesweeper', desc: 'Flag all mines without detonating them', category: 'game', accepts: null, multiple: false },
+  'hangman': { title: 'Hangman', desc: 'Guess the word before the man is hanged', category: 'game', accepts: null, multiple: false },
+  'word-search': { title: 'Word Search', desc: 'Find hidden words in the grid', category: 'game', accepts: null, multiple: false },
+  'simon-says': { title: 'Simon Says', desc: 'Remember and repeat color sequences', category: 'game', accepts: null, multiple: false },
+  'whack-a-mole': { title: 'Whack-a-Mole', desc: 'Tap moles as they pop up', category: 'game', accepts: null, multiple: false },
 };
 
 function ServicePage() {
@@ -1340,6 +1350,21 @@ function ServicePage() {
 
         {/* --- Sudoku --- */}
         {toolId === 'sudoku' && <SudokuGame />}
+
+        {/* --- Minesweeper --- */}
+        {toolId === 'minesweeper' && <MinesweeperGame />}
+
+        {/* --- Hangman --- */}
+        {toolId === 'hangman' && <HangmanGame />}
+
+        {/* --- Word Search --- */}
+        {toolId === 'word-search' && <WordSearchGame />}
+
+        {/* --- Simon Says --- */}
+        {toolId === 'simon-says' && <SimonGame />}
+
+        {/* --- Whack-a-Mole --- */}
+        {toolId === 'whack-a-mole' && <WhackGame />}
 
         <canvas ref={canvasRef} hidden />
 

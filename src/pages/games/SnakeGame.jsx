@@ -155,6 +155,7 @@ export default function SnakeGame() {
 
   useEffect(() => {
     const handleKey = (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault();
       if (gameState === 'menu') { if (e.key === 'Enter' || e.key === ' ') startGame(); return; }
       if (gameState === 'gameover') { if (e.key === 'Enter' || e.key === ' ') startGame(); return; }
       if (e.key === 'Escape' || e.key === 'p') { setGameState(g => g === 'paused' ? 'playing' : 'paused'); return; }
