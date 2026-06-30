@@ -1117,6 +1117,7 @@ function ServicePage() {
                 const diffMs = now - taken;
                 const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
                 const totalMonths = diffMs / (1000 * 60 * 60 * 24 * 30.4375);
+                const totalYears = totalMonths / 12;
                 const principal = Number(intAmount);
                 const ratePer100 = Number(intRate);
                 const monthlyRate = ratePer100 / 100;
@@ -1125,6 +1126,7 @@ function ServicePage() {
                 setIntResult({
                   totalDays,
                   totalMonths: totalMonths.toFixed(1),
+                  totalYears: totalYears.toFixed(2),
                   simpleInterest: simpleInterest.toFixed(2),
                   compoundInterest: compoundInterest.toFixed(2),
                   simpleTotal: (principal + simpleInterest).toFixed(2),
@@ -1137,6 +1139,7 @@ function ServicePage() {
                 <div className="result-grid">
                   <div className="result-card highlight"><span className="result-value">{intResult.totalDays}</span><span className="result-label">Days Elapsed</span></div>
                   <div className="result-card highlight"><span className="result-value">{intResult.totalMonths}</span><span className="result-label">Months Elapsed</span></div>
+                  <div className="result-card highlight"><span className="result-value">{intResult.totalYears}</span><span className="result-label">Years Elapsed</span></div>
                 </div>
                 <div className="interest-breakdown">
                   <h4 style={{ color: '#f1f5f9', fontSize: '16px', margin: '20px 0 12px' }}>Simple Interest</h4>
