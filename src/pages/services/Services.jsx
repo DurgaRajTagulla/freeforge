@@ -57,6 +57,25 @@ function Services() {
 
       <section className="tool-category">
         <h2 className="category-title">
+          <Calculator className="category-icon" />
+          Daily Utilities
+        </h2>
+        <div className="tools-grid">
+          {utilityTools.map(tool => {
+            const Icon = tool.icon;
+            return (
+              <button key={tool.id} className="tool-card" onClick={() => navigate(`/service/${tool.id}`)}>
+                <div className="tool-icon"><Icon size={28} /></div>
+                <h3 className="tool-title">{tool.title}</h3>
+                <p className="tool-desc">{tool.desc}</p>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="tool-category">
+        <h2 className="category-title">
           <Image className="category-icon" />
           Image Tools
         </h2>
@@ -81,25 +100,6 @@ function Services() {
         </h2>
         <div className="tools-grid">
           {pdfTools.map(tool => {
-            const Icon = tool.icon;
-            return (
-              <button key={tool.id} className="tool-card" onClick={() => navigate(`/service/${tool.id}`)}>
-                <div className="tool-icon"><Icon size={28} /></div>
-                <h3 className="tool-title">{tool.title}</h3>
-                <p className="tool-desc">{tool.desc}</p>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="tool-category">
-        <h2 className="category-title">
-          <Calculator className="category-icon" />
-          Daily Utilities
-        </h2>
-        <div className="tools-grid">
-          {utilityTools.map(tool => {
             const Icon = tool.icon;
             return (
               <button key={tool.id} className="tool-card" onClick={() => navigate(`/service/${tool.id}`)}>

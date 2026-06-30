@@ -1148,16 +1148,16 @@ function ServicePage() {
                 const principal = Number(intAmount);
                 const ratePer100 = Number(intRate);
                 const monthlyRate = ratePer100 / 100;
-                const simpleInterest = principal * monthlyRate * totalMonths;
-                const compoundInterest = principal * Math.pow(1 + monthlyRate, totalMonths) - principal;
+                const simpleInterest = Math.floor(principal * monthlyRate * totalMonths);
+                const compoundInterest = Math.floor(principal * Math.pow(1 + monthlyRate, totalMonths) - principal);
                 setIntResult({
                   totalDays,
-                  totalMonths: totalMonths.toFixed(1),
-                  totalYears: totalYears.toFixed(2),
-                  simpleInterest: simpleInterest.toFixed(2),
-                  compoundInterest: compoundInterest.toFixed(2),
-                  simpleTotal: (principal + simpleInterest).toFixed(2),
-                  compoundTotal: (principal + compoundInterest).toFixed(2),
+                  totalMonths: Math.floor(totalMonths),
+                  totalYears: Math.floor(totalYears),
+                  simpleInterest,
+                  compoundInterest,
+                  simpleTotal: principal + simpleInterest,
+                  compoundTotal: principal + compoundInterest,
                 });
               }}>Calculate Interest</button>
             </div>
@@ -1165,8 +1165,8 @@ function ServicePage() {
               <div className="utility-result">
                 <div className="result-grid">
                   <div className="result-card highlight"><span className="result-value">{intResult.totalDays}</span><span className="result-label">Days Elapsed</span></div>
-                  <div className="result-card highlight"><span className="result-value">{intResult.totalMonths}</span><span className="result-label">Months Elapsed</span></div>
-                  <div className="result-card highlight"><span className="result-value">{intResult.totalYears}</span><span className="result-label">Years Elapsed</span></div>
+                  {intResult.totalMonths >= 1 && <div className="result-card highlight"><span className="result-value">{intResult.totalMonths}</span><span className="result-label">Months Elapsed</span></div>}
+                  {intResult.totalYears >= 1 && <div className="result-card highlight"><span className="result-value">{intResult.totalYears}</span><span className="result-label">Years Elapsed</span></div>}
                 </div>
                 <div className="interest-breakdown">
                   <h4 style={{ color: '#f1f5f9', fontSize: '16px', margin: '20px 0 12px' }}>Simple Interest</h4>
