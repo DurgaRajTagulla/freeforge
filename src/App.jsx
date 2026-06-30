@@ -7,8 +7,12 @@ import Services from './pages/services/Services';
 import ServicePage from './pages/services/ServicePage';
 import './App.css';
 
+const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards'];
+
 function Navbar() {
   const location = useLocation();
+  const toolId = location.pathname.replace('/service/', '');
+  const isGameService = location.pathname.startsWith('/service/') && GAME_IDS.includes(toolId);
 
   return (
     <nav className="navbar">
@@ -18,10 +22,10 @@ function Navbar() {
           FreeForge
         </Link>
         <div className="navbar-links">
-          <Link to="/games" className={`nav-link ${location.pathname === '/games' ? 'active' : ''}`}>
+          <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`}>
             Games
           </Link>
-          <Link to="/services" className={`nav-link ${location.pathname === '/services' || location.pathname.startsWith('/service/') ? 'active' : ''}`}>
+          <Link to="/services" className={`nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`}>
             Services
           </Link>
         </div>
