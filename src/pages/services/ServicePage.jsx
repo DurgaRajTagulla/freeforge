@@ -138,6 +138,33 @@ function ServicePage() {
   const [curlInput, setCurlInput] = useState('');
   const [curlParsed, setCurlParsed] = useState(null);
 
+  function formatIndianNumber(num) {
+    const n = parseFloat(num);
+    if (isNaN(n)) return num;
+    const isDecimal = num.toString().includes('.');
+    const parts = num.toString().split('.');
+    let intPart = parts[0];
+    const decPart = parts[1];
+    const isNeg = intPart.startsWith('-');
+    if (isNeg) intPart = intPart.slice(1);
+    let result = '';
+    const len = intPart.length;
+    if (len <= 3) {
+      result = intPart;
+    } else {
+      result = intPart.slice(-3);
+      let remaining = intPart.slice(0, -3);
+      while (remaining.length > 2) {
+        result = remaining.slice(-2) + ',' + result;
+        remaining = remaining.slice(0, -2);
+      }
+      if (remaining.length > 0) result = remaining + ',' + result;
+    }
+    if (isNeg) result = '-' + result;
+    if (isDecimal) result += '.' + decPart;
+    return result;
+  }
+
   function deepDiff(a, b, path = '') {
     if (a === b) return [];
     if (typeof a !== typeof b || (typeof a !== 'object') || a === null || b === null) {
@@ -1144,13 +1171,13 @@ function ServicePage() {
                 <div className="interest-breakdown">
                   <h4 style={{ color: '#f1f5f9', fontSize: '16px', margin: '20px 0 12px' }}>Simple Interest</h4>
                   <div className="result-grid">
-                    <div className="result-card"><span className="result-value">₹{intResult.simpleInterest}</span><span className="result-label">Interest Amount</span></div>
-                    <div className="result-card highlight"><span className="result-value">₹{intResult.simpleTotal}</span><span className="result-label">Total (Principal + Interest)</span></div>
+                    <div className="result-card"><span className="result-value">₹{formatIndianNumber(intResult.simpleInterest)}</span><span className="result-label">Interest Amount</span></div>
+                    <div className="result-card highlight"><span className="result-value">₹{formatIndianNumber(intResult.simpleTotal)}</span><span className="result-label">Total (Principal + Interest)</span></div>
                   </div>
                   <h4 style={{ color: '#f1f5f9', fontSize: '16px', margin: '20px 0 12px' }}>Compound Interest</h4>
                   <div className="result-grid">
-                    <div className="result-card"><span className="result-value">₹{intResult.compoundInterest}</span><span className="result-label">Interest Amount</span></div>
-                    <div className="result-card highlight"><span className="result-value">₹{intResult.compoundTotal}</span><span className="result-label">Total (Principal + Interest)</span></div>
+                    <div className="result-card"><span className="result-value">₹{formatIndianNumber(intResult.compoundInterest)}</span><span className="result-label">Interest Amount</span></div>
+                    <div className="result-card highlight"><span className="result-value">₹{formatIndianNumber(intResult.compoundTotal)}</span><span className="result-label">Total (Principal + Interest)</span></div>
                   </div>
                 </div>
               </div>
