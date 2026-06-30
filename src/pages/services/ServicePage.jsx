@@ -29,6 +29,7 @@ const tools = {
   'timezone-converter': { title: 'Time Zone Converter', desc: 'Convert time between different time zones', category: 'utility', accepts: null, multiple: false },
   'unit-converter': { title: 'Unit Converter', desc: 'Convert between units of length, weight, temperature and more', category: 'utility', accepts: null, multiple: false },
   'bmi-calculator': { title: 'BMI Calculator', desc: 'Calculate Body Mass Index from weight and height', category: 'utility', accepts: null, multiple: false },
+  'interest-calculator': { title: 'Interest Calculator', desc: 'Simple & compound interest on borrowed money', category: 'utility', accepts: null, multiple: false },
   'browser-notepad': { title: 'Browser Notepad', desc: 'Take notes that auto-save in your browser', category: 'utility', accepts: null, multiple: false },
   'json-compare': { title: 'JSON Compare', desc: 'Compare two JSON objects side by side', category: 'utility', accepts: null, multiple: false },
   'json-parser': { title: 'JSON Parser', desc: 'Format, validate and beautify JSON', category: 'utility', accepts: null, multiple: false },
@@ -104,6 +105,12 @@ function ServicePage() {
   const [bmiWeight, setBmiWeight] = useState(70);
   const [bmiHeight, setBmiHeight] = useState(170);
   const [bmiResult, setBmiResult] = useState(null);
+
+  // Interest Calculator
+  const [intTakenDate, setIntTakenDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [intAmount, setIntAmount] = useState('');
+  const [intRate, setIntRate] = useState('');
+  const [intResult, setIntResult] = useState(null);
 
   // Notepad
   const [notepadText, setNotepadText] = useState(() => localStorage.getItem('freeforge_notepad') || '');
@@ -1072,6 +1079,75 @@ function ServicePage() {
                     <span>Normal</span>
                     <span>Overweight</span>
                     <span>Obese</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* --- Interest Calculator --- */}
+        {toolId === 'interest-calculator' && (
+          <div className="utility-tool">
+            <div className="tool-options">
+              <h3 className="options-title">Interest Calculator</h3>
+              <p style={{ color: '#94a3b8', fontSize: '13px', margin: '0 0 16px' }}>
+                Calculate simple & compound interest. Rate is per ₹100 per month (e.g. ₹1.5 per ₹100/month)
+              </p>
+              <div className="options-grid">
+                <div className="option-item">
+                  <label>Date Money Taken</label>
+                  <input type="date" className="option-input" value={intTakenDate} onChange={e => setIntTakenDate(e.target.value)} />
+                </div>
+                <div className="option-item">
+                  <label>Principal Amount (₹)</label>
+                  <input type="number" className="option-input" value={intAmount} onChange={e => setIntAmount(Math.max(0, Number(e.target.value)))} placeholder="e.g. 10000" min={1} />
+                </div>
+                <div className="option-item">
+                  <label>Rate per ₹100 per Month (₹)</label>
+                  <input type="number" className="option-input" value={intRate} onChange={e => setIntRate(Math.max(0, Number(e.target.value)))} placeholder="e.g. 1.5" min={0.01} step={0.01} />
+                </div>
+              </div>
+            </div>
+            <div className="service-actions">
+              <button className="process-btn" onClick={() => {
+                if (!intTakenDate || !intAmount || !intRate) return;
+                const taken = new Date(intTakenDate);
+                const now = new Date();
+                const diffMs = now - taken;
+                const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const totalMonths = diffMs / (1000 * 60 * 60 * 24 * 30.4375);
+                const principal = Number(intAmount);
+                const ratePer100 = Number(intRate);
+                const monthlyRate = ratePer100 / 100;
+                const simpleInterest = principal * monthlyRate * totalMonths;
+                const compoundInterest = principal * Math.pow(1 + monthlyRate, totalMonths) - principal;
+                setIntResult({
+                  totalDays,
+                  totalMonths: totalMonths.toFixed(1),
+                  simpleInterest: simpleInterest.toFixed(2),
+                  compoundInterest: compoundInterest.toFixed(2),
+                  simpleTotal: (principal + simpleInterest).toFixed(2),
+                  compoundTotal: (principal + compoundInterest).toFixed(2),
+                });
+              }}>Calculate Interest</button>
+            </div>
+            {intResult && (
+              <div className="utility-result">
+                <div className="result-grid">
+                  <div className="result-card highlight"><span className="result-value">{intResult.totalDays}</span><span className="result-label">Days Elapsed</span></div>
+                  <div className="result-card highlight"><span className="result-value">{intResult.totalMonths}</span><span className="result-label">Months Elapsed</span></div>
+                </div>
+                <div className="interest-breakdown">
+                  <h4 style={{ color: '#f1f5f9', fontSize: '16px', margin: '20px 0 12px' }}>Simple Interest</h4>
+                  <div className="result-grid">
+                    <div className="result-card"><span className="result-value">₹{intResult.simpleInterest}</span><span className="result-label">Interest Amount</span></div>
+                    <div className="result-card highlight"><span className="result-value">₹{intResult.simpleTotal}</span><span className="result-label">Total (Principal + Interest)</span></div>
+                  </div>
+                  <h4 style={{ color: '#f1f5f9', fontSize: '16px', margin: '20px 0 12px' }}>Compound Interest</h4>
+                  <div className="result-grid">
+                    <div className="result-card"><span className="result-value">₹{intResult.compoundInterest}</span><span className="result-label">Interest Amount</span></div>
+                    <div className="result-card highlight"><span className="result-value">₹{intResult.compoundTotal}</span><span className="result-label">Total (Principal + Interest)</span></div>
                   </div>
                 </div>
               </div>

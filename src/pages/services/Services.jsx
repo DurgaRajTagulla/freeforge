@@ -19,6 +19,7 @@ const imageTools = [
 const utilityTools = [
   { id: 'age-calculator', title: 'Age Calculator', icon: Calendar, desc: 'Calculate exact age in years, months and days' },
   { id: 'emi-calculator', title: 'EMI Calculator', icon: Calculator, desc: 'Monthly EMI, total interest and payment' },
+  { id: 'interest-calculator', title: 'Interest Calculator', icon: Calculator, desc: 'Simple & compound interest on borrowed money' },
   { id: 'income-tax-calculator', title: 'Income Tax Calculator (India)', icon: DollarSign, desc: 'Tax as per Indian income tax slabs' },
   { id: 'currency-converter', title: 'Currency Converter', icon: DollarSign, desc: 'Convert between world currencies' },
   { id: 'timezone-converter', title: 'Time Zone Converter', icon: Clock, desc: 'Convert time between different time zones' },
