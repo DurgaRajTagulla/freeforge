@@ -4,7 +4,7 @@ import {
   Droplets, Merge, Split,
   Unlock, Hash, Crop, Calendar,
   Calculator, DollarSign, Clock, Ruler,
-  Edit3, Code, Terminal, Gamepad2
+  Edit3, Code, Terminal
 } from 'lucide-react';
 import './Services.css';
 
@@ -43,12 +43,6 @@ const pdfTools = [
   { id: 'rotate-pdf', title: 'Rotate PDF', icon: RotateCw, desc: 'Rotate PDF pages' },
   { id: 'unlock-pdf', title: 'Unlock PDF', icon: Unlock, desc: 'Remove PDF password protection' },
   { id: 'add-page-numbers', title: 'Add Page Numbers', icon: Hash, desc: 'Add page numbers to PDF' },
-];
-
-const gameTools = [
-  { id: 'snake-game', title: 'Snake Game', icon: Gamepad2, desc: 'Classic snake game with obstacles and levels' },
-  { id: 'game-2048', title: '2048', icon: Gamepad2, desc: 'Slide tiles and merge numbers to reach 2048' },
-  { id: 'sudoku', title: 'Sudoku', icon: Gamepad2, desc: 'Logic puzzle with hints and difficulty levels' },
 ];
 
 function Services() {
@@ -125,25 +119,6 @@ function Services() {
         </h2>
         <div className="tools-grid">
           {devTools.map(tool => {
-            const Icon = tool.icon;
-            return (
-              <button key={tool.id} className="tool-card" onClick={() => navigate(`/service/${tool.id}`)}>
-                <div className="tool-icon"><Icon size={28} /></div>
-                <h3 className="tool-title">{tool.title}</h3>
-                <p className="tool-desc">{tool.desc}</p>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="tool-category">
-        <h2 className="category-title">
-          <Gamepad2 className="category-icon" />
-          Games
-        </h2>
-        <div className="tools-grid">
-          {gameTools.map(tool => {
             const Icon = tool.icon;
             return (
               <button key={tool.id} className="tool-card" onClick={() => navigate(`/service/${tool.id}`)}>

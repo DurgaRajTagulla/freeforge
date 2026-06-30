@@ -2,6 +2,7 @@ import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-ro
 import { Flame } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Editor from './pages/Editor';
+import Games from './pages/Games';
 import Services from './pages/services/Services';
 import ServicePage from './pages/services/ServicePage';
 import './App.css';
@@ -17,6 +18,9 @@ function Navbar() {
           FreeForge
         </Link>
         <div className="navbar-links">
+          <Link to="/games" className={`nav-link ${location.pathname === '/games' ? 'active' : ''}`}>
+            Games
+          </Link>
           <Link to="/services" className={`nav-link ${location.pathname === '/services' || location.pathname.startsWith('/service/') ? 'active' : ''}`}>
             Services
           </Link>
@@ -35,6 +39,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/editor" element={<Editor />} />
+            <Route path="/games" element={<Games />} />
             <Route path="/services" element={<Services />} />
             <Route path="/service/:toolId" element={<ServicePage />} />
           </Routes>
