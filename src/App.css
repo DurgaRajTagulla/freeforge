@@ -22,6 +22,7 @@ body {
 .main-content {
   flex: 1;
   overflow-x: hidden;
+  padding-top: 56px;
 }
 
 .main-content.full-content {
@@ -47,8 +48,10 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   flex-shrink: 0;
 }
