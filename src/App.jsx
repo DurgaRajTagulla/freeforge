@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { Flame, Menu, X } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
@@ -19,6 +19,11 @@ function Navbar() {
   const isGameService = location.pathname.startsWith('/service/') && GAME_IDS.includes(toolId);
 
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   return (
     <nav className="navbar">
