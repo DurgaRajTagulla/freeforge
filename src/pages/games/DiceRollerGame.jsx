@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { RotateCcw } from 'lucide-react';
 import './Games.css';
 
@@ -12,10 +12,10 @@ const DICE_FACES = [
   [[0,0],[0,2],[0,4],[4,0],[4,2],[4,4]],
 ];
 
-function DiceFace({ value, size = 80 }) {
+function DiceFace({ value }) {
   const dots = DICE_FACES[value] || [];
   return (
-    <div className="dice-face" style={{ width: size, height: size }}>
+    <div className="dice-face">
       {dots.map(([r, c], i) => (
         <span key={i} className="dice-dot" style={{ top: `${r * 20 + 8}%`, left: `${c * 20 + 8}%` }} />
       ))}
@@ -29,26 +29,49 @@ export default function DiceRollerGame() {
   const [rolling, setRolling] = useState(false);
   const [history, setHistory] = useState([]);
   const [total, setTotal] = useState(0);
+  const [rollPhase, setRollPhase] = useState(null);
+  const [dieStyles, setDieStyles] = useState([]);
 
-  const roll = () => {
+  const roll = useCallback(() => {
     if (rolling) return;
     setRolling(true);
+    setRollPhase('launch');
+
     const results = Array(count).fill(0).map(() => Math.floor(Math.random() * 6) + 1);
-    // Animate
+
+    const styles = Array(count).fill(0).map((_, i) => ({
+      '--tx': `${(Math.random() - 0.5) * 60}px`,
+      '--ty': `${-40 - Math.random() * 50}px`,
+      '--r1': `${(Math.random() - 0.5) * 720}deg`,
+      '--r2': `${(Math.random() - 0.5) * 360}deg`,
+      '--bounce-h': `${(Math.random() - 0.5) * 30}px`,
+      '--bounce-r': `${(Math.random() - 0.5) * 20}deg`,
+      animationDelay: `${i * 40}ms`,
+    }));
+    setDieStyles(styles);
+
     let frames = 0;
     const interval = setInterval(() => {
       setDice(Array(count).fill(0).map(() => Math.floor(Math.random() * 6) + 1));
       frames++;
-      if (frames >= 12) {
+      if (frames === 8) {
+        setRollPhase('tumble');
+      }
+      if (frames >= 14) {
         clearInterval(interval);
         setDice(results);
-        setRolling(false);
+        setRollPhase('settle');
         const sum = results.reduce((a, b) => a + b, 0);
         setTotal(t => t + sum);
         setHistory(h => [{ dice: results, sum }, ...h].slice(0, 20));
+        setTimeout(() => {
+          setRolling(false);
+          setRollPhase(null);
+          setDieStyles([]);
+        }, 500);
       }
-    }, 60);
-  };
+    }, 55);
+  }, [rolling, count]);
 
   return (
     <div className="game-container">
@@ -68,8 +91,12 @@ export default function DiceRollerGame() {
 
       <div className="dice-results">
         {dice.map((val, i) => (
-          <div key={i} className={`dice-container ${rolling ? 'rolling' : ''}`}>
-            <DiceFace value={val} size={80} />
+          <div
+            key={i}
+            className={`dice-container ${rollPhase ? `phase-${rollPhase}` : ''}`}
+            style={dieStyles[i] || {}}
+          >
+            <DiceFace value={val} />
           </div>
         ))}
       </div>

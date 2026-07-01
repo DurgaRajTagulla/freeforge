@@ -22,21 +22,28 @@
   gap: 12px;
 }
 
-.back-btn {
+.editor-back-btn {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e2e8f0;
+  color: #f1f5f9;
   transition: all 0.2s;
+  position: relative;
+  z-index: 10;
 }
 
-.back-btn:hover {
+.editor-back-btn svg {
+  stroke: #f1f5f9 !important;
+  fill: none !important;
+}
+
+.editor-back-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
 }
@@ -44,6 +51,7 @@
 .back-icon {
   width: 18px;
   height: 18px;
+  stroke: #f1f5f9;
 }
 
 .resume-title {
@@ -119,6 +127,48 @@
 .download-json-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.import-header-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.import-header-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.import-header-btn.pdf {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+}
+
+.import-header-btn.pdf:hover {
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.import-header-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.import-header-btn .btn-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
 }
 
 .editor-content {
@@ -877,7 +927,7 @@
 }
 
 .preview-modal-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: #f1f5f9;
   margin: 0;
@@ -892,12 +942,12 @@
 .download-pdf-modal-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 6px;
+  padding: 8px 16px;
   background: linear-gradient(135deg, #2563eb, #7c3aed);
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #fff;
   cursor: pointer;
@@ -1106,6 +1156,10 @@
     gap: 8px;
   }
 
+  .header-left {
+    width: 100%;
+  }
+
   .resume-title {
     font-size: 14px;
   }
@@ -1115,18 +1169,23 @@
   }
 
   .header-right {
-    gap: 8px;
+    width: 100%;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
   .preview-btn,
-  .download-json-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+  .download-json-btn,
+  .import-header-btn {
+    padding: 6px 10px;
+    font-size: 11px;
   }
 
-  .preview-btn span,
-  .download-json-btn span {
-    display: none;
+  .import-header-btn .btn-icon,
+  .preview-btn .btn-icon,
+  .download-json-btn .btn-icon {
+    width: 12px;
+    height: 12px;
   }
 
   .editor-content {
@@ -1267,7 +1326,12 @@
   }
 
   .preview-modal-title {
-    font-size: 16px;
+    font-size: 14px;
+  }
+
+  .download-pdf-modal-btn {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 
   .preview-modal-body {

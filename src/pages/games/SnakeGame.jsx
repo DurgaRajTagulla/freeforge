@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { RotateCcw, Pause, Play, Trophy } from 'lucide-react';
+import { RotateCcw, Trophy } from 'lucide-react';
 import './Games.css';
 
 const GRID = 20;
@@ -78,22 +78,121 @@ export default function SnakeGame() {
       ctx.fillRect(o.x * CELL + 1, o.y * CELL + 1, CELL - 2, CELL - 2);
     });
 
-    // Food
+    // Food with glow
+    const fx = foodRef.current.x * CELL + CELL / 2;
+    const fy = foodRef.current.y * CELL + CELL / 2;
+    ctx.shadowColor = '#ef4444';
+    ctx.shadowBlur = 10;
     ctx.fillStyle = '#ef4444';
     ctx.beginPath();
-    ctx.arc(foodRef.current.x * CELL + CELL / 2, foodRef.current.y * CELL + CELL / 2, CELL / 2 - 2, 0, Math.PI * 2);
+    ctx.arc(fx, fy, CELL / 2 - 2, 0, Math.PI * 2);
     ctx.fill();
+    ctx.shadowBlur = 0;
 
-    // Snake
-    snakeRef.current.forEach((s, i) => {
-      ctx.fillStyle = i === 0 ? '#22c55e' : '#16a34a';
-      ctx.shadowColor = i === 0 ? '#22c55e' : 'transparent';
-      ctx.shadowBlur = i === 0 ? 8 : 0;
+    const snake = snakeRef.current;
+    if (snake.length === 0) return;
+
+    const dir = dirRef.current;
+
+    // Draw body segments as connected rounded rects with overlap
+    for (let i = snake.length - 1; i >= 0; i--) {
+      const s = snake[i];
+      const t = i / Math.max(snake.length - 1, 1);
+      const green = Math.round(160 + t * 30);
+      const red = Math.round(10 + t * 20);
+      const blue = Math.round(40 + t * 20);
+      const bodyW = i === 0 ? CELL - 2 : CELL - 4 + (1 - t) * 2;
+      const bodyH = i === 0 ? CELL - 2 : CELL - 4 + (1 - t) * 2;
+      const offset = (CELL - bodyW) / 2;
+
+      ctx.fillStyle = i === 0 ? '#22c55e' : `rgb(${red},${green},${blue})`;
+      if (i === 0) {
+        ctx.shadowColor = '#22c55e';
+        ctx.shadowBlur = 10;
+      }
       ctx.beginPath();
-      ctx.roundRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2, 4);
+      ctx.roundRect(s.x * CELL + offset, s.y * CELL + offset, bodyW, bodyH, 6);
       ctx.fill();
       ctx.shadowBlur = 0;
-    });
+    }
+
+    // Connect segments with body-colored bridges
+    for (let i = 0; i < snake.length - 1; i++) {
+      const curr = snake[i];
+      const next = snake[i + 1];
+      const t = i / Math.max(snake.length - 1, 1);
+      const green = Math.round(160 + t * 30);
+      const red = Math.round(10 + t * 20);
+      const blue = Math.round(40 + t * 20);
+      ctx.fillStyle = `rgb(${red},${green},${blue})`;
+
+      const dx = curr.x - next.x;
+      const dy = curr.y - next.y;
+      const bridgeW = CELL - 4;
+      const bridgeH = CELL - 4;
+
+      if (dx !== 0) {
+        const bx = Math.min(curr.x, next.x) * CELL + CELL / 2;
+        ctx.fillRect(bx, curr.y * CELL + 2, CELL, bridgeH);
+      } else if (dy !== 0) {
+        const by = Math.min(curr.y, next.y) * CELL + CELL / 2;
+        ctx.fillRect(curr.x * CELL + 2, by, bridgeW, CELL);
+      }
+    }
+
+    // Head details
+    const head = snake[0];
+    const hx = head.x * CELL + CELL / 2;
+    const hy = head.y * CELL + CELL / 2;
+
+    // Eyes
+    const eyeOff = 4;
+    let eye1, eye2;
+    if (dir.x === 1) { eye1 = { x: hx + 3, y: hy - eyeOff }; eye2 = { x: hx + 3, y: hy + eyeOff }; }
+    else if (dir.x === -1) { eye1 = { x: hx - 3, y: hy - eyeOff }; eye2 = { x: hx - 3, y: hy + eyeOff }; }
+    else if (dir.y === -1) { eye1 = { x: hx - eyeOff, y: hy - 3 }; eye2 = { x: hx + eyeOff, y: hy - 3 }; }
+    else { eye1 = { x: hx - eyeOff, y: hy + 3 }; eye2 = { x: hx + eyeOff, y: hy + 3 }; }
+
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(eye1.x, eye1.y, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(eye2.x, eye2.y, 3, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath(); ctx.arc(eye1.x + dir.x, eye1.y + dir.y, 1.5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(eye2.x + dir.x, eye2.y + dir.y, 1.5, 0, Math.PI * 2); ctx.fill();
+
+    // Tongue
+    const tongueLen = 8;
+    const tx = hx + dir.x * (CELL / 2 + 1);
+    const ty = hy + dir.y * (CELL / 2 + 1);
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 1.5;
+    ctx.lineCap = 'round';
+
+    const tAngle = Math.atan2(dir.y, dir.x);
+    const forkLen = 4;
+    const forkAngle = 0.4;
+
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(tx + Math.cos(tAngle) * tongueLen, ty + Math.sin(tAngle) * tongueLen);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(tx + Math.cos(tAngle) * tongueLen, ty + Math.sin(tAngle) * tongueLen);
+    ctx.lineTo(
+      tx + Math.cos(tAngle) * tongueLen + Math.cos(tAngle + forkAngle) * forkLen,
+      ty + Math.sin(tAngle) * tongueLen + Math.sin(tAngle + forkAngle) * forkLen
+    );
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(tx + Math.cos(tAngle) * tongueLen, ty + Math.sin(tAngle) * tongueLen);
+    ctx.lineTo(
+      tx + Math.cos(tAngle) * tongueLen + Math.cos(tAngle - forkAngle) * forkLen,
+      ty + Math.sin(tAngle) * tongueLen + Math.sin(tAngle - forkAngle) * forkLen
+    );
+    ctx.stroke();
   }, []);
 
   const tick = useCallback(() => {

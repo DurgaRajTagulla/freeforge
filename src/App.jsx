@@ -3,6 +3,8 @@ import { Flame } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Editor from './pages/Editor';
 import Games from './pages/Games';
+import Kids from './pages/Kids';
+import KidsActivityPage from './pages/kids/KidsActivityPage';
 import Services from './pages/services/Services';
 import ServicePage from './pages/services/ServicePage';
 import './App.css';
@@ -22,11 +24,17 @@ function Navbar() {
           FreeForge
         </Link>
         <div className="navbar-links">
+        <Link to="/editor" className={`nav-link ${location.pathname === '/editor' ? 'active' : ''}`}>
+            Resume Builder
+          </Link>
+          <Link to="/services" className={`nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`}>
+            Tools
+          </Link>
           <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`}>
             Games
           </Link>
-          <Link to="/services" className={`nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`}>
-            Services
+          <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`}>
+            Kids
           </Link>
         </div>
       </div>
@@ -45,6 +53,8 @@ function App() {
             <Route path="/editor" element={<Editor />} />
             <Route path="/games" element={<Games />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/kids" element={<Kids />} />
+            <Route path="/kids/activity/:activityId" element={<KidsActivityPage />} />
             <Route path="/service/:toolId" element={<ServicePage />} />
           </Routes>
         </main>

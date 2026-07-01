@@ -34,7 +34,6 @@ export default function RPSGame() {
       setScores(s => ({ ...s, draws: s.draws + 1 }));
     } else if (choice.beats === comp.name) {
       setResult('win');
-      const newScore = scores.player + 1;
       setScores(s => ({ ...s, player: s.player + 1 }));
       setHighScore(highScore + 1);
       setHigh(getHighScore());

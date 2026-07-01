@@ -15,7 +15,7 @@ export default function StopwatchTool() {
       setElapsed(Date.now() - startTimeRef.current);
     }, 10);
     return () => clearInterval(intervalRef.current);
-  }, [running]);
+  }, [running, elapsed]);
 
   const start = () => { setRunning(true); };
   const pause = () => setRunning(false);

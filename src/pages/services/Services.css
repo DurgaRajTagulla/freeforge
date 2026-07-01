@@ -133,7 +133,124 @@
 .service-page-header p {
   color: #94a3b8;
   font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.guide-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 4px 12px;
+  color: #60a5fa;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.guide-toggle:hover {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: #60a5fa;
+}
+
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.guide-panel {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0 12px 12px 0;
+  padding: 20px;
+  width: 280px;
+  max-height: 100vh;
+  overflow-y: auto;
+  animation: slideInLeft 0.25s ease-out;
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.guide-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.guide-panel-header h3 {
+  color: #f1f5f9;
+  font-size: 16px;
+  font-weight: 700;
   margin: 0;
+}
+
+.guide-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.guide-close:hover { color: #f1f5f9; }
+
+.guide-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-panel li {
+  position: relative;
+  padding: 8px 0 8px 20px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.guide-panel li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #60a5fa;
+}
+
+@media (max-width: 640px) {
+  .guide-overlay {
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .guide-panel {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 14px;
+    animation: popIn 0.2s ease-out;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
 }
 
 .service-body {

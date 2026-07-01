@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Eye, Plus, X, Undo, Redo, Bold, List, Type, Printer, Download, FileJson } from 'lucide-react';
+import { ArrowLeft, Eye, Plus, X, Printer, FileJson, Upload, FileText, Loader2 } from 'lucide-react';
 import RichTextEditor from '../components/RichTextEditor';
 import { generatePDF } from '../utils/pdfGenerator';
+import { extractResumeFromPDF } from '../utils/pdfParser';
 import './Editor.css';
 
 const STORAGE_KEY = 'freeforge_data';
@@ -201,12 +202,50 @@ function Editor() {
     URL.revokeObjectURL(url);
   };
 
+  const jsonInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
+  const [importLoading, setImportLoading] = useState(false);
+
+  const handleImportJSON = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          setResumeData(data);
+        } catch {
+          alert('Invalid JSON file');
+        }
+      };
+      reader.readAsText(file);
+    }
+    e.target.value = '';
+  };
+
+  const handleImportPDF = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImportLoading(true);
+      try {
+        const data = await extractResumeFromPDF(file);
+        setResumeData(data);
+      } catch (error) {
+        console.error('Error parsing PDF:', error);
+        alert('Error parsing PDF file. Please try again or import a JSON file instead.');
+      } finally {
+        setImportLoading(false);
+      }
+    }
+    e.target.value = '';
+  };
+
   return (
     <div className="editor">
       <header className="editor-header">
         <div className="header-left">
-          <button className="back-btn" onClick={() => navigate('/')}>
-            <ArrowLeft className="back-icon" />
+          <button className="editor-back-btn" onClick={() => navigate('/')}>
+            <ArrowLeft size={18} />
           </button>
           <span className="resume-title">{resumeData.jobTitle || 'Untitled Resume'}</span>
           <span className="draft-status">
@@ -215,6 +254,20 @@ function Editor() {
           </span>
         </div>
         <div className="header-right">
+          <input type="file" ref={jsonInputRef} onChange={handleImportJSON} accept=".json" style={{ display: 'none' }} />
+          <input type="file" ref={pdfInputRef} onChange={handleImportPDF} accept=".pdf" style={{ display: 'none' }} />
+          <button className="import-header-btn" onClick={() => jsonInputRef.current.click()}>
+            <Upload className="btn-icon" />
+            Import JSON
+          </button>
+          <button className="import-header-btn pdf" onClick={() => pdfInputRef.current.click()} disabled={importLoading}>
+            {importLoading ? (
+              <Loader2 className="btn-icon spinning" />
+            ) : (
+              <FileText className="btn-icon" />
+            )}
+            Import PDF
+          </button>
           <button className="preview-btn" onClick={() => setPreviewOpen(true)}>
             <Eye className="btn-icon" />
             Preview & Download

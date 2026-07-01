@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RotateCcw, Trophy } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import './Games.css';
 
 export default function CoinTossGame() {

@@ -32,7 +32,7 @@ export const extractResumeFromPDF = async (file) => {
         return parsed;
       }
     }
-  } catch (e) {
+  } catch {
     // Fall through to text extraction
   }
 

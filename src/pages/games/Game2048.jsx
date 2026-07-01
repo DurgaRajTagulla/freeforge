@@ -98,7 +98,7 @@ export default function Game2048() {
     for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
       if (withRandom[r][c] === 2048 && !won) setWon(true);
     }
-  }, [grid, gameOver, won]);
+  }, [grid, gameOver, won, score]);
 
   const undo = () => {
     if (history.length === 0) return;

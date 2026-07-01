@@ -1,46 +1,9 @@
-import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Shield, Lock, Eye, FileText, ArrowRight, Check, Loader2, Wrench, Flame, Star, Gamepad2 } from 'lucide-react';
-import { extractResumeFromPDF } from '../utils/pdfParser';
+import { Upload, Shield, Lock, Eye, FileText, ArrowRight, Check, Wrench, Flame, Star, Gamepad2, GraduationCap } from 'lucide-react';
 import './Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-  const pdfInputRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleImportJSON = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        try {
-          const data = JSON.parse(event.target.result);
-          navigate('/editor', { state: { resumeData: data } });
-        } catch (error) {
-          alert('Invalid JSON file');
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  const handleImportPDF = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setIsLoading(true);
-      try {
-        const resumeData = await extractResumeFromPDF(file);
-        navigate('/editor', { state: { resumeData } });
-      } catch (error) {
-        console.error('Error parsing PDF:', error);
-        alert('Error parsing PDF file. Please try again or import a JSON file instead.');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
 
   return (
     <div className="dashboard-new">
@@ -49,7 +12,7 @@ function Dashboard() {
           <Flame className="hero-flame-icon" size={64} />
           <h1 className="hero-title">FreeForge</h1>
           <p className="hero-subtitle">
-            Free all-in-one tool suite. Build ATS-friendly resumes, compress images, merge PDFs, convert currencies, and 24+ more tools — all free, all private.
+            Free all-in-one tool suite. Build ATS-friendly resumes, compress images, merge PDFs, convert currencies, play free browser games, explore the Kids Learning Hub, and 24+ more tools — all free, all private.
           </p>
         </section>
 
@@ -88,103 +51,52 @@ function Dashboard() {
           </div>
         </section>
 
-        <section className="import-section">
-          <div className="import-cards">
-            <div className="import-card">
-              <div className="import-icon-wrapper">
-                <Upload className="import-icon" />
-              </div>
-              <h2 className="import-title">Import JSON</h2>
-              <p className="import-description">
-                Have an exported resume? Import your JSON file to continue editing.
-              </p>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImportJSON}
-                accept=".json"
-                style={{ display: 'none' }}
-              />
-              <button 
-                className="import-button"
-                onClick={() => fileInputRef.current.click()}
-              >
-                <Upload className="button-icon" />
-                Import JSON File
-              </button>
-            </div>
-
-            <div className="import-card">
-              <div className="import-icon-wrapper pdf">
-                <FileText className="import-icon" />
-              </div>
-              <h2 className="import-title">Import PDF Resume</h2>
-              <p className="import-description">
-                Upload your existing PDF resume. We'll extract the text and pre-fill your data.
-              </p>
-              <input
-                type="file"
-                ref={pdfInputRef}
-                onChange={handleImportPDF}
-                accept=".pdf"
-                style={{ display: 'none' }}
-              />
-              <button 
-                className="import-button pdf"
-                onClick={() => pdfInputRef.current.click()}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="button-icon spinning" />
-                    Extracting Data...
-                  </>
-                ) : (
-                  <>
-                    <FileText className="button-icon" />
-                    Import PDF File
-                  </>
-                )}
-              </button>
-            </div>
+        <section className="services-cta-section">
+          <div className="services-cta-card">
+            <Wrench className="services-cta-icon" />
+            <h3 className="services-cta-title">24+ Free Tools at Your Disposal</h3>
+            <p className="services-cta-description">
+              Resume Builder is our <strong>#1 priority</strong> — build ATS-friendly resumes with our powerful editor. 
+              But that's not all! We also offer <strong>24 additional free tools</strong>: image compressor, 
+              PDF merger, currency converter, JSON formatter, and many more. 
+              Everything runs locally in your browser — no uploads, no servers, just free tools.
+            </p>
+            <button className="cta-button secondary" onClick={() => navigate('/services')}>
+              Explore All Tools
+              <ArrowRight className="cta-icon" />
+            </button>
           </div>
         </section>
 
-        <section className="preview-section">
-          <h2 className="section-title">Professional Templates</h2>
-          <p className="section-subtitle">Choose from ATS-optimized templates</p>
-          <div className="preview-card">
-            <div className="resume-preview-mini">
-              <div className="preview-header-mini">
-                <div className="preview-name">JOHN PROFESSIONAL</div>
-                <div className="preview-title">Senior Project Manager</div>
-                <div className="preview-contact">john@email.com • 555-0123 • New York, NY</div>
-              </div>
-              <div className="preview-section-mini">
-                <div className="preview-section-title">PROFESSIONAL SUMMARY</div>
-                <div className="preview-lines">
-                  <div className="preview-line"></div>
-                  <div className="preview-line"></div>
-                  <div className="preview-line short"></div>
-                </div>
-              </div>
-              <div className="preview-section-mini">
-                <div className="preview-section-title">WORK EXPERIENCE</div>
-                <div className="preview-lines">
-                  <div className="preview-line"></div>
-                  <div className="preview-line"></div>
-                  <div className="preview-line short"></div>
-                </div>
-              </div>
-              <div className="preview-section-mini">
-                <div className="preview-section-title">SKILLS</div>
-                <div className="preview-tags">
-                  <span className="preview-tag"></span>
-                  <span className="preview-tag"></span>
-                  <span className="preview-tag"></span>
-                </div>
-              </div>
-            </div>
+        <section className="services-cta-section">
+          <div className="services-cta-card" style={{ background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(34, 197, 94, 0.25) 100%)', borderColor: 'rgba(34, 197, 94, 0.25)' }}>
+            <Gamepad2 className="services-cta-icon" style={{ color: '#4ade80' }} />
+            <h3 className="services-cta-title">Play Free Browser Games</h3>
+            <p className="services-cta-description">
+              Take a break with our <strong>free browser games</strong>! Play <strong>Snake</strong>, <strong>2048</strong>, 
+              and <strong>Sudoku</strong> — no downloads needed. Track your high scores and challenge yourself 
+              with different difficulty levels.
+            </p>
+            <button className="cta-button secondary" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }} onClick={() => navigate('/games')}>
+              Play Games
+              <ArrowRight className="cta-icon" />
+            </button>
+          </div>
+        </section>
+
+        <section className="services-cta-section">
+          <div className="services-cta-card" style={{ background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(168, 85, 247, 0.25) 100%)', borderColor: 'rgba(168, 85, 247, 0.25)' }}>
+            <GraduationCap className="services-cta-icon" style={{ color: '#c084fc' }} />
+            <h3 className="services-cta-title">Kids Learning Hub</h3>
+            <p className="services-cta-description">
+              Fun and interactive <strong>educational activities for kids</strong>! Learn <strong>alphabets, numbers, shapes, colors</strong>, 
+              and explore <strong>science, geography, and math</strong> through games. 
+              Includes matching games, quizzes, puzzles, and more — all designed to make learning fun and engaging.
+            </p>
+            <button className="cta-button secondary" style={{ background: 'linear-gradient(135deg, #a855f7, #7c3aed)' }} onClick={() => navigate('/kids')}>
+              Explore Kids Hub
+              <ArrowRight className="cta-icon" />
+            </button>
           </div>
         </section>
 
@@ -227,39 +139,6 @@ function Dashboard() {
                 Everything runs locally in your browser. No internet required after loading.
               </p>
             </div>
-          </div>
-        </section>
-
-        <section className="services-cta-section">
-          <div className="services-cta-card">
-            <Wrench className="services-cta-icon" />
-            <h3 className="services-cta-title">24+ Free Tools at Your Disposal</h3>
-            <p className="services-cta-description">
-              Resume Builder is our <strong>#1 priority</strong> — build ATS-friendly resumes with our powerful editor. 
-              But that's not all! We also offer <strong>24 additional free tools</strong>: image compressor, 
-              PDF merger, currency converter, JSON formatter, and many more. 
-              Everything runs locally in your browser — no uploads, no servers, just free tools.
-            </p>
-            <button className="cta-button secondary" onClick={() => navigate('/services')}>
-              Explore All Tools
-              <ArrowRight className="cta-icon" />
-            </button>
-          </div>
-        </section>
-
-        <section className="services-cta-section">
-          <div className="services-cta-card" style={{ background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(34, 197, 94, 0.25) 100%)', borderColor: 'rgba(34, 197, 94, 0.25)' }}>
-            <Gamepad2 className="services-cta-icon" style={{ color: '#4ade80' }} />
-            <h3 className="services-cta-title">Play Free Browser Games</h3>
-            <p className="services-cta-description">
-              Take a break with our <strong>free browser games</strong>! Play <strong>Snake</strong>, <strong>2048</strong>, 
-              and <strong>Sudoku</strong> — no downloads needed. Track your high scores and challenge yourself 
-              with different difficulty levels.
-            </p>
-            <button className="cta-button secondary" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }} onClick={() => navigate('/games')}>
-              Play Games
-              <ArrowRight className="cta-icon" />
-            </button>
           </div>
         </section>
 

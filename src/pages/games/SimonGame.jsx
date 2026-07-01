@@ -3,7 +3,6 @@ import { RotateCcw, Play, Trophy } from 'lucide-react';
 import './Games.css';
 
 const COLORS = ['#ef4444', '#22c55e', '#3b82f6', '#facc15'];
-const COLOR_NAMES = ['Red', 'Green', 'Blue', 'Yellow'];
 
 function getHighScore() {
   try { return parseInt(localStorage.getItem('freeforge_simon_high') || '0', 10); } catch { return 0; }

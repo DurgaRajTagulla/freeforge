@@ -52,21 +52,21 @@ const tools = {
   'json-compare': { title: 'JSON Compare', desc: 'Compare two JSON objects side by side', category: 'utility', accepts: null, multiple: false },
   'json-parser': { title: 'JSON Parser', desc: 'Format, validate and beautify JSON', category: 'utility', accepts: null, multiple: false },
   'curl-parser': { title: 'cURL Parser', desc: 'Parse cURL commands into readable request data', category: 'utility', accepts: null, multiple: false },
-  'snake-game': { title: 'Snake Game', desc: 'Classic snake game with obstacles and levels', category: 'game', accepts: null, multiple: false },
-  'game-2048': { title: '2048', desc: 'Slide tiles and merge numbers to reach 2048', category: 'game', accepts: null, multiple: false },
-  'sudoku': { title: 'Sudoku', desc: 'Logic puzzle with hints and difficulty levels', category: 'game', accepts: null, multiple: false },
-  'minesweeper': { title: 'Minesweeper', desc: 'Flag all mines without detonating them', category: 'game', accepts: null, multiple: false },
-  'hangman': { title: 'Hangman', desc: 'Guess the word before the man is hanged', category: 'game', accepts: null, multiple: false },
-  'word-search': { title: 'Word Search', desc: 'Find hidden words in the grid', category: 'game', accepts: null, multiple: false },
-  'simon-says': { title: 'Simon Says', desc: 'Remember and repeat color sequences', category: 'game', accepts: null, multiple: false },
-  'whack-a-mole': { title: 'Whack-a-Mole', desc: 'Tap moles as they pop up', category: 'game', accepts: null, multiple: false },
-  'tic-tac-toe': { title: 'Tic-Tac-Toe', desc: 'Classic X vs O game', category: 'game', accepts: null, multiple: false },
-  'memory-cards': { title: 'Memory Cards', desc: 'Flip cards and find matching pairs', category: 'game', accepts: null, multiple: false },
-  'spin-wheel': { title: 'Spin Wheel', desc: 'Custom spin wheel with any items', category: 'game', accepts: null, multiple: false },
-  'dice-roller': { title: 'Dice Roller', desc: 'Roll 1-6 dice with history', category: 'game', accepts: null, multiple: false },
-  'coin-toss': { title: 'Coin Toss', desc: 'Heads or tails with streak stats', category: 'game', accepts: null, multiple: false },
-  'truth-or-dare': { title: 'Truth or Dare', desc: 'Truth or Dare challenges for groups', category: 'game', accepts: null, multiple: false },
-  'rock-paper-scissors': { title: 'Rock Paper Scissors', desc: 'Beat the computer', category: 'game', accepts: null, multiple: false },
+  'snake-game': { title: 'Snake Game', desc: 'Classic snake game with obstacles and levels', category: 'game', accepts: null, multiple: false, howToPlay: ['Use Arrow Keys or WASD to move the snake', 'Eat food to grow longer and score points', 'Avoid hitting walls, obstacles, or yourself', '3 difficulty levels: Easy, Medium, Hard'] },
+  'game-2048': { title: '2048', desc: 'Slide tiles and merge numbers to reach 2048', category: 'game', accepts: null, multiple: false, howToPlay: ['Swipe or use Arrow Keys to slide tiles', 'When two tiles with the same number touch, they merge into one', 'Create a tile with the number 2048 to win', 'Use Undo to reverse your last move'] },
+  'sudoku': { title: 'Sudoku', desc: 'Logic puzzle with hints and difficulty levels', category: 'game', accepts: null, multiple: false, howToPlay: ['Fill each row, column, and 3x3 box with numbers 1-9', 'No number can repeat in any row, column, or box', 'Click a cell and type a number to fill it', 'Use Hint to reveal a correct cell when stuck'] },
+  'minesweeper': { title: 'Minesweeper', desc: 'Flag all mines without detonating them', category: 'game', accepts: null, multiple: false, howToPlay: ['Left-click to reveal a cell', 'Numbers show how many mines are adjacent', 'Right-click or long-press to flag a suspected mine', 'Flag all mines to win without clicking one'] },
+  'hangman': { title: 'Hangman', desc: 'Guess the word before the man is hanged', category: 'game', accepts: null, multiple: false, howToPlay: ['Click letters to guess them', 'Correct letters appear in the word, wrong ones add to the hangman', 'You have 6 wrong guesses before game over', 'Choose from 4 word categories with hints'] },
+  'word-search': { title: 'Word Search', desc: 'Find hidden words in the grid', category: 'game', accepts: null, multiple: false, howToPlay: ['Click and drag across letters to select a word', 'Words can be horizontal, vertical, or diagonal', 'Found words are highlighted in the grid', 'Find all words to complete the puzzle'] },
+  'simon-says': { title: 'Simon Says', desc: 'Remember and repeat color sequences', category: 'game', accepts: null, multiple: false, howToPlay: ['Watch the sequence of colors that light up', 'Repeat the sequence by clicking the buttons in order', 'Each round adds one more step to the sequence', 'Make a mistake and the game is over'] },
+  'whack-a-mole': { title: 'Whack-a-Mole', desc: 'Tap moles as they pop up', category: 'game', accepts: null, multiple: false, howToPlay: ['Click or tap moles as they appear', 'Each whacked mole scores a point', 'Moles disappear quickly — be fast!', 'You have 30 seconds to get the highest score'] },
+  'tic-tac-toe': { title: 'Tic-Tac-Toe', desc: 'Classic X vs O game', category: 'game', accepts: null, multiple: false, howToPlay: ['Click an empty cell to place your mark (X or O)', 'Get three in a row to win', 'Horizontal, vertical, or diagonal counts', 'Take turns with a friend or play against AI'] },
+  'memory-cards': { title: 'Memory Cards', desc: 'Flip cards and find matching pairs', category: 'game', accepts: null, multiple: false, howToPlay: ['Click a card to flip it and reveal the symbol', 'Click a second card to find a match', 'If they match, both stay face-up', 'Match all pairs in the fewest moves possible'] },
+  'spin-wheel': { title: 'Spin Wheel', desc: 'Custom spin wheel with any items', category: 'game', accepts: null, multiple: false, howToPlay: ['Add your own items using the input box below the wheel', 'Click Spin to randomly select an item', 'Remove items by clicking the × on their tag', 'Up to 16 segments supported'] },
+  'dice-roller': { title: 'Dice Roller', desc: 'Roll 1-6 dice with history', category: 'game', accepts: null, multiple: false, howToPlay: ['Select how many dice to roll (1-6)', 'Click Roll to roll all dice', 'View the total and roll history below', 'Track your cumulative score across rolls'] },
+  'coin-toss': { title: 'Coin Toss', desc: 'Heads or tails with streak stats', category: 'game', accepts: null, multiple: false, howToPlay: ['Click the coin or press Space to flip', 'Choose Heads or Tails before flipping', 'Track your streak of consecutive correct guesses', 'View flip history and streak stats'] },
+  'truth-or-dare': { title: 'Truth or Dare', desc: 'Truth or Dare challenges for groups', category: 'game', accepts: null, multiple: false, howToPlay: ['Choose Truth for a question or Dare for a challenge', 'Click the button to get a random prompt', 'Add custom truths and dares of your own', 'Great for parties and group gatherings'] },
+  'rock-paper-scissors': { title: 'Rock Paper Scissors', desc: 'Beat the computer', category: 'game', accepts: null, multiple: false, howToPlay: ['Click Rock, Paper, or Scissors to make your choice', 'Computer makes a random choice', 'Rock beats Scissors, Scissors beats Paper, Paper beats Rock', 'Track wins, losses, and ties'] },
   'countdown-timer': { title: 'Countdown Timer', desc: 'Set a countdown alarm', category: 'utility', accepts: null, multiple: false },
   'stopwatch': { title: 'Stopwatch', desc: 'Precision stopwatch with laps', category: 'utility', accepts: null, multiple: false },
   'compass': { title: 'Compass', desc: 'Digital compass using device orientation', category: 'utility', accepts: null, multiple: false },
@@ -83,6 +83,7 @@ function ServicePage() {
   const [loading, setLoading] = useState(false);
   const [outputUrl, setOutputUrl] = useState(null);
   const [outputName, setOutputName] = useState('');
+  const [showGuide, setShowGuide] = useState(false);
 
   // Compress options
   const [targetSizeKB, setTargetSizeKB] = useState(100);
@@ -304,12 +305,13 @@ function ServicePage() {
 
   // Auto-rotate: live preview on angle change
   const rotatePreviewRef = useRef(null);
+  const firstPreview = previewUrls[0];
   useEffect(() => {
-    if (toolId !== 'image-rotate' || !previewUrls[0] || !rotatePreviewRef.current) return;
+    if (toolId !== 'image-rotate' || !firstPreview || !rotatePreviewRef.current) return;
     let cancelled = false;
     (async () => {
       try {
-        const img = await loadImg(previewUrls[0]);
+        const img = await loadImg(firstPreview);
         if (cancelled) return;
         const canvas = rotatePreviewRef.current;
         const angle = rotateAngle * Math.PI / 180;
@@ -329,15 +331,16 @@ function ServicePage() {
       } catch {}
     })();
     return () => { cancelled = true; };
-  }, [toolId, rotateAngle, previewUrls[0], files]);
+  }, [toolId, rotateAngle, firstPreview, files, outputUrl, previewUrls]);
 
   // Auto-watermark: live preview on text/size/position change
+  const firstWatermarkPreview = previewUrls[0];
   useEffect(() => {
-    if (toolId !== 'add-watermark' || !previewUrls[0] || !watermarkPreviewRef.current) return;
+    if (toolId !== 'add-watermark' || !firstWatermarkPreview || !watermarkPreviewRef.current) return;
     let cancelled = false;
     (async () => {
       try {
-        const img = await loadImg(previewUrls[0]);
+        const img = await loadImg(firstWatermarkPreview);
         if (cancelled) return;
         const canvas = watermarkPreviewRef.current;
         canvas.width = img.width; canvas.height = img.height;
@@ -357,7 +360,7 @@ function ServicePage() {
       } catch {}
     })();
     return () => { cancelled = true; };
-  }, [toolId, watermarkText, watermarkSize, watermarkPos, watermarkColor, previewUrls[0], files]);
+  }, [toolId, watermarkText, watermarkSize, watermarkPos, watermarkColor, firstWatermarkPreview, files, outputUrl, previewUrls]);
 
   if (!tool) {
     return (
@@ -580,8 +583,28 @@ function ServicePage() {
         <div>
           <h1>{tool.title}</h1>
           <p>{tool.desc}</p>
+          {tool.howToPlay && (
+            <button className="guide-toggle" onClick={() => setShowGuide(true)}>
+              How to Play
+            </button>
+          )}
         </div>
       </div>
+      {tool.howToPlay && showGuide && (
+        <div className="guide-overlay" onClick={() => setShowGuide(false)}>
+          <div className="guide-panel" onClick={e => e.stopPropagation()}>
+            <div className="guide-panel-header">
+              <h3>How to Play</h3>
+              <button className="guide-close" onClick={() => setShowGuide(false)}>×</button>
+            </div>
+            <ul>
+              {tool.howToPlay.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
       <div className="service-body">
         {tool.category !== 'utility' && tool.category !== 'game' && (
           <div className="service-upload">

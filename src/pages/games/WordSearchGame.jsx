@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from 'react';
-import { RotateCcw, Timer, Trophy } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { RotateCcw } from 'lucide-react';
 import './Games.css';
 
 const WORD_LIST = [

@@ -2,7 +2,6 @@ import { jsPDF } from 'jspdf';
 
 const MARGIN = 20;
 const PAGE_W = 210;
-const CW = PAGE_W - MARGIN * 2;
 const LINE_H = 5;
 const BLACK = [0, 0, 0];
 const BLUE = [37, 99, 235];
@@ -29,8 +28,6 @@ function renderRichText(doc, html, startY) {
   const container = document.createElement('div');
   container.innerHTML = html || '';
   const nodes = [];
-  let listType = null;
-
   let hasContent = false;
   function walk(node, bold, italic) {
     if (node.nodeType === 3) {

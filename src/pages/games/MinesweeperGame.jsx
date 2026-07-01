@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { RotateCcw, Flag, Trophy } from 'lucide-react';
+import { RotateCcw, Flag } from 'lucide-react';
 import './Games.css';
 
 const DIFFICULTIES = {
@@ -50,7 +50,7 @@ function reveal(board, r, c) {
   }
 }
 
-const COLORS = ['', '#3b82f6', '#22c55e', '#ef4444', '#8b5cf6', '#f59e0b', '#06b6d4', '#f1f5f9', '#64748b'];
+
 
 export default function MinesweeperGame() {
   const [diff, setDiff] = useState('Easy');
@@ -69,7 +69,7 @@ export default function MinesweeperGame() {
   }, [gameState]);
 
   const startGame = useCallback(() => {
-    const { rows, cols, mines } = DIFFICULTIES[diff];
+    const { rows, cols, mines: _mines } = DIFFICULTIES[diff];
     setBoard(Array(rows).fill(null).map(() => Array(cols).fill(null).map(() => ({ mine: false, revealed: false, flagged: false, adjacent: 0 }))));
     setGameState('playing');
     setTimer(0);

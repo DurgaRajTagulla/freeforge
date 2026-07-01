@@ -1,9 +1,25 @@
 import { useState, useRef, useCallback } from 'react';
-import { RotateCcw, Trophy } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import './Games.css';
 
 const DEFAULT_SEGMENTS = ['Prize 1','Prize 2','Prize 3','Prize 4','Prize 5','Prize 6','Prize 7','Prize 8'];
 const COLORS = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899'];
+const SIZE = 280;
+const CX = SIZE / 2;
+const CY = SIZE / 2;
+const RADIUS = SIZE / 2 - 2;
+
+function polarToCartesian(cx, cy, r, angleDeg) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function describeArc(cx, cy, r, startAngle, endAngle) {
+  const start = polarToCartesian(cx, cy, r, endAngle);
+  const end = polarToCartesian(cx, cy, r, startAngle);
+  const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+  return `M ${cx} ${cy} L ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y} Z`;
+}
 
 export default function SpinWheelGame() {
   const [segments, setSegments] = useState(DEFAULT_SEGMENTS);
@@ -55,14 +71,35 @@ export default function SpinWheelGame() {
       <div className="spin-wheel-wrapper">
         <div className="spin-pointer">▼</div>
         <div ref={wheelRef} className="spin-wheel" style={{ transform: `rotate(${rotation}deg)`, transition: spinning ? 'transform 4s cubic-bezier(0.17,0.67,0.12,0.99)' : 'none' }}>
-          {segments.map((seg, i) => {
-            const angle = segAngle * i;
-            return (
-              <div key={i} className="spin-segment" style={{ transform: `rotate(${angle}deg)`, background: COLORS[i % COLORS.length] }}>
-                <span className="spin-seg-text" style={{ transform: `rotate(${segAngle / 2}deg)` }}>{seg}</span>
-              </div>
-            );
-          })}
+          <svg viewBox={`0 0 ${SIZE} ${SIZE}`} style={{ width: '100%', height: '100%' }}>
+            {segments.map((seg, i) => {
+              const startAngle = segAngle * i;
+              const endAngle = segAngle * (i + 1);
+              const midAngle = (startAngle + endAngle) / 2;
+              const path = describeArc(CX, CY, RADIUS, startAngle, endAngle);
+              const textPos = polarToCartesian(CX, CY, RADIUS * 0.6, midAngle);
+              const textRotation = midAngle <= 180 ? midAngle - 90 : midAngle + 90;
+              return (
+                <g key={i}>
+                  <path d={path} fill={COLORS[i % COLORS.length]} stroke="#1e293b" strokeWidth="2" />
+                  <text
+                    x={textPos.x}
+                    y={textPos.y}
+                    fill="#fff"
+                    fontSize="11"
+                    fontWeight="700"
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    transform={`rotate(${textRotation}, ${textPos.x}, ${textPos.y})`}
+                    style={{ pointerEvents: 'none' }}
+                  >
+                    {seg}
+                  </text>
+                </g>
+              );
+            })}
+            <circle cx={CX} cy={CY} r="6" fill="#1e293b" />
+          </svg>
         </div>
       </div>
 
