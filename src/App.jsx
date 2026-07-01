@@ -66,6 +66,10 @@ function Navbar() {
         <>
           <div className="mobile-menu-overlay" onClick={closeMenu}></div>
           <div className="mobile-menu">
+            <div className="mobile-menu-header">
+              <Flame className="navbar-logo-icon" size={20} />
+              <span style={{ fontWeight: 700, fontSize: 16 }}>FreeForge</span>
+            </div>
             {navLinks}
           </div>
         </>
