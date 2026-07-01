@@ -21,6 +21,7 @@ html {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .main-content {
@@ -41,7 +42,9 @@ a {
 
 /* Navbar */
 .navbar {
-  background: #0f172a;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid #1e293b;
   padding: 0 24px;
   height: 56px;
@@ -51,6 +54,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .navbar-left {
