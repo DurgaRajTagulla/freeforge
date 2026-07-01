@@ -25,50 +25,52 @@ function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname]);
+
+  const navLinks = (
+    <>
+      <Link to="/editor" className={`nav-link ${location.pathname === '/editor' ? 'active' : ''}`} onClick={closeMenu}>
+        Resume Builder
+      </Link>
+      <Link to="/services" className={`nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`} onClick={closeMenu}>
+        Tools
+      </Link>
+      <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`} onClick={closeMenu}>
+        Games
+      </Link>
+      <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
+        Kids Hub
+      </Link>
+    </>
+  );
+
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <Flame className="navbar-logo-icon" size={22} />
-          FreeForge
-        </Link>
-        <div className="navbar-links">
-          <Link to="/editor" className={`nav-link ${location.pathname === '/editor' ? 'active' : ''}`}>
-            Resume Builder
+    <>
+      <nav className="navbar">
+        <div className="navbar-left">
+          <Link to="/" className="navbar-logo" onClick={closeMenu}>
+            <Flame className="navbar-logo-icon" size={22} />
+            FreeForge
           </Link>
-          <Link to="/services" className={`nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`}>
-            Tools
-          </Link>
-          <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`}>
-            Games
-          </Link>
-          <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`}>
-            Kids Hub
-          </Link>
-        </div>
-      </div>
-      <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? <X size={22} /> : <Menu size={22} />}
-      </button>
-      {menuOpen && (
-        <div className="mobile-menu-overlay" onClick={closeMenu}>
-          <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
-            <Link to="/editor" className={`mobile-nav-link ${location.pathname === '/editor' ? 'active' : ''}`} onClick={closeMenu}>
-              Resume Builder
-            </Link>
-            <Link to="/services" className={`mobile-nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`} onClick={closeMenu}>
-              Tools
-            </Link>
-            <Link to="/games" className={`mobile-nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`} onClick={closeMenu}>
-              Games
-            </Link>
-            <Link to="/kids" className={`mobile-nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
-              Kids Hub
-            </Link>
+          <div className="navbar-links">
+            {navLinks}
           </div>
         </div>
+        <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </nav>
+      {menuOpen && (
+        <>
+          <div className="mobile-menu-overlay" onClick={closeMenu}></div>
+          <div className="mobile-menu">
+            {navLinks}
+          </div>
+        </>
       )}
-    </nav>
+    </>
   );
 }
 
