@@ -10,6 +10,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #0f172a;
   color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 .app {
@@ -250,19 +255,18 @@ a {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
-  overflow: hidden;
 }
 
 .mobile-menu {
   position: fixed;
   top: 0;
-  right: 0;
+  left: calc(100vw - 240px);
   width: 240px;
-  max-width: 80vw;
   height: 100vh;
   height: 100dvh;
   background: #1e293b;
