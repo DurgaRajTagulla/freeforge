@@ -9,7 +9,6 @@ const QuizIntro = lazy(() => import('./QuizIntro'));
 const AlphabetMatchGrid = lazy(() => import('./AlphabetMatchGrid'));
 const ShapeMatchingGrid = lazy(() => import('./ShapeMatchingGrid'));
 
-const SudokuKids = lazy(() => import('./components/MathLogicGames').then(m => ({ default: m.SudokuKids })));
 const TicTacToeAI = lazy(() => import('./components/MathLogicGames').then(m => ({ default: m.TicTacToeAI })));
 
 const ConnectFour = lazy(() => import('./components/PuzzleGames').then(m => ({ default: m.ConnectFour })));
@@ -21,7 +20,7 @@ const ArrangeSentences = lazy(() => import('./components/PuzzleGames').then(m =>
 
 const ChessKids = lazy(() => import('./components/DailyGames').then(m => ({ default: m.ChessKids })));
 
-import { generateAlphabetMatchPairs, generateAnimalSoundQuestions, generateCountQuestions, generateShapePairs, generateColorQuestions, generateFruitVegetablePairs, generateVehicleQuestions } from './generators';
+import { generateAlphabetMatchPairs, generateCountQuestions, generateShapePairs, generateColorQuestions, generateVehicleQuestions } from './generators';
 
 function RedirectGame({ to, title }) {
   const navigate = useNavigate();
@@ -47,11 +46,9 @@ export default function KidsActivityPage() {
   const activityData = useMemo(() => {
     switch (activityId) {
       case 'alphabet-match': return { pairs: generateAlphabetMatchPairs() };
-      case 'animal-sound-quiz': return { questions: generateAnimalSoundQuestions() };
       case 'count-the-objects': return { questions: generateCountQuestions() };
       case 'shape-matching': return { pairs: generateShapePairs() };
       case 'color-recognition': return { questions: generateColorQuestions() };
-      case 'fruit-vegetable-names': return { pairs: generateFruitVegetablePairs() };
       case 'vehicle-identification': return { questions: generateVehicleQuestions() };
       default: return null;
     }
@@ -62,26 +59,20 @@ export default function KidsActivityPage() {
     /* ========== PRESCHOOL ========== */
     case 'alphabet-match':
       return <AlphabetMatchGrid />;
-    case 'animal-sound-quiz':
-      return <QuizTemplate questions={activityData.questions} title="🐶 Animal Sound Quiz" pageSize={20} />;
     case 'count-the-objects':
       return <QuizTemplate questions={activityData.questions} title="🔢 Count the Objects" pageSize={5} />;
     case 'shape-matching':
       return <ShapeMatchingGrid />;
     case 'color-recognition':
       return <QuizTemplate questions={activityData.questions} title="🌈 Color Recognition" pageSize={5} />;
-    case 'fruit-vegetable-names':
-      return <MatchingTemplate pairs={activityData.pairs} title="🍎 Fruit & Vegetable Names" itemLabel="fruit/vegetable" compact pageSize={10} />;
     case 'vehicle-identification':
       return <QuizTemplate questions={activityData.questions} title="🚗 Vehicle Identification" pageSize={5} />;
-    case 'memory-card-game':
-      return <RedirectGame to="/games" title="Memory Card Game" />;
     case 'trace-letters':
       return <DrawingCanvas title="✏️ Trace Letters" />;
 
     /* ========== PRIMARY MATH ========== */
     case 'addition-race': {
-      const qs = Array.from({ length: 75 }, () => {
+      const qs = Array.from({ length: 25 }, () => {
         const a = Math.floor(Math.random() * 20) + 1;
         const b = Math.floor(Math.random() * 20) + 1;
         const correct = a + b;
@@ -92,7 +83,7 @@ export default function KidsActivityPage() {
       return <QuizTemplate questions={qs} title="➕ Addition Race" pageSize={5} />;
     }
     case 'subtraction-challenge': {
-      const qs = Array.from({ length: 75 }, () => {
+      const qs = Array.from({ length: 25 }, () => {
         const a = Math.floor(Math.random() * 20) + 10;
         const b = Math.floor(Math.random() * a) + 1;
         const correct = a - b;
@@ -103,7 +94,7 @@ export default function KidsActivityPage() {
       return <QuizTemplate questions={qs} title="➖ Subtraction Challenge" pageSize={5} />;
     }
     case 'multiplication-tables': {
-      const qs = Array.from({ length: 75 }, () => {
+      const qs = Array.from({ length: 25 }, () => {
         const a = Math.floor(Math.random() * 10) + 1;
         const b = Math.floor(Math.random() * 10) + 1;
         const correct = a * b;
@@ -114,7 +105,7 @@ export default function KidsActivityPage() {
       return <QuizTemplate questions={qs} title="✖️ Multiplication Tables" pageSize={5} />;
     }
     case 'division-practice': {
-      const qs = Array.from({ length: 75 }, () => {
+      const qs = Array.from({ length: 25 }, () => {
         const b = Math.floor(Math.random() * 9) + 2;
         const correct = Math.floor(Math.random() * 10) + 1;
         const a = b * correct;
@@ -150,57 +141,7 @@ export default function KidsActivityPage() {
         { question: 'Which is bigger: 4/5 or 3/5?', options: ['3/5', '4/5', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
         { question: 'What is 1/4 of 24?', options: ['4', '5', '6', '8'], correctIndex: 2, emoji: '🍕' },
         { question: 'What is 2/3 + 1/3?', options: ['2/3', '1', '3/3', 'Both B and C'], correctIndex: 3, emoji: '➕' },
-        { question: 'Which fraction is closest to 0?', options: ['1/2', '1/4', '1/8', '3/4'], correctIndex: 2, emoji: '📊' },
-        { question: 'Which is bigger: 2/5 or 3/5?', options: ['2/5', '3/5', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 1/4 + 1/4?', options: ['1/2', '1/4', '2/4', 'Both A and C'], correctIndex: 3, emoji: '➕' },
-        { question: 'How many sixths in 1 whole?', options: ['3', '4', '5', '6'], correctIndex: 3, emoji: '🔢' },
-        { question: 'Which is smaller: 2/3 or 3/3?', options: ['2/3', '3/3', 'Same', 'Neither'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 1/2 of 20?', options: ['5', '8', '10', '12'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 2/4 + 1/4?', options: ['1/4', '3/4', '2/4', '1'], correctIndex: 1, emoji: '➕' },
-        { question: 'Which fraction equals 1/2?', options: ['2/8', '4/8', '6/8', '1/8'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 3/3 of 15?', options: ['3', '5', '10', '15'], correctIndex: 3, emoji: '🍕' },
-        { question: 'How many tenths in a half?', options: ['2', '3', '4', '5'], correctIndex: 3, emoji: '🔢' },
-        { question: 'What is 4/5 - 1/5?', options: ['1/5', '2/5', '3/5', '4/5'], correctIndex: 2, emoji: '➖' },
-        { question: 'Which is bigger: 5/6 or 1/6?', options: ['1/6', '5/6', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 1/3 of 18?', options: ['3', '4', '5', '6'], correctIndex: 3, emoji: '🍕' },
-        { question: 'What is 1/2 + 1/4?', options: ['1/4', '2/4', '3/4', '1'], correctIndex: 2, emoji: '➕' },
-        { question: 'Which fraction is less than 1/3?', options: ['1/2', '2/3', '1/4', '3/3'], correctIndex: 2, emoji: '📊' },
-        { question: 'What is 2/3 of 12?', options: ['4', '6', '8', '9'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 3/4 + 1/4?', options: ['1/2', '3/4', '1', '4/4'], correctIndex: 2, emoji: '➕' },
-        { question: 'Which is bigger: 1/5 or 1/10?', options: ['1/5', '1/10', 'Same', 'Neither'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 1/6 of 24?', options: ['2', '3', '4', '6'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 1/3 + 2/3?', options: ['1/3', '2/3', '1', '3/3'], correctIndex: 2, emoji: '➕' },
-        { question: 'Which fraction is closest to 1?', options: ['1/8', '3/4', '1/2', '1/10'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 4/5 of 25?', options: ['15', '16', '18', '20'], correctIndex: 3, emoji: '🍕' },
-        { question: 'What is 1/2 - 1/4?', options: ['1/2', '1/4', '3/4', '1'], correctIndex: 1, emoji: '➖' },
-        { question: 'How many sevenths in a whole?', options: ['5', '6', '7', '8'], correctIndex: 2, emoji: '🔢' },
-        { question: 'Which is smaller: 3/4 or 4/5?', options: ['3/4', '4/5', 'Same', 'Neither'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 3/5 of 20?', options: ['8', '10', '12', '15'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 5/6 + 1/6?', options: ['5/6', '6/6', '1', 'Both B and C'], correctIndex: 3, emoji: '➕' },
-        { question: 'Which fraction is more than 1?', options: ['3/4', '2/3', '5/4', '1/2'], correctIndex: 2, emoji: '📊' },
-        { question: 'What is 1/4 of 32?', options: ['4', '6', '8', '10'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 2/3 - 1/3?', options: ['1/3', '2/3', '1', '1/6'], correctIndex: 0, emoji: '➖' },
-        { question: 'How many fifths in 2 wholes?', options: ['5', '8', '10', '12'], correctIndex: 2, emoji: '🔢' },
-        { question: 'Which is bigger: 4/7 or 3/7?', options: ['3/7', '4/7', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 2/5 of 30?', options: ['6', '8', '10', '12'], correctIndex: 3, emoji: '🍕' },
-        { question: 'What is 1/2 + 1/6?', options: ['1/3', '2/3', '4/6', 'Both A and C'], correctIndex: 3, emoji: '➕' },
-        { question: 'Which is closer to 0: 1/3 or 1/8?', options: ['1/3', '1/8', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 5/8 of 16?', options: ['5', '8', '10', '12'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 3/4 - 1/2?', options: ['1/4', '1/2', '3/4', '1'], correctIndex: 0, emoji: '➖' },
-        { question: 'Which equals 3/6?', options: ['1/2', '1/3', '2/3', '1/6'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 1/7 of 21?', options: ['1', '2', '3', '4'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 2/5 + 2/5?', options: ['2/5', '3/5', '4/5', '1'], correctIndex: 2, emoji: '➕' },
-        { question: 'How many fourths in 3 wholes?', options: ['4', '8', '10', '12'], correctIndex: 3, emoji: '🔢' },
-        { question: 'Which is smaller: 5/8 or 3/4?', options: ['5/8', '3/4', 'Same', 'Neither'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 3/4 of 12?', options: ['6', '8', '9', '10'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 4/5 - 2/5?', options: ['1/5', '2/5', '3/5', '4/5'], correctIndex: 1, emoji: '➖' },
-        { question: 'Which fraction equals 2/3?', options: ['4/6', '3/6', '5/6', '2/6'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 1/2 of 26?', options: ['10', '11', '12', '13'], correctIndex: 3, emoji: '🍕' },
-        { question: 'What is 1/8 + 3/8?', options: ['2/8', '3/8', '4/8', '5/8'], correctIndex: 2, emoji: '➕' },
-        { question: 'Which is bigger: 7/10 or 3/10?', options: ['3/10', '7/10', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 2/9 of 18?', options: ['2', '3', '4', '6'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 5/8 - 3/8?', options: ['1/8', '2/8', '3/8', '4/8'], correctIndex: 1, emoji: '➖' },
-        { question: 'What is 3/10 + 4/10?', options: ['6/10', '7/10', '8/10', '9/10'], correctIndex: 1, emoji: '➕' }
+        { question: 'Which fraction is closest to 0?', options: ['1/2', '1/4', '1/8', '3/4'], correctIndex: 2, emoji: '📊' }
       ];
       return <QuizTemplate questions={qs} title="🍕 Fractions Game" pageSize={5} />;
     }
@@ -230,61 +171,10 @@ export default function KidsActivityPage() {
         { question: 'How many half hours in 3 hours?', options: ['3', '4', '5', '6'], correctIndex: 3, emoji: '⏰' },
         { question: 'What time is quarter past 6?', options: ['6:00', '6:15', '6:30', '6:45'], correctIndex: 1, emoji: '🕡' },
         { question: 'Which comes first: 3pm or 3am?', options: ['3pm', '3am', 'Same', 'Neither'], correctIndex: 1, emoji: '🌅' },
-        { question: 'What time is 8:00?', options: ['Seven o\'clock', 'Eight o\'clock', 'Nine o\'clock', 'Eight thirty'], correctIndex: 1, emoji: '🕗' },
-        { question: 'What time is 2:15?', options: ['Two o\'clock', 'Quarter past two', 'Two thirty', 'Quarter to two'], correctIndex: 1, emoji: '🕡' },
-        { question: 'How many minutes in 3 hours?', options: ['120', '150', '180', '200'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What is 5:00 + 3 hours?', options: ['6:00', '7:00', '8:00', '9:00'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is 11:45?', options: ['Quarter past 11', 'Quarter to 12', 'Eleven forty-five', 'Both B and C'], correctIndex: 3, emoji: '🕧' },
-        { question: 'How many minutes from 3:00 to 3:30?', options: ['15', '30', '45', '60'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is half past 7?', options: ['7:00', '7:30', '8:00', '7:15'], correctIndex: 1, emoji: '🕢' },
-        { question: 'Which comes later: 6am or 6pm?', options: ['6am', '6pm', 'Same', 'Neither'], correctIndex: 1, emoji: '🌅' },
-        { question: 'What time is quarter past 9?', options: ['9:00', '9:15', '9:30', '9:45'], correctIndex: 1, emoji: '🕤' },
-        { question: 'How many hours from 10am to 5pm?', options: ['5', '6', '7', '8'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is 1:00?', options: ['Twelve o\'clock', 'One o\'clock', 'Two o\'clock', 'One thirty'], correctIndex: 1, emoji: '🕐' },
-        { question: 'How many half hours in 2 hours?', options: ['2', '3', '4', '6'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is quarter to 6?', options: ['5:15', '5:45', '6:15', '6:45'], correctIndex: 1, emoji: '🕠' },
-        { question: 'What is 10:30 + 30 minutes?', options: ['10:45', '11:00', '11:15', '11:30'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is 5:15?', options: ['Five o\'clock', 'Quarter past five', 'Five thirty', 'Quarter to five'], correctIndex: 1, emoji: '🕠' },
-        { question: 'How many hours from 12am to 12pm?', options: ['6', '12', '18', '24'], correctIndex: 1, emoji: '⏰' },
-        { question: 'Which comes first: 11am or 11pm?', options: ['11am', '11pm', 'Same', 'Neither'], correctIndex: 0, emoji: '🌅' },
-        { question: 'What time is 12:45?', options: ['Quarter past 12', 'Quarter to 1', 'Twelve forty-five', 'Both B and C'], correctIndex: 3, emoji: '🕧' },
-        { question: 'How many minutes from 7:00 to 7:15?', options: ['5', '10', '15', '20'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is quarter past 4?', options: ['4:00', '4:15', '4:30', '4:45'], correctIndex: 1, emoji: '🕟' },
-        { question: 'What is 2:30 + 1 hour?', options: ['3:00', '3:30', '4:00', '4:30'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is 11:30?', options: ['Eleven o\'clock', 'Half past eleven', 'Twelve o\'clock', 'Eleven fifteen'], correctIndex: 1, emoji: '🕦' },
-        { question: 'How many quarter hours in 2 hours?', options: ['2', '4', '6', '8'], correctIndex: 3, emoji: '⏰' },
-        { question: 'What time is quarter to 10?', options: ['9:15', '9:45', '10:15', '10:45'], correctIndex: 1, emoji: '🕤' },
-        { question: 'Which is longer: 90 minutes or 2 hours?', options: ['90 minutes', '2 hours', 'Same', 'Neither'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is 6:45?', options: ['Quarter past 6', 'Quarter to 7', 'Six forty-five', 'Both B and C'], correctIndex: 3, emoji: '🕡' },
-        { question: 'How many hours from 7am to 2pm?', options: ['5', '6', '7', '8'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is half past 9?', options: ['9:00', '9:15', '9:30', '9:45'], correctIndex: 2, emoji: '🕤' },
-        { question: 'What is 4:15 + 45 minutes?', options: ['4:45', '5:00', '5:15', '5:30'], correctIndex: 1, emoji: '⏰' },
-        { question: 'How many seconds in a minute?', options: ['30', '45', '60', '100'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is 3:30?', options: ['Three o\'clock', 'Half past three', 'Three fifteen', 'Three forty-five'], correctIndex: 1, emoji: '🕞' },
-        { question: 'Which comes first: 2pm or 3pm?', options: ['2pm', '3pm', 'Same', 'Neither'], correctIndex: 0, emoji: '🌅' },
-        { question: 'What time is quarter to 12?', options: ['11:15', '11:45', '12:15', '12:45'], correctIndex: 1, emoji: '🕧' },
-        { question: 'How many minutes in a quarter hour?', options: ['10', '15', '20', '30'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is 10:15?', options: ['Ten o\'clock', 'Quarter past ten', 'Ten thirty', 'Quarter to ten'], correctIndex: 1, emoji: '🕥' },
-        { question: 'What is 7:00 + 4 hours?', options: ['10:00', '11:00', '12:00', '1:00'], correctIndex: 1, emoji: '⏰' },
-        { question: 'How many hours from 9pm to 6am?', options: ['7', '8', '9', '10'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is 8:15?', options: ['Eight o\'clock', 'Quarter past eight', 'Eight thirty', 'Quarter to eight'], correctIndex: 1, emoji: '🕗' },
-        { question: 'Which is longer: 1 hour or 50 minutes?', options: ['1 hour', '50 minutes', 'Same', 'Neither'], correctIndex: 0, emoji: '⏰' },
-        { question: 'What time is half past 5?', options: ['5:00', '5:15', '5:30', '5:45'], correctIndex: 2, emoji: '🕠' },
-        { question: 'How many quarter hours in 3 hours?', options: ['3', '6', '9', '12'], correctIndex: 3, emoji: '⏰' },
-        { question: 'What time is 1:45?', options: ['Quarter past 1', 'Quarter to 2', 'One forty-five', 'Both B and C'], correctIndex: 3, emoji: '🕐' },
-        { question: 'What is 11:30 + 30 minutes?', options: ['11:45', '12:00', '12:15', '12:30'], correctIndex: 1, emoji: '⏰' },
-        { question: 'How many minutes from 4:00 to 4:45?', options: ['15', '30', '40', '45'], correctIndex: 3, emoji: '⏰' },
-        { question: 'What time is quarter past 12?', options: ['12:00', '12:15', '12:30', '12:45'], correctIndex: 1, emoji: '🕛' },
-        { question: 'Which comes first: 5am or 4pm?', options: ['5am', '4pm', 'Same', 'Neither'], correctIndex: 0, emoji: '🌅' },
-        { question: 'What time is 9:45?', options: ['Quarter past 9', 'Quarter to 10', 'Nine forty-five', 'Both B and C'], correctIndex: 3, emoji: '🕤' },
-        { question: 'How many hours from 1pm to 11pm?', options: ['8', '9', '10', '11'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What is 6:30 + 1 hour 30 minutes?', options: ['7:00', '7:30', '8:00', '8:30'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is half past 2?', options: ['2:00', '2:15', '2:30', '2:45'], correctIndex: 2, emoji: '🕑' },
-        { question: 'How many minutes from 1:00 to 1:50?', options: ['30', '40', '50', '60'], correctIndex: 2, emoji: '⏰' }
+        { question: 'What time is 8:00?', options: ['Seven o\'clock', 'Eight o\'clock', 'Nine o\'clock', 'Eight thirty'], correctIndex: 1, emoji: '🕗' }
       ];
       return <QuizTemplate questions={qs} title="🕐 Clock Reading" pageSize={5} />;
     }
-    case 'sudoku-kids': return <SudokuKids />;
 
     /* ========== PRIMARY SCIENCE ========== */
     case 'human-body-quiz': {

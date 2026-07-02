@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
-import { Flame, Menu, X } from 'lucide-react';
+import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Editor from './pages/Editor';
 import Games from './pages/Games';
@@ -8,9 +8,13 @@ import Kids from './pages/Kids';
 import KidsActivityPage from './pages/kids/KidsActivityPage';
 import Services from './pages/services/Services';
 import ServicePage from './pages/services/ServicePage';
+import HelpPage from './pages/HelpPage';
+import CareerGuide from './pages/CareerGuide';
+import NewsFeed from './pages/NewsFeed';
+import TourGuide from './pages/TourGuide';
 import './App.css';
 
-const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare','rock-paper-scissors'];
+const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare'];
 
 function Navbar() {
   const location = useLocation();
@@ -32,16 +36,36 @@ function Navbar() {
   const navLinks = (
     <>
       <Link to="/editor" className={`nav-link ${location.pathname === '/editor' ? 'active' : ''}`} onClick={closeMenu}>
+        <FileText size={16} />
         Resume Builder
       </Link>
       <Link to="/services" className={`nav-link ${location.pathname === '/services' || (location.pathname.startsWith('/service/') && !isGameService) ? 'active' : ''}`} onClick={closeMenu}>
+        <Wrench size={16} />
         Tools
       </Link>
       <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`} onClick={closeMenu}>
+        <Gamepad2 size={16} />
         Games
       </Link>
+      <Link to="/career-guide" className={`nav-link ${location.pathname === '/career-guide' ? 'active' : ''}`} onClick={closeMenu}>
+        <Briefcase size={16} />
+        Career Guide
+      </Link>
+      <Link to="/help" className={`nav-link ${location.pathname === '/help' ? 'active' : ''}`} onClick={closeMenu}>
+        <HelpCircle size={16} />
+        I Need Help
+      </Link>
+      <Link to="/tour-guide" className={`nav-link ${location.pathname === '/tour-guide' ? 'active' : ''}`} onClick={closeMenu}>
+        <Map size={16} />
+        Tour Guide
+      </Link>
       <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
+        <GraduationCap size={16} />
         Kids Hub
+      </Link>
+      <Link to="/news" className={`nav-link ${location.pathname === '/news' ? 'active' : ''}`} onClick={closeMenu}>
+        <Newspaper size={16} />
+        News Feed
       </Link>
     </>
   );
@@ -88,8 +112,13 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/games" element={<Games />} />
+            <Route path="/games/:toolId" element={<ServicePage />} />
             <Route path="/services" element={<Services />} />
             <Route path="/kids" element={<Kids />} />
+            <Route path="/help" element={<HelpPage />} />
+            <Route path="/career-guide" element={<CareerGuide />} />
+            <Route path="/news" element={<NewsFeed />} />
+            <Route path="/tour-guide" element={<TourGuide />} />
             <Route path="/kids/activity/:activityId" element={<KidsActivityPage />} />
             <Route path="/service/:toolId" element={<ServicePage />} />
           </Routes>

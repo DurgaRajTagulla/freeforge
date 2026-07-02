@@ -46,11 +46,24 @@ function Editor() {
   
   const [resumeData, setResumeData] = useState(loadData);
   const [zoom, setZoom] = useState(85);
+  const [template, setTemplate] = useState(0);
+  const [theme, setTheme] = useState({ primary: '#2563eb', secondary: '#1e40af' });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [modalData, setModalData] = useState({});
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  const themes = [
+    { name: 'Blue', primary: '#2563eb', secondary: '#1e40af' },
+    { name: 'Purple', primary: '#9333ea', secondary: '#7c3aed' },
+    { name: 'Green', primary: '#16a34a', secondary: '#15803d' },
+    { name: 'Red', primary: '#dc2626', secondary: '#b91c1c' },
+    { name: 'Orange', primary: '#ea580c', secondary: '#c2410c' },
+    { name: 'Teal', primary: '#0d9488', secondary: '#0f766e' },
+    { name: 'Pink', primary: '#db2777', secondary: '#be185d' },
+    { name: 'Black', primary: '#1e293b', secondary: '#0f172a' },
+  ];
 
   // Save to localStorage whenever resumeData changes
   useEffect(() => {
@@ -186,7 +199,32 @@ function Editor() {
   };
 
   const handleDownloadPDFModal = () => {
-    generatePDF(resumeData);
+    generatePDF(resumeData, template, theme);
+  };
+
+  const handleDownloadCanvasPDF = async () => {
+    const el = document.getElementById('resume-paper-modal');
+    if (!el) return;
+    
+    const html2canvas = (await import('html2canvas')).default;
+    const { jsPDF } = await import('jspdf');
+    
+    const canvas = await html2canvas(el, { 
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff'
+    });
+    
+    const imgData = canvas.toDataURL('image/png');
+    const imgW = canvas.width;
+    const imgH = canvas.height;
+    
+    const pdfW = 210;
+    const pdfH = (imgH * pdfW) / imgW;
+    
+    const pdf = new jsPDF('p', 'mm', [pdfW, Math.max(pdfH, 297)]);
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save(`${resumeData.fullName || 'resume'}_canvas_resume.pdf`);
   };
 
   const handleDownloadJSON = () => {
@@ -509,11 +547,36 @@ function Editor() {
 
         <div className="editor-preview">
           <div className="preview-header">
-            <div className="style-selector">
-              <span className="style-label">Style: Executive Precision</span>
-              <div className="style-options">
-                <span className="style-dot active"></span>
-                <span className="style-dot"></span>
+            <div className="preview-header-controls">
+              <div className="style-selector">
+                <span className="style-label">Template:</span>
+                <div className="style-options">
+                  <button 
+                    className={`style-dot ${template === 0 ? 'active' : ''}`}
+                    onClick={() => setTemplate(0)}
+                    title="Classic"
+                  />
+                  <button 
+                    className={`style-dot ${template === 1 ? 'active' : ''}`}
+                    onClick={() => setTemplate(1)}
+                    title="Two-Column"
+                  />
+                </div>
+                <span className="style-name">{template === 0 ? 'Classic' : 'Two-Column'}</span>
+              </div>
+              <div className="color-selector">
+                <span className="style-label">Theme:</span>
+                <div className="color-options">
+                  {themes.map((t, i) => (
+                    <button
+                      key={i}
+                      className={`color-dot ${theme.primary === t.primary ? 'active' : ''}`}
+                      style={{ background: t.primary }}
+                      onClick={() => setTheme({ primary: t.primary, secondary: t.secondary })}
+                      title={t.name}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
             <div className="zoom-controls">
@@ -536,86 +599,180 @@ function Editor() {
             </div>
           </div>
 
-          <div className="resume-preview">
-            <div id="resume-paper" className="resume-paper" style={{ transform: `scale(${zoom / 100})` }}>
-              <h1 className="resume-name">{resumeData.fullName?.toUpperCase() || 'YOUR NAME'}</h1>
-              <p className="resume-title-text">{resumeData.jobTitle || 'Job Title'}</p>
-              <div className="resume-contact">
-                {resumeData.email && <span>{resumeData.email}</span>}
-                {resumeData.email && resumeData.phone && <span className="separator">•</span>}
-                {resumeData.phone && <span>{resumeData.phone}</span>}
-                {(resumeData.email || resumeData.phone) && resumeData.location && <span className="separator">•</span>}
-                {resumeData.location && <span>{resumeData.location}</span>}
-                {resumeData.location && resumeData.linkedin && <span className="separator">•</span>}
-                {resumeData.linkedin && <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn</a>}
-                {resumeData.linkedin && resumeData.github && <span className="separator">•</span>}
-                {resumeData.github && <a href={resumeData.github} target="_blank" rel="noopener noreferrer" className="contact-link">GitHub</a>}
-              </div>
+          <div className="editor-resume-preview">
+            <div id="resume-paper" className={`resume-paper ${template === 1 ? 'template-two-col' : ''}`} style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top center', width: '700px', '--theme-primary': theme.primary, '--theme-secondary': theme.secondary }}>
+              {template === 0 ? (
+                // Classic Template
+                <>
+                  <h1 className="resume-name">{resumeData.fullName?.toUpperCase() || 'YOUR NAME'}</h1>
+                  <p className="resume-title-text">{resumeData.jobTitle || 'Job Title'}</p>
+                  <div className="resume-contact">
+                    {resumeData.email && <span>{resumeData.email}</span>}
+                    {resumeData.email && resumeData.phone && <span className="separator">•</span>}
+                    {resumeData.phone && <span>{resumeData.phone}</span>}
+                    {(resumeData.email || resumeData.phone) && resumeData.location && <span className="separator">•</span>}
+                    {resumeData.location && <span>{resumeData.location}</span>}
+                    {resumeData.location && resumeData.linkedin && <span className="separator">•</span>}
+                    {resumeData.linkedin && <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn</a>}
+                    {resumeData.linkedin && resumeData.github && <span className="separator">•</span>}
+                    {resumeData.github && <a href={resumeData.github} target="_blank" rel="noopener noreferrer" className="contact-link">GitHub</a>}
+                  </div>
 
-              {resumeData.summary && (
-                <div className="resume-section">
-                  <h2 className="resume-section-title">PROFESSIONAL SUMMARY</h2>
-                  <p className="resume-text">{resumeData.summary}</p>
-                </div>
-              )}
+                  {resumeData.summary && (
+                    <div className="resume-section">
+                      <h2 className="resume-section-title">PROFESSIONAL SUMMARY</h2>
+                      <p className="resume-text">{resumeData.summary}</p>
+                    </div>
+                  )}
 
-              {resumeData.experience.length > 0 && (
-                <div className="resume-section">
-                  <h2 className="resume-section-title">WORK EXPERIENCE</h2>
-                  {resumeData.experience.map((exp, index) => (
-                    <div key={index} className="resume-experience">
-                      <div className="resume-exp-header">
-                        <div>
-                          <h3 className="resume-company">{exp.company}</h3>
-                          <p className="resume-position">{exp.position}</p>
+                  {resumeData.experience.length > 0 && (
+                    <div className="resume-section">
+                      <h2 className="resume-section-title">WORK EXPERIENCE</h2>
+                      {resumeData.experience.map((exp, index) => (
+                        <div key={index} className="resume-experience">
+                          <div className="resume-exp-header">
+                            <div>
+                              <h3 className="resume-company">{exp.company}</h3>
+                              <p className="resume-position">{exp.position}</p>
+                            </div>
+                            <div className="resume-exp-meta">
+                              {exp.location && <span className="resume-location">{exp.location}</span>}
+                              <span className="resume-date">{exp.startDate} — {exp.endDate}</span>
+                            </div>
+                          </div>
+                          {exp.description && (
+                            <div className="resume-exp-list" dangerouslySetInnerHTML={{ __html: exp.description }} />
+                          )}
                         </div>
-                        <div className="resume-exp-meta">
-                          {exp.location && <span className="resume-location">{exp.location}</span>}
-                          <span className="resume-date">{exp.startDate} — {exp.endDate}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  {Object.keys(resumeData.skills).length > 0 && (
+                    <div className="resume-section">
+                      <h2 className="resume-section-title">SKILLS</h2>
+                      {Object.entries(resumeData.skills).map(([category, skills]) => (
+                        <div key={category} className="resume-skill-category">
+                          <strong>{category}:</strong> {skills.join(', ')}
                         </div>
-                      </div>
-                      {exp.description && (
-                        <div className="resume-exp-list" dangerouslySetInnerHTML={{ __html: exp.description }} />
+                      ))}
+                    </div>
+                  )}
+
+                  {resumeData.projects.length > 0 && (
+                    <div className="resume-section">
+                      <h2 className="resume-section-title">KEY PROJECTS</h2>
+                      {resumeData.projects.map((project, index) => (
+                        <div key={index} className="resume-project">
+                          <h3 className="resume-project-name">{project.name}</h3>
+                          <p className="resume-project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {resumeData.education.length > 0 && (
+                    <div className="resume-section">
+                      <h2 className="resume-section-title">EDUCATION</h2>
+                      {resumeData.education.map((edu, index) => (
+                        <div key={index} className="resume-education">
+                          <h3 className="resume-school">{edu.school}</h3>
+                          <p className="resume-degree">{edu.degree}</p>
+                          <p className="resume-date">{edu.startDate} - {edu.endDate}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                // Two-Column Template
+                <>
+                  <div className="tc-header">
+                    <div className="tc-header-content">
+                      <h1 className="tc-name">{resumeData.fullName || 'YOUR NAME'}</h1>
+                      <p className="tc-jobtitle">{resumeData.jobTitle || 'Job Title'}</p>
+                      {resumeData.summary && (
+                        <p className="tc-summary">{resumeData.summary}</p>
                       )}
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
 
-              {Object.keys(resumeData.skills).length > 0 && (
-                <div className="resume-section">
-                  <h2 className="resume-section-title">SKILLS</h2>
-                  {Object.entries(resumeData.skills).map(([category, skills]) => (
-                    <div key={category} className="resume-skill-category">
-                      <strong>{category}:</strong> {skills.join(', ')}
-                    </div>
-                  ))}
-                </div>
-              )}
+                  <div className="tc-contact-bar">
+                    {resumeData.email && <span className="tc-contact-item">✉ {resumeData.email}</span>}
+                    {resumeData.phone && <span className="tc-contact-item">☎ {resumeData.phone}</span>}
+                    {resumeData.location && <span className="tc-contact-item">📍 {resumeData.location}</span>}
+                    {resumeData.linkedin && <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="tc-contact-item tc-link">🔗 LinkedIn</a>}
+                    {resumeData.github && <a href={resumeData.github} target="_blank" rel="noopener noreferrer" className="tc-contact-item tc-link">🔗 GitHub</a>}
+                  </div>
 
-              {resumeData.projects.length > 0 && (
-                <div className="resume-section">
-                  <h2 className="resume-section-title">KEY PROJECTS</h2>
-                  {resumeData.projects.map((project, index) => (
-                    <div key={index} className="resume-project">
-                      <h3 className="resume-project-name">{project.name}</h3>
-                      <p className="resume-project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
-                    </div>
-                  ))}
-                </div>
-              )}
+                  <div className="tc-body">
+                    <div className="tc-left-col">
+                      {resumeData.experience.length > 0 && (
+                        <div className="tc-section">
+                          <h2 className="tc-section-title">WORK EXPERIENCE</h2>
+                          {resumeData.experience.map((exp, index) => (
+                            <div key={index} className="tc-experience">
+                              <h3 className="tc-company">{exp.company}</h3>
+                              <p className="tc-position">{exp.position}</p>
+                              <div className="tc-exp-meta">
+                                <span className="tc-date">{exp.startDate} — {exp.endDate}</span>
+                                {exp.location && <span className="tc-location">{exp.location}</span>}
+                              </div>
+                              {exp.description && (
+                                <div className="tc-exp-description" dangerouslySetInnerHTML={{ __html: exp.description }} />
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
-              {resumeData.education.length > 0 && (
-                <div className="resume-section">
-                  <h2 className="resume-section-title">EDUCATION</h2>
-                  {resumeData.education.map((edu, index) => (
-                    <div key={index} className="resume-education">
-                      <h3 className="resume-school">{edu.school}</h3>
-                      <p className="resume-degree">{edu.degree}</p>
-                      <p className="resume-date">{edu.startDate} - {edu.endDate}</p>
+                      {resumeData.education.length > 0 && (
+                        <div className="tc-section">
+                          <h2 className="tc-section-title">EDUCATION</h2>
+                          {resumeData.education.map((edu, index) => (
+                            <div key={index} className="tc-education">
+                              <h3 className="tc-school">{edu.school}</h3>
+                              <p className="tc-degree">{edu.degree}</p>
+                              <p className="tc-date">{edu.startDate} - {edu.endDate}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
+
+                    <div className="tc-right-col">
+                      {Object.keys(resumeData.skills).length > 0 && (
+                        <div className="tc-section">
+                          <h2 className="tc-section-title">SKILLS</h2>
+                          <div className="tc-skills-container">
+                            {Object.entries(resumeData.skills).map(([category, skills]) => (
+                              <div key={category} className="tc-skill-group">
+                                <span className="tc-skill-category">{category}</span>
+                                <div className="tc-skill-tags">
+                                  {skills.map((skill, i) => (
+                                    <span key={i} className="tc-skill-tag">{skill}</span>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {resumeData.projects.length > 0 && (
+                        <div className="tc-section">
+                          <h2 className="tc-section-title">PROJECTS</h2>
+                          {resumeData.projects.map((project, index) => (
+                            <div key={index} className="tc-project">
+                              <h3 className="tc-project-name">{project.name}</h3>
+                              <div className="tc-project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -794,9 +951,27 @@ function Editor() {
             <div className="preview-modal-header">
               <h2 className="preview-modal-title">Resume Preview</h2>
               <div className="preview-modal-actions">
+                <div className="modal-theme-selector">
+                  <span className="style-label">Theme:</span>
+                  <div className="color-options">
+                    {themes.map((t, i) => (
+                      <button
+                        key={i}
+                        className={`color-dot ${theme.primary === t.primary ? 'active' : ''}`}
+                        style={{ background: t.primary }}
+                        onClick={() => setTheme({ primary: t.primary, secondary: t.secondary })}
+                        title={t.name}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <button className="download-pdf-modal-btn" onClick={handleDownloadPDFModal}>
                   <Printer className="btn-icon" />
                   Download PDF
+                </button>
+                <button className="download-canvas-modal-btn" onClick={handleDownloadCanvasPDF}>
+                  <FileText className="btn-icon" />
+                  Canvas PDF
                 </button>
                 <button className="modal-close" onClick={() => setPreviewOpen(false)}>
                   <X className="close-icon" />
@@ -804,85 +979,179 @@ function Editor() {
               </div>
             </div>
             <div className="preview-modal-body">
-              <div id="resume-paper-modal" className="resume-paper-preview">
-                <h1 className="resume-name">{resumeData.fullName?.toUpperCase() || 'YOUR NAME'}</h1>
-                <p className="resume-title-text">{resumeData.jobTitle || 'Job Title'}</p>
-                <div className="resume-contact">
-                  {resumeData.email && <span>{resumeData.email}</span>}
-                  {resumeData.email && resumeData.phone && <span className="separator">•</span>}
-                  {resumeData.phone && <span>{resumeData.phone}</span>}
-                  {(resumeData.email || resumeData.phone) && resumeData.location && <span className="separator">•</span>}
-                  {resumeData.location && <span>{resumeData.location}</span>}
-                  {resumeData.location && resumeData.linkedin && <span className="separator">•</span>}
-                  {resumeData.linkedin && <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn</a>}
-                  {resumeData.linkedin && resumeData.github && <span className="separator">•</span>}
-                  {resumeData.github && <a href={resumeData.github} target="_blank" rel="noopener noreferrer" className="contact-link">GitHub</a>}
-                </div>
+              <div id="resume-paper-modal" className={`resume-paper-preview ${template === 1 ? 'template-two-col-modal' : ''}`} style={{ '--theme-primary': theme.primary, '--theme-secondary': theme.secondary }}>
+                {template === 0 ? (
+                  // Classic Template
+                  <>
+                    <h1 className="resume-name">{resumeData.fullName?.toUpperCase() || 'YOUR NAME'}</h1>
+                    <p className="resume-title-text">{resumeData.jobTitle || 'Job Title'}</p>
+                    <div className="resume-contact">
+                      {resumeData.email && <span>{resumeData.email}</span>}
+                      {resumeData.email && resumeData.phone && <span className="separator">•</span>}
+                      {resumeData.phone && <span>{resumeData.phone}</span>}
+                      {(resumeData.email || resumeData.phone) && resumeData.location && <span className="separator">•</span>}
+                      {resumeData.location && <span>{resumeData.location}</span>}
+                      {resumeData.location && resumeData.linkedin && <span className="separator">•</span>}
+                      {resumeData.linkedin && <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn</a>}
+                      {resumeData.linkedin && resumeData.github && <span className="separator">•</span>}
+                      {resumeData.github && <a href={resumeData.github} target="_blank" rel="noopener noreferrer" className="contact-link">GitHub</a>}
+                    </div>
 
-                {resumeData.summary && resumeData.summary.trim() && (
-                  <div className="resume-section">
-                    <h2 className="resume-section-title">PROFESSIONAL SUMMARY</h2>
-                    <p className="resume-text">{resumeData.summary}</p>
-                  </div>
-                )}
+                    {resumeData.summary && resumeData.summary.trim() && (
+                      <div className="resume-section">
+                        <h2 className="resume-section-title">PROFESSIONAL SUMMARY</h2>
+                        <p className="resume-text">{resumeData.summary}</p>
+                      </div>
+                    )}
 
-                {resumeData.experience?.length > 0 && (
-                  <div className="resume-section">
-                    <h2 className="resume-section-title">WORK EXPERIENCE</h2>
-                    {resumeData.experience.map((exp, index) => (
-                      <div key={index} className="resume-experience">
-                        <div className="resume-exp-header">
-                          <div>
-                            <h3 className="resume-company">{exp.company}</h3>
-                            <p className="resume-position">{exp.position}</p>
+                    {resumeData.experience?.length > 0 && (
+                      <div className="resume-section">
+                        <h2 className="resume-section-title">WORK EXPERIENCE</h2>
+                        {resumeData.experience.map((exp, index) => (
+                          <div key={index} className="resume-experience">
+                            <div className="resume-exp-header">
+                              <div>
+                                <h3 className="resume-company">{exp.company}</h3>
+                                <p className="resume-position">{exp.position}</p>
+                              </div>
+                              <div className="resume-exp-meta">
+                                {exp.location && <span className="resume-location">{exp.location}</span>}
+                                <span className="resume-date">{exp.startDate} — {exp.endDate}</span>
+                              </div>
+                            </div>
+                            {exp.description && (
+                              <div className="resume-list" dangerouslySetInnerHTML={{ __html: exp.description }} />
+                            )}
                           </div>
-                          <div className="resume-exp-meta">
-                            {exp.location && <span className="resume-location">{exp.location}</span>}
-                            <span className="resume-date">{exp.startDate} — {exp.endDate}</span>
+                        ))}
+                      </div>
+                    )}
+
+                    {Object.keys(resumeData.skills || {}).length > 0 && (
+                      <div className="resume-section">
+                        <h2 className="resume-section-title">SKILLS</h2>
+                        {Object.entries(resumeData.skills).map(([category, skills]) => (
+                          <div key={category} className="resume-skill-category">
+                            <strong>{category}:</strong> {skills.join(', ')}
                           </div>
-                        </div>
-                        {exp.description && (
-                          <div className="resume-list" dangerouslySetInnerHTML={{ __html: exp.description }} />
+                        ))}
+                      </div>
+                    )}
+
+                    {resumeData.projects?.length > 0 && (
+                      <div className="resume-section">
+                        <h2 className="resume-section-title">KEY PROJECTS</h2>
+                        {resumeData.projects.map((project, index) => (
+                          <div key={index} className="resume-project">
+                            <h3 className="resume-project-name">{project.name}</h3>
+                            <p className="resume-project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {resumeData.education?.length > 0 && (
+                      <div className="resume-section">
+                        <h2 className="resume-section-title">EDUCATION</h2>
+                        {resumeData.education.map((edu, index) => (
+                          <div key={index} className="resume-education">
+                            <h3 className="resume-school">{edu.school}</h3>
+                            <p className="resume-degree">{edu.degree}</p>
+                            <p className="resume-date">{edu.startDate} - {edu.endDate}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  // Two-Column Template
+                  <>
+                    <div className="tc-header">
+                      <div className="tc-header-content">
+                        <h1 className="tc-name">{resumeData.fullName || 'YOUR NAME'}</h1>
+                        <p className="tc-jobtitle">{resumeData.jobTitle || 'Job Title'}</p>
+                        {resumeData.summary && (
+                          <p className="tc-summary">{resumeData.summary}</p>
                         )}
                       </div>
-                    ))}
-                  </div>
-                )}
+                    </div>
 
-                {Object.keys(resumeData.skills || {}).length > 0 && (
-                  <div className="resume-section">
-                    <h2 className="resume-section-title">SKILLS</h2>
-                    {Object.entries(resumeData.skills).map(([category, skills]) => (
-                      <div key={category} className="resume-skill-category">
-                        <strong>{category}:</strong> {skills.join(', ')}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                    <div className="tc-contact-bar">
+                      {resumeData.email && <span className="tc-contact-item">✉ {resumeData.email}</span>}
+                      {resumeData.phone && <span className="tc-contact-item">☎ {resumeData.phone}</span>}
+                      {resumeData.location && <span className="tc-contact-item">📍 {resumeData.location}</span>}
+                      {resumeData.linkedin && <a href={resumeData.linkedin} target="_blank" rel="noopener noreferrer" className="tc-contact-item tc-link">🔗 LinkedIn</a>}
+                      {resumeData.github && <a href={resumeData.github} target="_blank" rel="noopener noreferrer" className="tc-contact-item tc-link">🔗 GitHub</a>}
+                    </div>
 
-                {resumeData.projects?.length > 0 && (
-                  <div className="resume-section">
-                    <h2 className="resume-section-title">KEY PROJECTS</h2>
-                    {resumeData.projects.map((project, index) => (
-                      <div key={index} className="resume-project">
-                        <h3 className="resume-project-name">{project.name}</h3>
-                        <p className="resume-project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                    <div className="tc-body">
+                      <div className="tc-left-col">
+                        {resumeData.experience?.length > 0 && (
+                          <div className="tc-section">
+                            <h2 className="tc-section-title">WORK EXPERIENCE</h2>
+                            {resumeData.experience.map((exp, index) => (
+                              <div key={index} className="tc-experience">
+                                <h3 className="tc-company">{exp.company}</h3>
+                                <p className="tc-position">{exp.position}</p>
+                                <div className="tc-exp-meta">
+                                  <span className="tc-date">{exp.startDate} — {exp.endDate}</span>
+                                  {exp.location && <span className="tc-location">{exp.location}</span>}
+                                </div>
+                                {exp.description && (
+                                  <div className="tc-exp-description" dangerouslySetInnerHTML={{ __html: exp.description }} />
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
 
-                {resumeData.education?.length > 0 && (
-                  <div className="resume-section">
-                    <h2 className="resume-section-title">EDUCATION</h2>
-                    {resumeData.education.map((edu, index) => (
-                      <div key={index} className="resume-education">
-                        <h3 className="resume-school">{edu.school}</h3>
-                        <p className="resume-degree">{edu.degree}</p>
-                        <p className="resume-date">{edu.startDate} - {edu.endDate}</p>
+                        {resumeData.education?.length > 0 && (
+                          <div className="tc-section">
+                            <h2 className="tc-section-title">EDUCATION</h2>
+                            {resumeData.education.map((edu, index) => (
+                              <div key={index} className="tc-education">
+                                <h3 className="tc-school">{edu.school}</h3>
+                                <p className="tc-degree">{edu.degree}</p>
+                                <p className="tc-date">{edu.startDate} - {edu.endDate}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="tc-right-col">
+                        {Object.keys(resumeData.skills || {}).length > 0 && (
+                          <div className="tc-section">
+                            <h2 className="tc-section-title">SKILLS</h2>
+                            <div className="tc-skills-container">
+                              {Object.entries(resumeData.skills).map(([category, skills]) => (
+                                <div key={category} className="tc-skill-group">
+                                  <span className="tc-skill-category">{category}</span>
+                                  <div className="tc-skill-tags">
+                                    {skills.map((skill, i) => (
+                                      <span key={i} className="tc-skill-tag">{skill}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {resumeData.projects?.length > 0 && (
+                          <div className="tc-section">
+                            <h2 className="tc-section-title">PROJECTS</h2>
+                            {resumeData.projects.map((project, index) => (
+                              <div key={index} className="tc-project">
+                                <h3 className="tc-project-name">{project.name}</h3>
+                                <div className="tc-project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             </div>

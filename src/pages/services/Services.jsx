@@ -3,7 +3,7 @@ import {
   Image, FileText, RotateCw, Shuffle,
   Droplets, Merge, Split,
   Unlock, Hash, Crop, Calendar,
-  Calculator, DollarSign, Clock, Ruler,
+  Calculator, DollarSign, Clock, Ruler, QrCode,
   Edit3, Code, Terminal, Timer, Compass
 } from 'lucide-react';
 import './Services.css';
@@ -21,13 +21,13 @@ const utilityTools = [
   { id: 'emi-calculator', title: 'EMI Calculator', icon: Calculator, desc: 'Monthly EMI, total interest and payment' },
   { id: 'interest-calculator', title: 'Interest Calculator', icon: Calculator, desc: 'Simple & compound interest on borrowed money' },
   { id: 'income-tax-calculator', title: 'Income Tax Calculator (India)', icon: DollarSign, desc: 'Tax as per Indian income tax slabs' },
-  { id: 'currency-converter', title: 'Currency Converter', icon: DollarSign, desc: 'Convert between world currencies' },
   { id: 'timezone-converter', title: 'Time Zone Converter', icon: Clock, desc: 'Convert time between different time zones' },
   { id: 'unit-converter', title: 'Unit Converter', icon: Ruler, desc: 'Convert length, weight, temperature, area and more' },
   { id: 'bmi-calculator', title: 'BMI Calculator', icon: Calculator, desc: 'Calculate Body Mass Index from weight and height' },
   { id: 'countdown-timer', title: 'Countdown Timer', icon: Timer, desc: 'Set a countdown alarm with hours, minutes, seconds' },
   { id: 'stopwatch', title: 'Stopwatch', icon: Timer, desc: 'Precision stopwatch with lap tracking' },
   { id: 'compass', title: 'Compass', icon: Compass, desc: 'Digital compass using device orientation' },
+  { id: 'qr-code-generator', title: 'QR Code Generator', icon: QrCode, desc: 'Generate QR codes for text, URLs and more' },
 ];
 
 const devTools = [

@@ -10,7 +10,6 @@ const categories = [
       { id: 'whack-a-mole', icon: '🔨', desc: 'Tap moles as they pop up in 30s' },
       { id: 'simon-says', icon: '🎨', desc: 'Remember and repeat color sequences' },
       { id: 'tic-tac-toe', icon: '❌', desc: 'Classic X vs O with score tracking' },
-      { id: 'rock-paper-scissors', icon: '✊', desc: 'Beat the computer, streak tracker' },
     ],
   },
   {
@@ -65,7 +64,7 @@ export default function Games() {
             </h2>
             <div className="tools-grid">
               {cat.games.map(game => (
-                <button key={game.id} className="tool-card" onClick={() => navigate(`/service/${game.id}`)}>
+                <button key={game.id} className="tool-card" onClick={() => navigate(`/games/${game.id}`)}>
                   <div className="tool-icon" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', fontSize: '28px' }}>
                     {game.icon}
                   </div>

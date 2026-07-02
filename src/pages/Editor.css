@@ -432,6 +432,12 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.preview-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
 .style-selector {
   display: flex;
   align-items: center;
@@ -454,12 +460,52 @@
   border-radius: 50%;
   background: #d1d5db;
   cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.style-dot:hover {
+  background: #9ca3af;
 }
 
 .style-dot.active {
   background: #60a5fa;
-  border-color: rgba(96, 165, 250, 0.4);
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
+}
+
+.style-name {
+  font-size: 13px;
+  color: #94a3b8;
+  min-width: 80px;
+}
+
+.color-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-options {
+  display: flex;
+  gap: 6px;
+}
+
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.color-dot:hover {
+  transform: scale(1.15);
+}
+
+.color-dot.active {
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .zoom-controls {
@@ -499,7 +545,7 @@
   text-align: center;
 }
 
-.resume-preview {
+.editor-resume-preview {
   flex: 1;
   padding: 32px;
   overflow: auto;
@@ -516,7 +562,6 @@
   padding: 48px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  transform-origin: top center;
 }
 
 .resume-name {
@@ -530,7 +575,7 @@
 
 .resume-title-text {
   font-size: 16px;
-  color: #2563eb;
+  color: var(--theme-primary, #2563eb);
   text-align: center;
   margin: 0 0 16px 0;
   font-weight: 500;
@@ -551,7 +596,7 @@
 }
 
 .contact-link {
-  color: #2563eb;
+  color: var(--theme-primary, #2563eb);
   text-decoration: none;
 }
 
@@ -569,7 +614,7 @@
   color: #111827;
   margin: 0 0 12px 0;
   padding-bottom: 8px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--theme-primary, #e5e7eb);
   letter-spacing: 0.5px;
 }
 
@@ -599,7 +644,7 @@
 
 .resume-position {
   font-size: 13px;
-  color: #2563eb;
+  color: var(--theme-primary, #2563eb);
   margin: 0;
   font-weight: 500;
 }
@@ -939,6 +984,29 @@
   gap: 12px;
 }
 
+.modal-theme-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-theme-selector .style-label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.modal-theme-selector .color-options {
+  display: flex;
+  gap: 4px;
+}
+
+.modal-theme-selector .color-dot {
+  width: 16px;
+  height: 16px;
+}
+
 .download-pdf-modal-btn {
   display: flex;
   align-items: center;
@@ -959,6 +1027,28 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
   background: #1d4ed8;
+}
+
+.download-canvas-modal-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+
+.download-canvas-modal-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+  background: #b45309;
 }
 
 .preview-modal-body {
@@ -993,7 +1083,7 @@
 
 .resume-paper-preview .resume-title-text {
   font-size: 16px;
-  color: #2563eb;
+  color: var(--theme-primary, #2563eb);
   text-align: center;
   margin: 0 0 16px 0;
   font-weight: 500;
@@ -1014,7 +1104,7 @@
 }
 
 .resume-paper-preview .contact-link {
-  color: #2563eb;
+  color: var(--theme-primary, #2563eb);
   text-decoration: none;
 }
 
@@ -1032,7 +1122,7 @@
   color: #111827;
   margin: 0 0 12px 0;
   padding-bottom: 8px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--theme-primary, #2563eb);
   letter-spacing: 0.5px;
 }
 
@@ -1062,7 +1152,7 @@
 
 .resume-paper-preview .resume-position {
   font-size: 13px;
-  color: #2563eb;
+  color: var(--theme-primary, #2563eb);
   margin: 0;
   font-weight: 500;
 }
@@ -1148,6 +1238,226 @@
   color: #111827;
 }
 
+/* Two-Column Template - Modal */
+.template-two-col-modal {
+  padding: 0 !important;
+}
+
+.template-two-col-modal .tc-header {
+  background: linear-gradient(135deg, var(--theme-secondary, #2563eb) 0%, var(--theme-primary, #3b82f6) 100%);
+  color: white;
+  padding: 28px 32px;
+}
+
+.template-two-col-modal .tc-header-content {
+  max-width: 100%;
+}
+
+.template-two-col-modal .tc-name {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.5px;
+}
+
+.template-two-col-modal .tc-jobtitle {
+  font-size: 15px;
+  margin: 0 0 10px 0;
+  opacity: 0.9;
+}
+
+.template-two-col-modal .tc-summary {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.template-two-col-modal .tc-contact-bar {
+  background: #f8fafc;
+  padding: 12px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.template-two-col-modal .tc-contact-item {
+  font-size: 12px;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.template-two-col-modal .tc-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.template-two-col-modal .tc-link:hover {
+  text-decoration: underline;
+}
+
+.template-two-col-modal .tc-body {
+  display: flex;
+  min-height: 400px;
+}
+
+.template-two-col-modal .tc-left-col {
+  flex: 1;
+  padding: 24px 20px;
+  background: #ffffff;
+  border-right: 2px solid #e2e8f0;
+}
+
+.template-two-col-modal .tc-right-col {
+  flex: 0.9;
+  padding: 24px 20px;
+  background: #f8fafc;
+}
+
+.template-two-col-modal .tc-section {
+  margin-bottom: 24px;
+}
+
+.template-two-col-modal .tc-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--theme-primary, #2563eb);
+  margin: 0 0 14px 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--theme-primary, #2563eb);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.template-two-col-modal .tc-experience {
+  margin-bottom: 16px;
+}
+
+.template-two-col-modal .tc-company {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 2px 0;
+}
+
+.template-two-col-modal .tc-position {
+  font-size: 13px;
+  color: var(--theme-primary, #2563eb);
+  font-weight: 500;
+  margin: 0 0 4px 0;
+}
+
+.template-two-col-modal .tc-exp-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.template-two-col-modal .tc-date {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.template-two-col-modal .tc-location {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.template-two-col-modal .tc-exp-description {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.template-two-col-modal .tc-exp-description ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.template-two-col-modal .tc-exp-description li {
+  margin-bottom: 3px;
+}
+
+.template-two-col-modal .tc-education {
+  margin-bottom: 14px;
+}
+
+.template-two-col-modal .tc-school {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 2px 0;
+}
+
+.template-two-col-modal .tc-degree {
+  font-size: 13px;
+  color: #2563eb;
+  margin: 0 0 4px 0;
+}
+
+.template-two-col-modal .tc-skills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.template-two-col-modal .tc-skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.template-two-col-modal .tc-skill-category {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.template-two-col-modal .tc-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.template-two-col-modal .tc-skill-tag {
+  background: linear-gradient(135deg, var(--theme-primary, #2563eb) 0%, var(--theme-primary, #3b82f6) 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.template-two-col-modal .tc-project {
+  margin-bottom: 14px;
+}
+
+.template-two-col-modal .tc-project-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.template-two-col-modal .tc-project-description {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.template-two-col-modal .tc-project-description ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.template-two-col-modal .tc-project-description li {
+  margin-bottom: 3px;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .editor-header {
@@ -1223,6 +1533,11 @@
     gap: 8px;
   }
 
+  .preview-header-controls {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
   .style-selector {
     gap: 8px;
   }
@@ -1231,7 +1546,11 @@
     display: none;
   }
 
-  .resume-preview {
+  .color-selector {
+    display: none;
+  }
+
+  .editor-resume-preview {
     padding: 16px;
   }
 
@@ -1393,4 +1712,238 @@
     flex: 1;
     text-align: center;
   }
+}
+
+/* Two-Column Template */
+.template-two-col {
+  padding: 0;
+}
+
+.tc-header {
+  background: linear-gradient(135deg, var(--theme-secondary, #1e3a5f) 0%, var(--theme-primary, #2563eb) 100%);
+  padding: 32px 40px;
+  color: #fff;
+}
+
+.tc-header-content {
+  text-align: center;
+}
+
+.tc-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tc-jobtitle {
+  font-size: 16px;
+  color: #93c5fd;
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+.tc-summary {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tc-contact-bar {
+  background: #0f172a;
+  padding: 12px 40px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.tc-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tc-link {
+  color: var(--theme-primary, #60a5fa);
+  text-decoration: none;
+}
+
+.tc-link:hover {
+  text-decoration: underline;
+}
+
+.tc-body {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 0;
+  min-height: 600px;
+}
+
+.tc-left-col {
+  padding: 24px 20px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.tc-right-col {
+  padding: 24px 20px;
+  background: #f8fafc;
+}
+
+.tc-section {
+  margin-bottom: 24px;
+}
+
+.tc-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--theme-primary, #1e3a5f);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--theme-primary, #2563eb);
+}
+
+.tc-experience {
+  margin-bottom: 16px;
+}
+
+.tc-company {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.tc-position {
+  font-size: 13px;
+  color: var(--theme-primary, #2563eb);
+  margin: 0 0 6px 0;
+  font-weight: 500;
+}
+
+.tc-exp-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.tc-date {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.tc-location {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.tc-exp-description {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.tc-exp-description ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.tc-exp-description li {
+  margin-bottom: 4px;
+}
+
+.tc-exp-description p {
+  margin: 0 0 4px 0;
+}
+
+.tc-education {
+  margin-bottom: 12px;
+}
+
+.tc-school {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.tc-degree {
+  font-size: 12px;
+  color: #374151;
+  margin: 0 0 4px 0;
+}
+
+.tc-skills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tc-skill-group {
+  margin-bottom: 8px;
+}
+
+.tc-skill-category {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e3a5f;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.tc-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tc-skill-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--theme-primary, #2563eb);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.tc-project {
+  margin-bottom: 12px;
+}
+
+.tc-project-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.tc-project-description {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.tc-project-description ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.tc-project-description li {
+  margin-bottom: 4px;
+}
+
+.tc-project-description p {
+  margin: 0 0 4px 0;
 }

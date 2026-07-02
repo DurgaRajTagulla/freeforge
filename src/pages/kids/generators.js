@@ -46,73 +46,6 @@ export function generateAlphabetMatchPairs() {
   return allPairs.slice(0, 200);
 }
 
-export function generateAnimalSoundQuestions() {
-  const animalSounds = [
-    ['Cow','Moo','🐄'],['Dog','Bark','🐕'],['Cat','Meow','🐱'],
-    ['Duck','Quack','🦆'],['Sheep','Baa','🐑'],['Horse','Neigh','🐴'],
-    ['Pig','Oink','🐷'],['Chicken','Cluck','🐔'],['Rooster','Cock-a-doodle-doo','🐓'],
-    ['Goat','Bleat','🐐'],['Donkey','Hee-haw','🫏'],['Rabbit','Thump','🐇'],
-    ['Turkey','Gobble','🦃'],['Mouse','Squeak','🐭'],['Hen','Cluck','🐔'],
-    ['Goose','Honk','🦆'],['Pony','Neigh','🐴'],['Bull','Bellow','🐂'],
-    ['Ox','Low','🐂'],['Hamster','Squeak','🐹'],['Guinea Pig','Wheek','🐹'],
-    ['Ferret','Dook','🐾'],['Parakeet','Tweet','🐦'],
-    ['Lion','Roar','🦁'],['Tiger','Roar','🐯'],['Wolf','Howl','🐺'],
-    ['Bear','Growl','🐻'],['Fox','Yelp','🦊'],['Elephant','Trumpet','🐘'],
-    ['Monkey','Chatter','🐒'],['Gorilla','Hoot','🦍'],['Chimpanzee','Scream','🐵'],
-    ['Zebra','Bray','🦓'],['Giraffe','Hum','🦒'],['Camel','Grunt','🐪'],
-    ['Hippo','Honk','🦛'],['Rhinoceros','Snort','🦏'],['Leopard','Growl','🐆'],
-    ['Cheetah','Chirp','🐆'],['Hyena','Laugh','🐆'],['Kangaroo','Chortle','🦘'],
-    ['Koala','Snore','🐨'],['Panda','Bleat','🐼'],['Sloth','Squeak','🦥'],
-    ['Raccoon','Trill','🦝'],['Squirrel','Chatter','🐿️'],['Beaver','Chatter','🦫'],
-    ['Otter','Squeak','🦦'],['Hedgehog','Snuffle','🦔'],['Moose','Bellow','🫎'],
-    ['Buffalo','Bellow','🐃'],['Bison','Grunt','🦬'],['Deer','Bell','🦌'],
-    ['Antelope','Snort','🦌'],['Gazelle','Snort','🦌'],['Wildebeest','Grunt','🦓'],
-    ['Meerkat','Chatter','🦫'],['Wombat','Grunt','🦘'],['Platypus','Growl','🦘'],
-    ['Armadillo','Grunt','🦔'],['Porcupine','Chatter','🦔'],['Skunk','Hiss','🦨'],
-    ['Badger','Growl','🦡'],['Mole','Squeak','🐭'],['Bat','Screech','🦇'],
-    ['Owl','Hoot','🦉'],['Parrot','Squawk','🦜'],['Eagle','Screech','🦅'],
-    ['Hawk','Screech','🦅'],['Falcon','Screech','🦅'],['Vulture','Hiss','🦅'],
-    ['Crow','Caw','🐦‍⬛'],['Raven','Croak','🐦‍⬛'],['Magpie','Chatter','🐦'],
-    ['Pigeon','Coo','🕊️'],['Dove','Coo','🕊️'],['Sparrow','Chirp','🐦'],
-    ['Robin','Sing','🐦'],['Nightingale','Sing','🎵'],['Canary','Sing','🐦'],
-    ['Blue Jay','Jay','🐦'],['Mockingbird','Mimic','🐦'],['Cuckoo','Cuckoo','🕊️'],
-    ['Woodpecker','Tap','🪚'],['Peacock','Squall','🦚'],['Flamingo','Honk','🦩'],
-    ['Penguin','Honk','🐧'],['Swan','Trumpet','🦢'],['Stork','Clatter','🦩'],
-    ['Crane','Trumpet','🦩'],['Heron','Squawk','🦩'],['Pelican','Silent','🦩'],
-    ['Seagull','Mew','🕊️'],['Ostrich','Boom','🦩'],['Emu','Boom','🦩'],
-    ['Cockatoo','Screech','🦜'],['Macaw','Scream','🦜'],['Toucan','Croak','🦜'],
-    ['Kiwi','Hiss','🦩'],
-    ['Frog','Croak','🐸'],['Toad','Croak','🐸'],['Snake','Hiss','🐍'],
-    ['Lizard','Hiss','🦎'],['Turtle','Hiss','🐢'],['Crocodile','Bellow','🐊'],
-    ['Alligator','Roar','🐊'],['Salamander','Squeak','🦎'],['Chameleon','Hiss','🦎'],
-    ['Iguana','Hiss','🦎'],['Gecko','Click','🦎'],
-    ['Dolphin','Click','🐬'],['Whale','Sing','🐋'],['Seal','Arf','🦭'],
-    ['Walrus','Bell','🦭'],['Sea Lion','Bark','🦭'],['Shark','Silent','🦈'],
-    ['Octopus','Silent','🐙'],['Jellyfish','Silent','🪼'],['Starfish','Silent','⭐'],
-    ['Crab','Click','🦀'],['Lobster','Click','🦞'],
-    ['Bee','Buzz','🐝'],['Cricket','Chirp','🦗'],['Grasshopper','Chirp','🦗'],
-    ['Mosquito','Buzz','🦟'],['Fly','Buzz','🪰'],['Ant','Silent','🐜'],
-    ['Butterfly','Silent','🦋'],['Moth','Silent','🦋'],['Dragonfly','Buzz','🪰'],
-    ['Cicada','Buzz','🪰'],['Firefly','Silent','🪲'],
-    ['Dinosaur','Roar','🦕'],['T-Rex','Roar','🦖'],['Pterodactyl','Screech','🦅'],
-    ['Dragon','Roar','🐉'],['Unicorn','Neigh','🦄'],['Phoenix','Sing','🪶'],
-    ['Griffin','Screech','🦁'],['Fairy','Tinkle','🧚'],
-  ];
-  const allSounds = [...new Set(animalSounds.map(a => a[1]))];
-  const shuffleArray = (a) => [...a].sort(() => Math.random() - 0.5);
-  const forward = animalSounds.map(([animal, sound, emoji]) => {
-    const wrong = shuffleArray(allSounds.filter(s => s !== sound)).slice(0, 3);
-    const options = shuffleArray([sound, ...wrong]);
-    return { question: `What sound does a ${animal} make?`, options, correctIndex: options.indexOf(sound), emoji };
-  });
-  const reverse = animalSounds.map(([animal, sound, emoji]) => {
-    const others = shuffleArray(animalSounds.filter(a => a[1] !== sound)).slice(0, 3).map(a => a[0]);
-    const options = shuffleArray([animal, ...others]);
-    return { question: `Which animal makes a "${sound}" sound?`, options, correctIndex: options.indexOf(animal), emoji };
-  });
-  return shuffleArray([...forward, ...reverse]);
-}
-
 export function generateCountQuestions() {
   const allEmojis = [
     '🍎','⭐','🐱','🌸','⚽','📚','🎈','🐟','🌈','🍪',
@@ -225,41 +158,6 @@ export function generateColorQuestions() {
     const options = shuffleArray([c.name, ...opts]);
     return { question: `What color is this?`, options, correctIndex: options.indexOf(c.name), emoji: '🎨', colors: [c.hex] };
   });
-}
-
-export function generateFruitVegetablePairs() {
-  return [
-    { id: 'apple', item: 'Apple', match: '🍎' },
-    { id: 'banana', item: 'Banana', match: '🍌' },
-    { id: 'orange', item: 'Orange', match: '🍊' },
-    { id: 'strawberry', item: 'Strawberry', match: '🍓' },
-    { id: 'grape', item: 'Grape', match: '🍇' },
-    { id: 'watermelon', item: 'Watermelon', match: '🍉' },
-    { id: 'mango', item: 'Mango', match: '🥭' },
-    { id: 'pineapple', item: 'Pineapple', match: '🍍' },
-    { id: 'peach', item: 'Peach', match: '🍑' },
-    { id: 'cherry', item: 'Cherry', match: '🍒' },
-    { id: 'lemon', item: 'Lemon', match: '🍋' },
-    { id: 'kiwi', item: 'Kiwi', match: '🥝' },
-    { id: 'coconut', item: 'Coconut', match: '🥥' },
-    { id: 'blueberry', item: 'Blueberry', match: '🫐' },
-    { id: 'carrot', item: 'Carrot', match: '🥕' },
-    { id: 'tomato', item: 'Tomato', match: '🍅' },
-    { id: 'broccoli', item: 'Broccoli', match: '🥦' },
-    { id: 'corn', item: 'Corn', match: '🌽' },
-    { id: 'potato', item: 'Potato', match: '🥔' },
-    { id: 'onion', item: 'Onion', match: '🧅' },
-    { id: 'pepper', item: 'Pepper', match: '🌶️' },
-    { id: 'cucumber', item: 'Cucumber', match: '🥒' },
-    { id: 'lettuce', item: 'Lettuce', match: '🥬' },
-    { id: 'mushroom', item: 'Mushroom', match: '🍄' },
-    { id: 'eggplant', item: 'Eggplant', match: '🍆' },
-    { id: 'garlic', item: 'Garlic', match: '🧄' },
-    { id: 'avocado', item: 'Avocado', match: '🥑' },
-    { id: 'peas', item: 'Peas', match: '🫛' },
-    { id: 'bean', item: 'Bean', match: '🫘' },
-    { id: 'ginger', item: 'Ginger', match: '🫚' },
-  ];
 }
 
 export function generateVehicleQuestions() {

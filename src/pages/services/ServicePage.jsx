@@ -20,7 +20,7 @@ import SpinWheelGame from '../games/SpinWheelGame';
 import DiceRollerGame from '../games/DiceRollerGame';
 import CoinTossGame from '../games/CoinTossGame';
 import TruthDareGame from '../games/TruthDareGame';
-import RPSGame from '../games/RPSGame';
+
 import CountdownTimer from '../tools/CountdownTimer';
 import StopwatchTool from '../tools/StopwatchTool';
 import CompassTool from '../tools/CompassTool';
@@ -43,7 +43,6 @@ const tools = {
   'age-calculator': { title: 'Age Calculator', desc: 'Calculate exact age in years, months and days', category: 'utility', accepts: null, multiple: false },
   'emi-calculator': { title: 'EMI Calculator', desc: 'Calculate monthly EMI, total interest and payment', category: 'utility', accepts: null, multiple: false },
   'income-tax-calculator': { title: 'Income Tax Calculator (India)', desc: 'Calculate tax as per Indian income tax slabs', category: 'utility', accepts: null, multiple: false },
-  'currency-converter': { title: 'Currency Converter', desc: 'Convert between world currencies with live rates', category: 'utility', accepts: null, multiple: false },
   'timezone-converter': { title: 'Time Zone Converter', desc: 'Convert time between different time zones', category: 'utility', accepts: null, multiple: false },
   'unit-converter': { title: 'Unit Converter', desc: 'Convert between units of length, weight, temperature and more', category: 'utility', accepts: null, multiple: false },
   'bmi-calculator': { title: 'BMI Calculator', desc: 'Calculate Body Mass Index from weight and height', category: 'utility', accepts: null, multiple: false },
@@ -66,10 +65,11 @@ const tools = {
   'dice-roller': { title: 'Dice Roller', desc: 'Roll 1-6 dice with history', category: 'game', accepts: null, multiple: false, howToPlay: ['Select how many dice to roll (1-6)', 'Click Roll to roll all dice', 'View the total and roll history below', 'Track your cumulative score across rolls'] },
   'coin-toss': { title: 'Coin Toss', desc: 'Heads or tails with streak stats', category: 'game', accepts: null, multiple: false, howToPlay: ['Click the coin or press Space to flip', 'Choose Heads or Tails before flipping', 'Track your streak of consecutive correct guesses', 'View flip history and streak stats'] },
   'truth-or-dare': { title: 'Truth or Dare', desc: 'Truth or Dare challenges for groups', category: 'game', accepts: null, multiple: false, howToPlay: ['Choose Truth for a question or Dare for a challenge', 'Click the button to get a random prompt', 'Add custom truths and dares of your own', 'Great for parties and group gatherings'] },
-  'rock-paper-scissors': { title: 'Rock Paper Scissors', desc: 'Beat the computer', category: 'game', accepts: null, multiple: false, howToPlay: ['Click Rock, Paper, or Scissors to make your choice', 'Computer makes a random choice', 'Rock beats Scissors, Scissors beats Paper, Paper beats Rock', 'Track wins, losses, and ties'] },
+
   'countdown-timer': { title: 'Countdown Timer', desc: 'Set a countdown alarm', category: 'utility', accepts: null, multiple: false },
   'stopwatch': { title: 'Stopwatch', desc: 'Precision stopwatch with laps', category: 'utility', accepts: null, multiple: false },
   'compass': { title: 'Compass', desc: 'Digital compass using device orientation', category: 'utility', accepts: null, multiple: false },
+  'qr-code-generator': { title: 'QR Code Generator', desc: 'Generate QR codes for text, URLs and more', category: 'utility', accepts: null, multiple: false },
 };
 
 function ServicePage() {
@@ -123,11 +123,6 @@ function ServicePage() {
   const [taxRegime, setTaxRegime] = useState('old');
   const [taxAgeGroup, setTaxAgeGroup] = useState('below60');
   const [taxResult, setTaxResult] = useState(null);
-  const [currencyAmount, setCurrencyAmount] = useState(1);
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('INR');
-  const [convertedAmount, setConvertedAmount] = useState(null);
-  const [convLoading, setConvLoading] = useState(false);
   const [tzDateTime, setTzDateTime] = useState(() => new Date().toISOString().slice(0, 16));
   const [fromTz, setFromTz] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
   const [toTz, setToTz] = useState('Asia/Kolkata');
@@ -148,6 +143,11 @@ function ServicePage() {
   const [intAmount, setIntAmount] = useState('');
   const [intRate, setIntRate] = useState('');
   const [intResult, setIntResult] = useState(null);
+
+  // QR Code Generator
+  const [qrText, setQrText] = useState('');
+  const [qrSize, setQrSize] = useState(300);
+  const [qrImageUrl, setQrImageUrl] = useState('');
 
   // Notepad
   const [notepadText, setNotepadText] = useState(() => localStorage.getItem('freeforge_notepad') || '');
@@ -963,45 +963,6 @@ function ServicePage() {
           </div>
         )}
 
-        {/* --- Currency Converter --- */}
-        {toolId === 'currency-converter' && (
-          <div className="utility-tool">
-            <div className="tool-options">
-              <h3 className="options-title">Currency Converter</h3>
-              <div className="options-grid">
-                <div className="option-item"><label>Amount</label><input type="number" className="option-input" value={currencyAmount} onChange={e => setCurrencyAmount(Math.max(0, Number(e.target.value)))} min={0} step={0.01} /></div>
-                <div className="option-item"><label>From</label><select className="option-input" value={fromCurrency} onChange={e => setFromCurrency(e.target.value)}>
-                  {['USD','EUR','GBP','JPY','INR','AUD','CAD','CHF','CNY','SGD','NZD','MXN','BRL','KRW','SEK','NOK','DKK','ZAR','TRY','HKD','MYR','THB','PHP','IDR'].map(c => <option key={c} value={c}>{c}</option>)}
-                </select></div>
-                <div className="option-item"><label>To</label><select className="option-input" value={toCurrency} onChange={e => setToCurrency(e.target.value)}>
-                  {['USD','EUR','GBP','JPY','INR','AUD','CAD','CHF','CNY','SGD','NZD','MXN','BRL','KRW','SEK','NOK','DKK','ZAR','TRY','HKD','MYR','THB','PHP','IDR'].map(c => <option key={c} value={c}>{c}</option>)}
-                </select></div>
-              </div>
-            </div>
-            <div className="service-actions">
-              <button className="process-btn" disabled={convLoading} onClick={async () => {
-                if (!currencyAmount || fromCurrency === toCurrency) { setConvertedAmount(currencyAmount); return; }
-                setConvLoading(true);
-                try {
-                  const r = await fetch(`https://api.frankfurter.dev/v1/latest?from=${fromCurrency}&to=${toCurrency}`);
-                  const d = await r.json();
-                  if (!d.rates || d.rates[toCurrency] == null) throw new Error('Unsupported currency pair');
-                  setConvertedAmount(currencyAmount * d.rates[toCurrency]);
-                } catch (e) { alert('Conversion failed: ' + e.message); }
-                setConvLoading(false);
-              }}>{convLoading ? 'Converting...' : 'Convert'}</button>
-            </div>
-            {convertedAmount !== null && (
-              <div className="utility-result">
-                <div className="result-grid">
-                  <div className="result-card highlight"><span className="result-value">{currencyAmount} {fromCurrency}</span><span className="result-label">=</span></div>
-                  <div className="result-card highlight"><span className="result-value">{convertedAmount.toFixed(2)} {toCurrency}</span><span className="result-label">at live rate</span></div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
         {/* --- Time Zone Converter --- */}
         {toolId === 'timezone-converter' && (
           <div className="utility-tool">
@@ -1427,9 +1388,6 @@ function ServicePage() {
         {/* --- Truth or Dare --- */}
         {toolId === 'truth-or-dare' && <TruthDareGame />}
 
-        {/* --- Rock Paper Scissors --- */}
-        {toolId === 'rock-paper-scissors' && <RPSGame />}
-
         {/* --- Countdown Timer --- */}
         {toolId === 'countdown-timer' && <CountdownTimer />}
 
@@ -1438,6 +1396,52 @@ function ServicePage() {
 
         {/* --- Compass --- */}
         {toolId === 'compass' && <CompassTool />}
+
+        {/* --- QR Code Generator --- */}
+        {toolId === 'qr-code-generator' && (
+          <div className="utility-tool">
+            <div className="tool-options">
+              <h3 className="options-title">QR Code Generator</h3>
+              <div className="options-grid">
+                <div className="option-item">
+                  <label>Text or URL</label>
+                  <input type="text" className="option-input" value={qrText} onChange={e => { setQrText(e.target.value); setQrImageUrl(''); }} placeholder="Enter text or URL to encode" />
+                </div>
+                <div className="option-item">
+                  <label>Size: {qrSize}x{qrSize}</label>
+                  <input type="range" className="option-slider" min={100} max={1000} step={50} value={qrSize} onChange={e => { setQrSize(Number(e.target.value)); if (qrText) setQrImageUrl(`https://api.qrserver.com/v1/create-qr-code/?size=${e.target.value}x${e.target.value}&data=${encodeURIComponent(qrText)}`); }} />
+                </div>
+              </div>
+            </div>
+            <div className="service-actions">
+              <button className="process-btn" onClick={() => {
+                if (!qrText.trim()) return;
+                setQrImageUrl(`https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(qrText)}`);
+              }}>Generate QR Code</button>
+              {qrImageUrl && (
+                <button className="download-btn" onClick={async () => {
+                  try {
+                    const response = await fetch(qrImageUrl);
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'qrcode.png';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  } catch (err) { alert('Download failed. Right-click the image and save it.'); }
+                }}><Download size={20} /> Download QR Code</button>
+              )}
+            </div>
+            {qrImageUrl && (
+              <div className="utility-result">
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                  <img src={qrImageUrl} alt="QR Code" style={{ maxWidth: '100%', borderRadius: '8px', border: '2px solid #334155' }} />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         <canvas ref={canvasRef} hidden />
 
