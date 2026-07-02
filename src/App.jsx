@@ -1,20 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper } from 'lucide-react';
-import Dashboard from './pages/Dashboard';
-import Editor from './pages/Editor';
-import Games from './pages/Games';
-import Kids from './pages/Kids';
-import KidsActivityPage from './pages/kids/KidsActivityPage';
-import Services from './pages/services/Services';
-import ServicePage from './pages/services/ServicePage';
-import HelpPage from './pages/HelpPage';
-import CareerGuide from './pages/CareerGuide';
-import NewsFeed from './pages/NewsFeed';
-import TourGuide from './pages/TourGuide';
 import './App.css';
 
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Editor = lazy(() => import('./pages/Editor'));
+const Games = lazy(() => import('./pages/Games'));
+const Kids = lazy(() => import('./pages/Kids'));
+const KidsActivityPage = lazy(() => import('./pages/kids/KidsActivityPage'));
+const Services = lazy(() => import('./pages/services/Services'));
+const ServicePage = lazy(() => import('./pages/services/ServicePage'));
+const HelpPage = lazy(() => import('./pages/HelpPage'));
+const CareerGuide = lazy(() => import('./pages/CareerGuide'));
+const NewsFeed = lazy(() => import('./pages/NewsFeed'));
+const TourGuide = lazy(() => import('./pages/TourGuide'));
+
 const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare'];
+
+function Loading() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#94a3b8' }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: 32, marginBottom: 8, animation: 'spin 1s linear infinite' }}>⚡</div>
+        <p>Loading...</p>
+      </div>
+    </div>
+  );
+}
 
 function Navbar() {
   const location = useLocation();
@@ -108,20 +120,22 @@ function App() {
       <div className="app">
         <Navbar />
         <main className="main-content full-content">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/editor" element={<Editor />} />
-            <Route path="/games" element={<Games />} />
-            <Route path="/games/:toolId" element={<ServicePage />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/kids" element={<Kids />} />
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="/career-guide" element={<CareerGuide />} />
-            <Route path="/news" element={<NewsFeed />} />
-            <Route path="/tour-guide" element={<TourGuide />} />
-            <Route path="/kids/activity/:activityId" element={<KidsActivityPage />} />
-            <Route path="/service/:toolId" element={<ServicePage />} />
-          </Routes>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/editor" element={<Editor />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/games/:toolId" element={<ServicePage />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/kids" element={<Kids />} />
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="/career-guide" element={<CareerGuide />} />
+              <Route path="/news" element={<NewsFeed />} />
+              <Route path="/tour-guide" element={<TourGuide />} />
+              <Route path="/kids/activity/:activityId" element={<KidsActivityPage />} />
+              <Route path="/service/:toolId" element={<ServicePage />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
     </Router>

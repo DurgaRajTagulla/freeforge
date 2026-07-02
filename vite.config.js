@@ -27,9 +27,10 @@ export default defineConfig({
             return 'vendor';
           }
         },
-        experimentalMinChunkSize: 8192,
       },
     },
-    chunkSizeWarningLimit: 400,
+    chunkSizeWarningLimit: 600,
+    target: 'es2020',
+    modulePreload: { polyfill: false },
   },
 })
