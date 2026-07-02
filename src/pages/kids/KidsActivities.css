@@ -71,6 +71,18 @@
   margin-bottom: 12px;
 }
 
+.quiz-flag-img {
+  width: 128px;
+  height: 85px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 2px solid #334155;
+  margin-bottom: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .quiz-question-text {
   font-size: 20px;
   font-weight: 600;
@@ -1709,6 +1721,14 @@
 
 .reference-emoji {
   font-size: 28px;
+  flex-shrink: 0;
+}
+
+.reference-flag-img {
+  width: 40px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 

@@ -19,7 +19,11 @@ export default function QuizIntro({ title, emoji, content, facts, referenceList,
             <div className="reference-grid">
               {referenceList.map((item, i) => (
                 <div key={i} className="reference-item">
-                  <span className="reference-emoji">{item.emoji || item.icon}</span>
+                  {item.image ? (
+                    <img src={item.image} alt={item.label} className="reference-flag-img" />
+                  ) : (
+                    <span className="reference-emoji">{item.emoji || item.icon}</span>
+                  )}
                   <span className="reference-label">{item.label}</span>
                   {item.sublabel && <span className="reference-sublabel">{item.sublabel}</span>}
                 </div>

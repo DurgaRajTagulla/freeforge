@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './KidsActivities.css';
 
-export default function QuizTemplate({ questions: allQuestions, title, pageSize }) {
+export default function QuizTemplate({ questions: allQuestions, title, pageSize, flagMode }) {
   const [page, setPage] = useState(0);
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
@@ -122,6 +122,9 @@ export default function QuizTemplate({ questions: allQuestions, title, pageSize 
         Question {currentQ + 1} of {total}
       </div>
       <div className="quiz-question">
+        {flagMode && q.flag && (
+          <img src={`https://flagcdn.com/256x192/${q.flag}.png`} alt="Flag" className="quiz-flag-img" />
+        )}
         {q.emoji && <span className="quiz-emoji">{q.emoji}</span>}
         {q.colors && (
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 12 }}>
