@@ -25,7 +25,6 @@ const activityId = (label) => {
     'Weather Quiz': 'weather-quiz',
     'Animal Classification': 'animal-classification',
     'Guess the Country Flag': 'country-flags',
-    'World Map Puzzle': 'world-map-puzzle',
     'Indian States & Capitals': 'indian-states',
     'Snake with Math Questions': 'snake-math',
     'Memory Match': 'memory-match',
@@ -116,7 +115,6 @@ const SECTIONS = [
         iconColor: '#06b6d4',
         items: [
           { icon: '🏳️', name: 'Guess the Country Flag', desc: 'Identify flags from around the world' },
-          { icon: '🌍', name: 'World Map Puzzle', desc: 'Match continents to positions' },
           { icon: '🇮🇳', name: 'Indian States & Capitals', desc: 'Indian geography quiz' },
         ],
       },

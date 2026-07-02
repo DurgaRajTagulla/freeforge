@@ -19,7 +19,6 @@ const EmojiStory = lazy(() => import('./components/PuzzleGames').then(m => ({ de
 const BuildWords = lazy(() => import('./components/PuzzleGames').then(m => ({ default: m.BuildWords })));
 const ArrangeSentences = lazy(() => import('./components/PuzzleGames').then(m => ({ default: m.ArrangeSentences })));
 
-const WorldMapPuzzle = lazy(() => import('./components/DailyGames').then(m => ({ default: m.WorldMapPuzzle })));
 const ChessKids = lazy(() => import('./components/DailyGames').then(m => ({ default: m.ChessKids })));
 
 import { generateAlphabetMatchPairs, generateAnimalSoundQuestions, generateCountQuestions, generateShapePairs, generateColorQuestions, generateFruitVegetablePairs, generateVehicleQuestions } from './generators';
@@ -700,42 +699,6 @@ export default function KidsActivityPage() {
       ];
       return <QuizTemplate questions={qs} title="🏳️ Country Flags" pageSize={5} flagMode />;
     }
-    case 'world-map-puzzle':
-      if (showIntro) {
-        return (
-          <QuizIntro
-            title="🗺️ World Map Puzzle"
-            emoji="🗺️"
-            content={[
-              "Our world is a big, beautiful place with seven continents! A map is a flat picture of the Earth that shows us where all the countries, oceans, and continents are located.",
-              "Study the continents and oceans below carefully, then test your knowledge in the puzzle!"
-            ]}
-            referenceTitle="🌍 Continents & Oceans — Memorize Them!"
-            referenceList={[
-              { emoji: '🌏', label: 'Asia', sublabel: 'Largest continent' },
-              { emoji: '🌍', label: 'Africa', sublabel: '2nd largest' },
-              { emoji: '🌎', label: 'North America', sublabel: '3rd largest' },
-              { emoji: '🌎', label: 'South America', sublabel: '4th largest' },
-              { emoji: '❄️', label: 'Antarctica', sublabel: '5th largest' },
-              { emoji: '🌍', label: 'Europe', sublabel: '6th largest' },
-              { emoji: '🦘', label: 'Australia', sublabel: 'Smallest continent' },
-              { emoji: '🌊', label: 'Pacific Ocean', sublabel: 'Largest ocean' },
-              { emoji: '🌊', label: 'Atlantic Ocean', sublabel: '2nd largest' },
-              { emoji: '🌊', label: 'Indian Ocean', sublabel: '3rd largest' },
-              { emoji: '🧊', label: 'Southern Ocean', sublabel: '4th largest' },
-              { emoji: '🧊', label: 'Arctic Ocean', sublabel: 'Smallest ocean' }
-            ]}
-            facts={[
-              "Asia has more people living in it than all other continents combined",
-              "Africa is so big that the USA, China, and India could all fit inside it",
-              "Antarctica is actually a desert because it gets very little rain",
-              "The Pacific Ocean is bigger than all the land on Earth combined"
-            ]}
-            onStart={() => setShowIntro(false)}
-          />
-        );
-      }
-      return <WorldMapPuzzle />;
     case 'indian-states': {
       if (showIntro) {
         return (
