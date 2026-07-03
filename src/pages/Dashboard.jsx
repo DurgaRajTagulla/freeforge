@@ -1,75 +1,10 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Upload, Shield, Lock, FileText, ArrowRight, Check, Wrench, Flame, Star,
-  Gamepad2, GraduationCap, RefreshCw, Quote, Briefcase, Newspaper, Map, HelpCircle,
+  Gamepad2, GraduationCap, Briefcase, Newspaper, Map, HelpCircle,
   Image, Merge, Calculator, Wifi, QrCode, Ruler, Scale, ChevronRight, Target, Puzzle, Brain, Zap
 } from 'lucide-react';
 import './Dashboard.css';
-
-function DailyQuote() {
-  const [quote, setQuote] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const getToday = () => new Date().toISOString().split('T')[0];
-
-  const fetchQuote = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('https://zenquotes.io/api/random');
-      const data = await res.json();
-      if (data && data[0]) {
-        const newQuote = { text: data[0].q, author: data[0].a };
-        setQuote(newQuote);
-        localStorage.setItem('dailyQuote', JSON.stringify({ ...newQuote, date: getToday() }));
-      } else {
-        throw new Error('No quote data');
-      }
-    } catch {
-      const fallback = { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", date: getToday() };
-      setQuote(fallback);
-      localStorage.setItem('dailyQuote', JSON.stringify(fallback));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const cached = localStorage.getItem('dailyQuote');
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      if (parsed.date === getToday()) {
-        setQuote(parsed);
-        setLoading(false);
-        return;
-      }
-    }
-    fetchQuote();
-  }, []);
-
-  return (
-    <div className="sticky-note">
-      <div className="sticky-pin" />
-      <div className="sticky-header">
-        <span className="sticky-label">Daily Motivation</span>
-        <button className="sticky-refresh" onClick={fetchQuote} disabled={loading} title="New quote">
-          <RefreshCw size={14} className={loading ? 'spinning' : ''} />
-        </button>
-      </div>
-      {loading ? (
-        <div className="sticky-loading">Loading...</div>
-      ) : (
-        <>
-          <div className="sticky-quote">
-            <Quote size={18} className="sticky-quote-icon" />
-            <p className="sticky-quote-text">{quote.text}</p>
-          </div>
-          <p className="sticky-author">— {quote.author}</p>
-        </>
-      )}
-    </div>
-  );
-}
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -117,7 +52,6 @@ function Dashboard() {
               </button>
             </div>
           </div>
-          <DailyQuote />
         </section>
 
         <section className="stats-bar">

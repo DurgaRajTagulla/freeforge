@@ -948,6 +948,9 @@ function Editor() {
       {previewOpen && (
         <div className="preview-modal-overlay" onClick={() => setPreviewOpen(false)}>
           <div className="preview-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setPreviewOpen(false)}>
+              <X className="close-icon" />
+            </button>
             <div className="preview-modal-header">
               <h2 className="preview-modal-title">Resume Preview</h2>
               <div className="preview-modal-actions">
@@ -972,9 +975,6 @@ function Editor() {
                 <button className="download-canvas-modal-btn" onClick={handleDownloadCanvasPDF}>
                   <FileText className="btn-icon" />
                   Canvas PDF
-                </button>
-                <button className="modal-close" onClick={() => setPreviewOpen(false)}>
-                  <X className="close-icon" />
                 </button>
               </div>
             </div>

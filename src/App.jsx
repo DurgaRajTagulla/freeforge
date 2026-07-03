@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
-import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper, Music } from 'lucide-react';
+import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper } from 'lucide-react';
 import './App.css';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -14,7 +14,6 @@ const HelpPage = lazy(() => import('./pages/HelpPage'));
 const CareerGuide = lazy(() => import('./pages/CareerGuide'));
 const NewsFeed = lazy(() => import('./pages/NewsFeed'));
 const TourGuide = lazy(() => import('./pages/TourGuide'));
-const MusicPage = lazy(() => import('./pages/MusicPage'));
 
 const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare'];
 
@@ -76,10 +75,6 @@ function Navbar() {
         <GraduationCap size={16} />
         Kids Hub
       </Link>
-      <Link to="/music" className={`nav-link ${location.pathname === '/music' ? 'active' : ''}`} onClick={closeMenu}>
-        <Music size={16} />
-        Music
-      </Link>
       <Link to="/news" className={`nav-link ${location.pathname === '/news' ? 'active' : ''}`} onClick={closeMenu}>
         <Newspaper size={16} />
         News Feed
@@ -137,7 +132,6 @@ function App() {
               <Route path="/career-guide" element={<CareerGuide />} />
               <Route path="/news" element={<NewsFeed />} />
               <Route path="/tour-guide" element={<TourGuide />} />
-              <Route path="/music" element={<MusicPage />} />
               <Route path="/kids/activity/:activityId" element={<KidsActivityPage />} />
               <Route path="/service/:toolId" element={<ServicePage />} />
             </Routes>

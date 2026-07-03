@@ -629,7 +629,8 @@
   }
 
   .tour-season-tabs {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
 
@@ -644,6 +645,8 @@
   }
 
   .tour-group-pills {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     justify-content: center;
   }
 
