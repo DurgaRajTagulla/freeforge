@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Search, Play, Pause, Music, DiscAlbum, Clock, User } from 'lucide-react';
 import './MusicPage.css';
 
@@ -7,6 +7,14 @@ const JAMENDO_API = CLIENT_ID
   ? `https://api.jamendo.com/v3.0/tracks/?client_id=${CLIENT_ID}&format=json`
   : null;
 
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
 export default function MusicPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -14,7 +22,6 @@ export default function MusicPage() {
   const [playingId, setPlayingId] = useState(null);
   const [error, setError] = useState('');
   const audioRef = useRef(null);
-  const searchTimeout = useRef(null);
 
   useEffect(() => {
     return () => {
@@ -22,7 +29,7 @@ export default function MusicPage() {
     };
   }, []);
 
-  const searchSongs = async (q) => {
+  const searchSongs = useCallback(async (q) => {
     if (!q.trim() || !JAMENDO_API) {
       setResults([]);
       return;
@@ -40,14 +47,17 @@ export default function MusicPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const debouncedSearch = useRef(debounce((val) => {
+    searchSongs(val);
+  }, 400)).current;
 
   const handleInputChange = (e) => {
     const val = e.target.value;
     setQuery(val);
-    clearTimeout(searchTimeout.current);
     if (val.trim()) {
-      searchTimeout.current = setTimeout(() => searchSongs(val), 400);
+      debouncedSearch(val);
     } else {
       setResults([]);
     }
