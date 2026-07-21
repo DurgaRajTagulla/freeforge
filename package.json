@@ -12,8 +12,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@turf/turf": "^7.3.5",
     "browser-image-compression": "^2.0.2",
     "jspdf": "^4.2.1",
+    "leaflet": "^1.9.4",
     "lucide-react": "^1.21.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.1.200",
@@ -21,6 +23,7 @@
     "react-dom": "^19.2.7",
     "react-dropzone": "^15.0.0",
     "react-easy-crop": "^6.0.2",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.18.0"
   },
   "devDependencies": {

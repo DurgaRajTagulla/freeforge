@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
-import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper } from 'lucide-react';
+import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper, LandPlot } from 'lucide-react';
 import './App.css';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -14,6 +14,7 @@ const HelpPage = lazy(() => import('./pages/HelpPage'));
 const CareerGuide = lazy(() => import('./pages/CareerGuide'));
 const NewsFeed = lazy(() => import('./pages/NewsFeed'));
 const TourGuide = lazy(() => import('./pages/TourGuide'));
+const LandSurvey = lazy(() => import('./pages/LandSurvey'));
 
 const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare'];
 
@@ -70,6 +71,10 @@ function Navbar() {
       <Link to="/tour-guide" className={`nav-link ${location.pathname === '/tour-guide' ? 'active' : ''}`} onClick={closeMenu}>
         <Map size={16} />
         Tour Guide
+      </Link>
+      <Link to="/land-survey" className={`nav-link ${location.pathname === '/land-survey' ? 'active' : ''}`} onClick={closeMenu}>
+        <LandPlot size={16} />
+        Land Survey
       </Link>
       <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
         <GraduationCap size={16} />
@@ -131,6 +136,7 @@ function App() {
               <Route path="/help" element={<HelpPage />} />
               <Route path="/career-guide" element={<CareerGuide />} />
               <Route path="/news" element={<NewsFeed />} />
+              <Route path="/land-survey" element={<LandSurvey />} />
               <Route path="/tour-guide" element={<TourGuide />} />
               <Route path="/kids/activity/:activityId" element={<KidsActivityPage />} />
               <Route path="/service/:toolId" element={<ServicePage />} />

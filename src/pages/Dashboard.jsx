@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import {
   Upload, Shield, Lock, FileText, ArrowRight, Check, Wrench, Flame, Star,
-  Gamepad2, GraduationCap, Briefcase, Newspaper, Map, HelpCircle,
+  Gamepad2, GraduationCap, Briefcase, Newspaper, Map, HelpCircle, LandPlot,
   Image, Merge, Calculator, Wifi, QrCode, Ruler, Scale, ChevronRight, Target, Puzzle, Brain, Zap
 } from 'lucide-react';
 import './Dashboard.css';
@@ -211,6 +211,13 @@ function Dashboard() {
               <h3 className="explore-card-title">Tour Guide</h3>
               <p className="explore-card-desc">Explore famous temples, tourist destinations across India with detailed guides.</p>
               <span className="explore-card-tag">27+ Destinations</span>
+            </div>
+            <div className="explore-card survey" onClick={() => navigate('/land-survey')}>
+              <div className="explore-card-bg" />
+              <LandPlot size={40} className="explore-card-icon" />
+              <h3 className="explore-card-title">Land Survey</h3>
+              <p className="explore-card-desc">GPS land measurement & area calculator. Walk your boundary, get area in cents/acres. Cross-check with AP & Telangana records.</p>
+              <span className="explore-card-tag">GPS-Based</span>
             </div>
             <div className="explore-card help" onClick={() => navigate('/help')}>
               <div className="explore-card-bg" />

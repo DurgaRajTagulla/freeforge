@@ -1,9 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
   base: '/freeforge/',
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 1024,
+    }),
+  ],
 
   build: {
     rollupOptions: {
@@ -23,6 +31,12 @@ export default defineConfig({
           }
           if (id.includes('node_modules/pdfjs-dist')) {
             return 'vendor-pdfjs';
+          }
+          if (id.includes('node_modules/@turf') || id.includes('node_modules/leaflet') || id.includes('node_modules/react-leaflet')) {
+            return 'vendor-geo';
+          }
+          if (id.includes('node_modules/browser-image-compression') || id.includes('node_modules/react-easy-crop') || id.includes('node_modules/react-dropzone')) {
+            return 'vendor-image';
           }
           if (id.includes('node_modules')) {
             return 'vendor';
