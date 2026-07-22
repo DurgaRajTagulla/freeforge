@@ -98,8 +98,6 @@ export default function LandSurvey() {
   const [unit, setUnit] = useState('cents');
   const [crossCheck, setCrossCheck] = useState({ state: '', district: '', mandal: '', village: '', surveyNo: '' });
   const [showCrossCheck, setShowCrossCheck] = useState(false);
-  const [convInput, setConvInput] = useState({ value: '', fromUnit: 'cents' });
-  const [convResult, setConvResult] = useState(null);
   const [history, setHistory] = useState([]);
   const [centroid, setCentroid] = useState(null);
   const [surveyNo, setSurveyNo] = useState('');
@@ -247,14 +245,6 @@ export default function LandSurvey() {
     }
   };
 
-  const handleConvert = () => {
-    const val = parseFloat(convInput.value);
-    if (isNaN(val) || val <= 0) return;
-    const sqftLookup = { cents: CENT_TO_SQFT, acres: ACRE_TO_SQFT, 'sq-yd': SQYD_TO_SQFT, 'sq-ft': 1, hectares: HECTARE_TO_SQFT, 'sq-m': 10.764 };
-    const sqft = val * (sqftLookup[convInput.fromUnit] || 1);
-    setConvResult(convertArea(sqft));
-  };
-
   const openPortal = (portal) => {
     const urls = {
       meebhoomi: 'https://meebhoomi.ap.gov.in',
@@ -321,6 +311,18 @@ export default function LandSurvey() {
                   <div className="survey-gps-pulse" />
                 </Marker>
               )}
+              {path.map((pos, idx) => (
+                <Marker
+                  key={idx}
+                  position={pos}
+                  icon={L.divIcon({
+                    className: 'survey-point-marker',
+                    html: `<div class="survey-point-dot" style="background:${tracking ? '#f97316' : '#3b82f6'}">${idx + 1}</div>`,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                  })}
+                />
+              ))}
               {path.length >= 2 && (
                 <Polyline
                   positions={path}
@@ -333,6 +335,17 @@ export default function LandSurvey() {
                   pathOptions={{
                     color: '#22c55e', weight: 2, fillColor: '#22c55e', fillOpacity: 0.15
                   }}
+                />
+              )}
+              {centroid && !tracking && (
+                <Marker
+                  position={centroid}
+                  icon={L.divIcon({
+                    className: 'survey-centroid-marker',
+                    html: '<div class="survey-centroid-dot">📍</div>',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
+                  })}
                 />
               )}
               {currentPos && accuracy && (
@@ -371,6 +384,13 @@ export default function LandSurvey() {
               </button>
             </div>
 
+            {path.length > 0 && !tracking && (
+              <button className="survey-btn survey-btn-ghost survey-btn-undo" onClick={() => setPath(prev => prev.slice(0, -1))}>
+                <ArrowLeft size={14} />
+                Undo Last Point ({path.length})
+              </button>
+            )}
+
             <div className="survey-mode-toggle">
               <button
                 className={`survey-mode-btn ${!manualMode ? 'active' : ''}`}
@@ -400,6 +420,35 @@ export default function LandSurvey() {
         </div>
 
         <div className="survey-results-section">
+          {path.length > 0 && !calculatedArea && (
+            <div className="survey-point-list">
+              <div className="survey-point-list-header">
+                <MapPin size={16} />
+                <span>Boundary Points ({path.length})</span>
+              </div>
+              <div className="survey-point-list-body">
+                {path.map((pos, idx) => {
+                  const prev = idx > 0 ? path[idx - 1] : null;
+                  const segDist = prev
+                    ? Math.sqrt((prev[0] - pos[0]) ** 2 + (prev[1] - pos[1]) ** 2) * 111320
+                    : 0;
+                  return (
+                    <div key={idx} className="survey-point-item">
+                      <span className="survey-point-num">{idx + 1}</span>
+                      <span className="survey-point-coords">
+                        {pos[0].toFixed(6)}, {pos[1].toFixed(6)}
+                      </span>
+                      {segDist > 0 && (
+                        <span className="survey-point-dist">
+                          {segDist < 1 ? '<1m' : `${Math.round(segDist)}m`}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {calculatedArea ? (
             <div className="survey-results-card">
               <div className="survey-results-header">
@@ -438,114 +487,50 @@ export default function LandSurvey() {
               <div className="survey-points-info">
                 <MapPin size={14} /> {path.length} boundary points recorded
               </div>
-              <button className="survey-btn survey-btn-ghost" onClick={() => setShowCrossCheck(true)}>
-                <Search size={16} />
-                Cross-Check with Official Records
-              </button>
-
-              <div className="survey-find-section">
-                <div className="survey-find-header">
-                  <Search size={16} />
-                  <h4>Find Your Survey Number</h4>
-                </div>
-
-                {geocoding && (
-                  <div className="survey-geocoding-hint">
-                    Detecting your location...
-                  </div>
+              <div className="survey-points-info">
+                {centroid && (
+                  <span>📍 {centroid[0].toFixed(6)}, {centroid[1].toFixed(6)}</span>
                 )}
-
-                {locationInfo && (
-                  <div className="survey-location-card">
-                    <MapPin size={14} className="survey-location-icon" />
-                    <div className="survey-location-details">
-                      {locationInfo.village && <span className="survey-loc-village">{locationInfo.village}</span>}
-                      <span className="survey-loc-sub">
-                        {[locationInfo.mandal, locationInfo.district, locationInfo.state].filter(Boolean).join(', ')}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                <p className="survey-coords-hint">
-                  The fastest way: search by your <strong>Aadhaar number</strong> or <strong>owner name</strong> on the state portal below. No map browsing needed.
-                </p>
-
-                <div className="survey-suggest-search">
-                  <h5>Search by Aadhaar on Meebhoomi (AP)</h5>
-                  <ol>
-                    <li>Open <strong>Meebhoomi</strong> → login with mobile OTP</li>
-                    <li>Click <strong>"1B / ROR-1B"</strong> → select your district/mandal/village</li>
-                    <li>Search by <strong>Aadhaar Number</strong> → all your lands appear instantly</li>
-                  </ol>
-                  <div className="survey-portal-row">
-                    <button className="survey-portal-mini ap" onClick={() => openPortal('meebhoomi')}>
-                      <FileText size={16} /> Open Meebhoomi <ExternalLink size={12} />
-                    </button>
-                    <button className="survey-portal-mini ts" onClick={() => openPortal('dharani')}>
-                      <FileText size={16} /> Open Dharani <ExternalLink size={12} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="survey-bhuvan-option">
-                  <h5><MapIcon size={14} /> Use Bhuvan Map (ISRO)</h5>
-                  <p>Open Bhuvan at your exact coordinates and visually find the survey number on the cadastral map.</p>
-                  <button className="survey-find-btn" onClick={openBhuvanAtLocation}>
-                    <MapIcon size={18} />
-                    <span>Open Bhuvan at My Land</span>
-                    <ExternalLink size={16} />
-                  </button>
-                  <div className="survey-find-steps">
-                    <div className="survey-find-step">
-                      <span className="survey-step-num">1</span>
-                      <span>Bhuvan opens at your coordinates — see the <strong>red dot</strong></span>
-                    </div>
-                    <div className="survey-find-step">
-                      <span className="survey-step-num">2</span>
-                      <span>Zoom in closer to see <strong>survey number labels</strong></span>
-                    </div>
-                    <div className="survey-find-step">
-                      <span className="survey-step-num">3</span>
-                      <span>Type the survey number below and save</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="survey-survey-no-section">
-                  <div className="survey-survey-no-header">
-                    <FileText size={14} />
-                    <span>Survey Number</span>
-                  </div>
-                  <div className="survey-survey-no-input">
-                    <input
-                      type="text"
-                      placeholder="e.g. 123/45"
-                      value={surveyNo}
-                      onChange={(e) => setSurveyNo(e.target.value)}
-                    />
-                    <button
-                      className="survey-btn survey-btn-sm survey-btn-primary"
-                      onClick={() => {
-                        const updated = history.map(e => {
-                          if (e.id === history[0]?.id) return { ...e, surveyNo };
-                          return e;
-                        });
-                        setHistory(updated);
-                        localStorage.setItem('survey-history', JSON.stringify(updated));
-                      }}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-
-                <div className="survey-coords-links">
-                  <button className="survey-btn survey-btn-sm" onClick={() => { navigator.clipboard.writeText(`${centroid[0].toFixed(6)}, ${centroid[1].toFixed(6)}`); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
-                    <MapIcon size={14} /> {copied ? 'Copied!' : 'Copy Coordinates'}
-                  </button>
-                </div>
               </div>
+
+              {locationInfo && (
+                <div className="survey-location-card">
+                  <MapPin size={14} className="survey-location-icon" />
+                  <div className="survey-location-details">
+                    {locationInfo.village && <span className="survey-loc-village">{locationInfo.village}</span>}
+                    <span className="survey-loc-sub">
+                      {[locationInfo.mandal, locationInfo.district, locationInfo.state].filter(Boolean).join(', ')}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <details className="survey-details">
+                <summary><Search size={14} /> Cross-Check & Survey Number</summary>
+                <div className="survey-details-body">
+                  <div className="survey-detail-row">
+                    <span>Survey Number</span>
+                    <div className="survey-survey-no-input">
+                      <input type="text" placeholder="e.g. 123/45" value={surveyNo} onChange={e => setSurveyNo(e.target.value)} />
+                      <button className="survey-btn survey-btn-sm survey-btn-primary" onClick={() => { const updated = history.map(e => e.id === history[0]?.id ? { ...e, surveyNo } : e); setHistory(updated); localStorage.setItem('survey-history', JSON.stringify(updated)); }}>Save</button>
+                    </div>
+                  </div>
+                  <div className="survey-detail-row">
+                    <span>Portals</span>
+                    <div className="survey-portal-row">
+                      <button className="survey-portal-mini ap" onClick={() => openPortal('meebhoomi')}><FileText size={14} /> Meebhoomi <ExternalLink size={12} /></button>
+                      <button className="survey-portal-mini ts" onClick={() => openPortal('dharani')}><FileText size={14} /> Dharani <ExternalLink size={12} /></button>
+                      <button className="survey-portal-mini central isro" onClick={openBhuvanAtLocation}><MapIcon size={14} /> Bhuvan <ExternalLink size={12} /></button>
+                    </div>
+                  </div>
+                  <div className="survey-detail-row">
+                    <span>Coordinates</span>
+                    <button className="survey-btn survey-btn-sm" onClick={() => { navigator.clipboard.writeText(`${centroid[0].toFixed(6)}, ${centroid[1].toFixed(6)}`); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
+                      <MapIcon size={14} /> {copied ? 'Copied!' : 'Copy Coords'}
+                    </button>
+                  </div>
+                </div>
+              </details>
             </div>
           ) : (
             <div className="survey-placeholder">
@@ -567,37 +552,6 @@ export default function LandSurvey() {
       </div>
 
       <div className="survey-tools-section">
-        <div className="survey-tool-card">
-          <h3><Ruler size={18} /> Land Unit Converter</h3>
-          <div className="survey-converter">
-            <input
-              type="number"
-              placeholder="Enter value"
-              value={convInput.value}
-              onChange={(e) => setConvInput(prev => ({ ...prev, value: e.target.value }))}
-            />
-            <select value={convInput.fromUnit} onChange={(e) => setConvInput(prev => ({ ...prev, fromUnit: e.target.value }))}>
-              <option value="cents">Cents</option>
-              <option value="acres">Acres</option>
-              <option value="sq-yd">Sq Yards</option>
-              <option value="sq-ft">Sq Feet</option>
-              <option value="hectares">Hectares</option>
-              <option value="sq-m">Sq Meters</option>
-            </select>
-            <button className="survey-btn survey-btn-primary" onClick={handleConvert}>Convert</button>
-          </div>
-          {convResult && (
-            <div className="survey-conv-results">
-              {['cents', 'acres', 'sqyd', 'sqft', 'hectares', 'sqm'].map(u => (
-                <div key={u} className="survey-conv-row">
-                  <span>{showUnit(u)}</span>
-                  <span className="survey-conv-val">{formatNum(convResult[u])}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         <div className="survey-tool-card">
           <h3><Search size={18} /> Cross-Check with Government Records</h3>
           <p className="survey-tool-desc">After measuring your land, cross-check with official state portals.</p>

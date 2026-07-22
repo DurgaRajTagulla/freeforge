@@ -7,7 +7,7 @@ const MatchingTemplate = lazy(() => import('./MatchingTemplate'));
 const DrawingCanvas = lazy(() => import('./DrawingCanvas'));
 const QuizIntro = lazy(() => import('./QuizIntro'));
 const AlphabetMatchGrid = lazy(() => import('./AlphabetMatchGrid'));
-const ShapeMatchingGrid = lazy(() => import('./ShapeMatchingGrid'));
+
 
 const TicTacToeAI = lazy(() => import('./components/MathLogicGames').then(m => ({ default: m.TicTacToeAI })));
 
@@ -20,7 +20,7 @@ const ArrangeSentences = lazy(() => import('./components/PuzzleGames').then(m =>
 
 const ChessKids = lazy(() => import('./components/DailyGames').then(m => ({ default: m.ChessKids })));
 
-import { generateAlphabetMatchPairs, generateCountQuestions, generateShapePairs, generateColorQuestions, generateVehicleQuestions } from './generators';
+import { generateAlphabetMatchPairs, generateCountQuestions } from './generators';
 
 function RedirectGame({ to, title }) {
   const navigate = useNavigate();
@@ -47,9 +47,6 @@ export default function KidsActivityPage() {
     switch (activityId) {
       case 'alphabet-match': return { pairs: generateAlphabetMatchPairs() };
       case 'count-the-objects': return { questions: generateCountQuestions() };
-      case 'shape-matching': return { pairs: generateShapePairs() };
-      case 'color-recognition': return { questions: generateColorQuestions() };
-      case 'vehicle-identification': return { questions: generateVehicleQuestions() };
       default: return null;
     }
   }, [activityId]);
@@ -61,12 +58,6 @@ export default function KidsActivityPage() {
       return <AlphabetMatchGrid />;
     case 'count-the-objects':
       return <QuizTemplate questions={activityData.questions} title="🔢 Count the Objects" pageSize={5} />;
-    case 'shape-matching':
-      return <ShapeMatchingGrid />;
-    case 'color-recognition':
-      return <QuizTemplate questions={activityData.questions} title="🌈 Color Recognition" pageSize={5} />;
-    case 'vehicle-identification':
-      return <QuizTemplate questions={activityData.questions} title="🚗 Vehicle Identification" pageSize={5} />;
     case 'trace-letters':
       return <DrawingCanvas title="✏️ Trace Letters" />;
 
@@ -116,63 +107,132 @@ export default function KidsActivityPage() {
       return <QuizTemplate questions={qs} title="➗ Division Practice" pageSize={5} />;
     }
     case 'fractions-game': {
-      const qs = [
-        { question: 'What is 1/2 of 8?', options: ['2', '3', '4', '6'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 1/4 of 12?', options: ['2', '3', '4', '6'], correctIndex: 1, emoji: '🍕' },
-        { question: 'Which is larger: 1/2 or 1/4?', options: ['1/4', '1/2', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 3/4 of 16?', options: ['9', '10', '12', '14'], correctIndex: 2, emoji: '🍕' },
-        { question: 'How many halves in a whole?', options: ['1', '2', '3', '4'], correctIndex: 1, emoji: '🔢' },
-        { question: 'What is 1/3 of 9?', options: ['2', '3', '4', '6'], correctIndex: 1, emoji: '🍕' },
-        { question: 'Which fraction is bigger: 2/3 or 1/3?', options: ['1/3', '2/3', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 1/2 + 1/2?', options: ['1', '1/2', '2', '1/4'], correctIndex: 0, emoji: '➕' },
-        { question: 'What is 1/5 of 20?', options: ['2', '3', '4', '5'], correctIndex: 3, emoji: '🍕' },
-        { question: 'How many quarters in a whole?', options: ['2', '3', '4', '5'], correctIndex: 2, emoji: '🔢' },
-        { question: 'Which is smaller: 1/6 or 1/3?', options: ['1/6', '1/3', 'Same', 'Neither'], correctIndex: 0, emoji: '📊' },
-        { question: 'What is 2/5 of 15?', options: ['4', '5', '6', '8'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 3/4 - 1/4?', options: ['1/2', '1/4', '3/4', '1'], correctIndex: 0, emoji: '➖' },
-        { question: 'How many thirds in a whole?', options: ['1', '2', '3', '4'], correctIndex: 2, emoji: '🔢' },
-        { question: 'Which is bigger: 3/8 or 1/4?', options: ['1/4', '3/8', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 1/2 of 14?', options: ['4', '5', '6', '7'], correctIndex: 3, emoji: '🍕' },
-        { question: 'What is 1/3 + 1/3?', options: ['1/3', '2/3', '1', '1/6'], correctIndex: 1, emoji: '➕' },
-        { question: 'Which fraction equals 1?', options: ['2/4', '3/4', '4/4', '1/4'], correctIndex: 2, emoji: '📊' },
-        { question: 'What is 3/5 of 10?', options: ['3', '4', '5', '6'], correctIndex: 3, emoji: '🍕' },
-        { question: 'How many eighths in a half?', options: ['2', '3', '4', '5'], correctIndex: 2, emoji: '🔢' },
-        { question: 'What is 5/6 - 2/6?', options: ['1/6', '2/6', '3/6', '4/6'], correctIndex: 2, emoji: '➖' },
-        { question: 'Which is bigger: 4/5 or 3/5?', options: ['3/5', '4/5', 'Same', 'Neither'], correctIndex: 1, emoji: '📊' },
-        { question: 'What is 1/4 of 24?', options: ['4', '5', '6', '8'], correctIndex: 2, emoji: '🍕' },
-        { question: 'What is 2/3 + 1/3?', options: ['2/3', '1', '3/3', 'Both B and C'], correctIndex: 3, emoji: '➕' },
-        { question: 'Which fraction is closest to 0?', options: ['1/2', '1/4', '1/8', '3/4'], correctIndex: 2, emoji: '📊' }
-      ];
+      const qs = Array.from({ length: 25 }, () => {
+        const types = ['of', 'compare', 'add', 'subtract', 'how-many'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const genOpts = (correct, count = 4, spread = 5) => {
+          const opts = new Set([correct]);
+          while (opts.size < count) {
+            const offset = randInt(1, spread);
+            opts.add(Math.random() > 0.5 ? correct + offset : Math.max(0, correct - offset));
+          }
+          return [...opts].sort((a, b) => a - b).map(String);
+        };
+        const num = randInt(1, 10), den = randInt(2, 8);
+        const num2 = randInt(1, 10), den2 = randInt(2, 8);
+        if (type === 'of') {
+          const whole = randInt(2, 10) * den;
+          const correct = (num / den) * whole;
+          if (!Number.isInteger(correct)) return null;
+          return { question: `What is ${num}/${den} of ${whole}?`, options: genOpts(correct, 4, 5), correctIndex: genOpts(correct, 4, 5).indexOf(String(correct)), emoji: '🍕' };
+        }
+        if (type === 'compare') {
+          const a = num / den, b = num2 / den2;
+          if (a === b) return null;
+          const larger = a > b ? `${num}/${den}` : `${num2}/${den2}`;
+          const smaller = a > b ? `${num2}/${den2}` : `${num}/${den}`;
+          return { question: `Which is larger: ${num}/${den} or ${num2}/${den2}?`, options: [smaller, larger, 'Same', 'Neither'], correctIndex: 1, emoji: '📊' };
+        }
+        if (type === 'add') {
+          const commonDen = den;
+          const total = num + randInt(1, 5);
+          if (total >= commonDen) return null;
+          return { question: `What is ${num}/${commonDen} + ${total - num}/${commonDen}?`, options: [`${total}/${commonDen}`, `${num}/${commonDen}`, `${commonDen}/${total}`, '1'], correctIndex: 0, emoji: '➕' };
+        }
+        if (type === 'subtract') {
+          const bigger = Math.max(num, randInt(2, 8));
+          const smaller = randInt(1, bigger - 1);
+          const diff = bigger - smaller;
+          return { question: `What is ${bigger}/${den} - ${smaller}/${den}?`, options: [`${diff}/${den}`, `${bigger - diff}/${den}`, `${den}/${diff}`, '0'], correctIndex: 0, emoji: '➖' };
+        }
+        const part = randInt(1, 4);
+        const wholePieces = den * part;
+        return { question: `How many ${den === 2 ? 'halves' : den === 3 ? 'thirds' : den === 4 ? 'quarters' : den === 5 ? 'fifths' : den + 'ths'} in ${part > 1 ? part + ' ' : ''}${part === 1 ? 'a whole' : 'wholes'}?`, options: genOpts(wholePieces, 4, 5), correctIndex: genOpts(wholePieces, 4, 5).indexOf(String(wholePieces)), emoji: '🔢' };
+      }).filter(Boolean);
       return <QuizTemplate questions={qs} title="🍕 Fractions Game" pageSize={5} />;
     }
     case 'clock-reading': {
-      const qs = [
-        { question: 'What time is 3:00?', options: ['Three o\'clock', 'Three thirty', 'Two o\'clock', 'Four o\'clock'], correctIndex: 0, emoji: '🕐' },
-        { question: 'How many minutes in an hour?', options: ['30', '45', '60', '100'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is 6:30?', options: ['Six o\'clock', 'Half past six', 'Six thirty', 'Both B and C'], correctIndex: 3, emoji: '🕡' },
-        { question: 'Which hand is the shortest?', options: ['Hour', 'Minute', 'Second', 'All same'], correctIndex: 0, emoji: '🕐' },
-        { question: 'What time is 12:00 noon?', options: ['Morning', 'Noon', 'Evening', 'Night'], correctIndex: 1, emoji: '🕛' },
-        { question: 'How many hours from 9am to 3pm?', options: ['4', '5', '6', '7'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is half past 1?', options: ['1:00', '1:30', '2:00', '12:30'], correctIndex: 1, emoji: '🕜' },
-        { question: 'Which comes first: 7am or 7pm?', options: ['7pm', '7am', 'Same', 'Neither'], correctIndex: 1, emoji: '🌅' },
-        { question: 'How many hours in a day?', options: ['12', '24', '48', '36'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is 9:15?', options: ['Nine o\'clock', 'Quarter past nine', 'Nine thirty', 'Quarter to nine'], correctIndex: 1, emoji: '🕤' },
-        { question: 'Which hand moves fastest?', options: ['Hour', 'Minute', 'Second', 'All same'], correctIndex: 2, emoji: '🕐' },
-        { question: 'What time is 4:45?', options: ['Quarter past 4', 'Quarter to 5', 'Four forty-five', 'Both B and C'], correctIndex: 3, emoji: '🕟' },
-        { question: 'How many minutes in half an hour?', options: ['15', '30', '45', '60'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is 7:00?', options: ['Seven o\'clock', 'Seven thirty', 'Eight o\'clock', 'Six o\'clock'], correctIndex: 0, emoji: '🕖' },
-        { question: 'What is 3:00 + 2 hours?', options: ['4:00', '5:00', '6:00', '7:00'], correctIndex: 1, emoji: '⏰' },
-        { question: 'How many minutes from 8:00 to 8:45?', options: ['15', '30', '45', '60'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is half past 11?', options: ['11:00', '11:30', '12:00', '12:30'], correctIndex: 1, emoji: '🕦' },
-        { question: 'Which is longer: 1 hour or 100 minutes?', options: ['1 hour', '100 minutes', 'Same', 'Neither'], correctIndex: 1, emoji: '⏰' },
-        { question: 'What time is quarter to 3?', options: ['2:15', '2:45', '3:15', '3:45'], correctIndex: 1, emoji: '🕧' },
-        { question: 'How many hours from 2pm to 8pm?', options: ['4', '5', '6', '7'], correctIndex: 2, emoji: '⏰' },
-        { question: 'What time is 10:30?', options: ['Ten o\'clock', 'Half past ten', 'Ten fifteen', 'Eleven o\'clock'], correctIndex: 1, emoji: '🕥' },
-        { question: 'How many half hours in 3 hours?', options: ['3', '4', '5', '6'], correctIndex: 3, emoji: '⏰' },
-        { question: 'What time is quarter past 6?', options: ['6:00', '6:15', '6:30', '6:45'], correctIndex: 1, emoji: '🕡' },
-        { question: 'Which comes first: 3pm or 3am?', options: ['3pm', '3am', 'Same', 'Neither'], correctIndex: 1, emoji: '🌅' },
-        { question: 'What time is 8:00?', options: ['Seven o\'clock', 'Eight o\'clock', 'Nine o\'clock', 'Eight thirty'], correctIndex: 1, emoji: '🕗' }
-      ];
+      const qs = Array.from({ length: 25 }, () => {
+        const types = ['time', 'minutes-in-hour', 'hand', 'hours-between', 'half-past', 'quarter-past', 'quarter-to', 'which-first', 'add-hours', 'minutes-elapsed', 'half-hours-in', 'min-in-half'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        const h = Math.floor(Math.random() * 12) + 1;
+        const h2 = Math.floor(Math.random() * 12) + 1;
+        const randOpts = (correct, wrongs) => {
+          const all = [correct, ...wrongs].sort(() => Math.random() - 0.5);
+          return { options: all, correctIndex: all.indexOf(correct) };
+        };
+        if (type === 'time') {
+          const hourNames = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+          const name = hourNames[h - 1];
+          const wrongs = hourNames.filter((_, i) => i !== h - 1).sort(() => Math.random() - 0.5).slice(0, 3);
+          return { question: `What time is ${h}:00?`, ...randOpts(`${name} o'clock`, wrongs.map(n => `${n} o'clock`)), emoji: '🕐' };
+        }
+        if (type === 'minutes-in-hour') {
+          const wrongs = ['30', '45', '100', '50', '90'].sort(() => Math.random() - 0.5).slice(0, 3);
+          return { question: 'How many minutes in an hour?', ...randOpts('60', wrongs), emoji: '⏰' };
+        }
+        if (type === 'hand') {
+          const qs = [
+            { q: 'Which hand is the shortest?', correct: 'Hour', wrongs: ['Minute', 'Second', 'All same'] },
+            { q: 'Which hand moves fastest?', correct: 'Second', wrongs: ['Hour', 'Minute', 'All same'] },
+            { q: 'Which hand moves slowest?', correct: 'Hour', wrongs: ['Minute', 'Second', 'All same'] },
+          ];
+          return { question: qs[Math.floor(Math.random() * qs.length)].q, ...randOpts(qs[0].correct, qs[0].wrongs), emoji: '🕐' };
+        }
+        if (type === 'hours-between') {
+          const start = Math.floor(Math.random() * 8) + 1;
+          const end = start + Math.floor(Math.random() * 5) + 1;
+          if (end > 12) return null;
+          const correct = end - start;
+          const wrongs = [correct + 1, correct - 1, correct + 2, correct - 2].filter(n => n > 0 && n !== correct).slice(0, 3);
+          return { question: `How many hours from ${start}am to ${end}am?`, ...randOpts(String(correct), wrongs.map(String)), emoji: '⏰' };
+        }
+        if (type === 'half-past') {
+          const hourNames = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+          const name = hourNames[h - 1];
+          const wrongs = [`${h > 1 ? h - 1 : 12}:00`, `${h > 1 ? h - 1 : 12}:30`, `${h + 1 > 12 ? 1 : h + 1}:00`, `${h}:00`].filter((_, i) => i < 3);
+          return { question: `What time is half past ${h}?`, ...randOpts(`${h}:30`, wrongs), emoji: '🕜' };
+        }
+        if (type === 'quarter-past') {
+          const hourNames = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+          const name = hourNames[h - 1];
+          const wrongs = [`${h}:00`, `${h}:30`, `${h}:45`, `${h + 1 > 12 ? 1 : h + 1}:00`].filter(w => w !== `${h}:15`).slice(0, 3);
+          return { question: `What time is quarter past ${h}?`, ...randOpts(`${h}:15`, wrongs), emoji: '🕤' };
+        }
+        if (type === 'quarter-to') {
+          const nextH = h + 1 > 12 ? 1 : h + 1;
+          const wrongs = [`${h}:15`, `${h}:45`, `${h}:30`, `${nextH}:00`].filter(w => w !== `${nextH - 1}:45`).slice(0, 3);
+          return { question: `What time is quarter to ${nextH}?`, ...randOpts(`${nextH > 1 ? nextH - 1 : 12}:45`, wrongs), emoji: '🕧' };
+        }
+        if (type === 'which-first') {
+          const ampm = Math.random() > 0.5 ? 'am' : 'pm';
+          const otherAmpm = ampm === 'am' ? 'pm' : 'am';
+          return { question: `Which comes first: ${h}${ampm} or ${h}${otherAmpm}?`, ...randOpts(`${h}${ampm}`, [`${h}${otherAmpm}`, 'Same', 'Neither']), emoji: '🌅' };
+        }
+        if (type === 'add-hours') {
+          const add = Math.floor(Math.random() * 4) + 1;
+          const result = h + add > 12 ? h + add - 12 : h + add;
+          const wrongs = [`${result + 1 > 12 ? result + 1 - 12 : result + 1}:00`, `${h}:00`, `${add}:00`, `${result - 1 || 12}:00`].filter((_, i) => i < 3);
+          return { question: `What is ${h}:00 + ${add} hours?`, ...randOpts(`${result}:00`, wrongs), emoji: '⏰' };
+        }
+        if (type === 'minutes-elapsed') {
+          const mins = [15, 30, 45][Math.floor(Math.random() * 3)];
+          const wrongs = [15, 30, 45, 60].filter(m => m !== mins).slice(0, 3);
+          return { question: `How many minutes from ${h}:00 to ${h}:${mins === 15 ? '15' : mins === 30 ? '30' : '45'}?`, ...randOpts(String(mins), wrongs.map(String)), emoji: '⏰' };
+        }
+        if (type === 'half-hours-in') {
+          const hours = Math.floor(Math.random() * 4) + 2;
+          const correct = hours * 2;
+          const wrongs = [correct + 1, correct - 1, correct + 2, correct - 2].filter(n => n > 0 && n !== correct).slice(0, 3);
+          return { question: `How many half hours in ${hours} hours?`, ...randOpts(String(correct), wrongs.map(String)), emoji: '⏰' };
+        }
+        if (type === 'min-in-half') {
+          const wrongs = ['15', '45', '60', '20', '25'].sort(() => Math.random() - 0.5).slice(0, 3);
+          return { question: 'How many minutes in half an hour?', ...randOpts('30', wrongs), emoji: '⏰' };
+        }
+        return null;
+      }).filter(Boolean);
       return <QuizTemplate questions={qs} title="🕐 Clock Reading" pageSize={5} />;
     }
 

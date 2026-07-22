@@ -87,11 +87,11 @@ const careers = [
     ],
     freeResources: [
       { name: 'NCERT (Free Textbooks)', url: 'https://ncert.nic.in', type: 'website' },
-      { name: 'Physics Wallah (All Streams)', url: 'https://www.youtube.com/c/physicswallah', type: 'youtube' },
-      { name: 'Unacademy Foundation', url: 'https://www.youtube.com/c/unacademyfoundation', type: 'youtube' },
-      { name: 'Vedantu Learning', url: 'https://www.youtube.com/c/vedantulearning', type: 'youtube' },
+      { name: 'Physics Wallah (All Streams)', url: 'https://www.youtube.com/@physicswallah', type: 'youtube' },
+      { name: 'Unacademy India', url: 'https://www.youtube.com/@unacademy', type: 'youtube' },
+      { name: 'Vedantu Learning', url: 'https://www.youtube.com/@vedantubrand', type: 'youtube' },
       { name: 'Khan Academy India', url: 'https://www.khanacademy.org', type: 'website' },
-      { name: 'Doubtnut (Maths/Science)', url: 'https://www.youtube.com/c/doubtnut', type: 'youtube' },
+      { name: 'Doubtnut (Maths/Science)', url: 'https://www.youtube.com/@doubtnut', type: 'youtube' },
       { name: 'BYJU\'S Free Classes', url: 'https://byjus.com', type: 'website' }
     ]
   },
@@ -179,9 +179,9 @@ const careers = [
       { name: 'NEET Official (NTA)', url: 'https://neet.nta.nic.in', type: 'website' },
       { name: 'CLAT Official', url: 'https://consortiumofnlus.ac.in', type: 'website' },
       { name: 'ICAI (CA)', url: 'https://www.icai.org', type: 'website' },
-      { name: 'Physics Wallah (All Exams)', url: 'https://www.youtube.com/c/physicswallah', type: 'youtube' },
-      { name: 'Unacademy Foundation', url: 'https://www.youtube.com/c/unacademyfoundation', type: 'youtube' },
-      { name: 'Vedantu', url: 'https://www.youtube.com/c/vedantulearning', type: 'youtube' },
+      { name: 'Physics Wallah (All Exams)', url: 'https://www.youtube.com/@physicswallah', type: 'youtube' },
+      { name: 'Unacademy India', url: 'https://www.youtube.com/@unacademy', type: 'youtube' },
+      { name: 'Vedantu', url: 'https://www.youtube.com/@vedantubrand', type: 'youtube' },
       { name: 'Aglasem (College Info)', url: 'https://www.aglasem.com', type: 'website' },
       { name: 'CollegeDekho', url: 'https://www.collegedekho.com', type: 'website' }
     ]
@@ -216,11 +216,11 @@ const careers = [
     ],
     freeResources: [
       { name: 'UPSC Official Website', url: 'https://www.upsc.gov.in', type: 'website' },
-      { name: 'Unacademy Free UPSC Lessons', url: 'https://www.youtube.com/unacademy', type: 'youtube' },
-      { name: 'Study IQ Education', url: 'https://www.youtube.com/c/StudyIQeducation', type: 'youtube' },
-      { name: 'Drishti IAS Free Videos', url: 'https://www.youtube.com/c/drishtiias', type: 'youtube' },
+      { name: 'Unacademy Free UPSC Lessons', url: 'https://www.youtube.com/@unacademy', type: 'youtube' },
+      { name: 'Study IQ Education', url: 'https://www.youtube.com/@studyiqeducationltd', type: 'youtube' },
+      { name: 'Drishti IAS Free Videos', url: 'https://www.youtube.com/@DrishtiIASVideos', type: 'youtube' },
       { name: 'NCERT Official (Free Textbooks)', url: 'https://ncert.nic.in', type: 'website' },
-      { name: 'Mrunal Patel Free Lectures', url: 'https://www.youtube.com/user/MrunalOrg', type: 'youtube' },
+      { name: 'Mrunal Patel Free Lectures', url: 'https://www.youtube.com/@themrunalpatel', type: 'youtube' },
       { name: 'ClearIAS Free Study Material', url: 'https://www.clearias.com', type: 'website' },
       { name: 'BYJU\'S Free UPSC Prep', url: 'https://byjus.com/free-ias-prep', type: 'website' }
     ]
@@ -256,12 +256,12 @@ const careers = [
     ],
     freeResources: [
       { name: 'SSC Official Website', url: 'https://ssc.nic.in', type: 'website' },
-      { name: 'Rakesh Yadav Readers Club', url: 'https://www.youtube.com/c/RakeshYadavReadersClub', type: 'youtube' },
-      { name: 'Adda247 SSC', url: 'https://www.youtube.com/c/adda247', type: 'youtube' },
-      { name: 'wifistudy', url: 'https://www.youtube.com/c/wifistudy', type: 'youtube' },
+      { name: 'Rakesh Yadav Readers Club', url: 'https://www.youtube.com/@ryrpbooks', type: 'youtube' },
+      { name: 'Adda247 SSC', url: 'https://www.youtube.com/@adda247', type: 'youtube' },
+      { name: 'wifistudy', url: 'https://www.youtube.com/@wifistudyStudios', type: 'youtube' },
       { name: 'Testbook Free Mocks', url: 'https://testbook.com', type: 'website' },
       { name: 'Oliveboard Free Study Material', url: 'https://www.oliveboard.in', type: 'website' },
-      { name: 'Khan Sir Official (GK)', url: 'https://www.youtube.com/c/khansirofficial', type: 'youtube' }
+      { name: 'Khan Sir Official (GK)', url: 'https://www.youtube.com/@khansirofficial', type: 'youtube' }
     ]
   },
   {
@@ -295,10 +295,10 @@ const careers = [
     freeResources: [
       { name: 'IBPS Official Website', url: 'https://www.ibps.in', type: 'website' },
       { name: 'SBI Careers', url: 'https://sbi.co.in/web/careers', type: 'website' },
-      { name: 'Adda247 Banking', url: 'https://www.youtube.com/c/adda247', type: 'youtube' },
+      { name: 'Adda247 Banking', url: 'https://www.youtube.com/@adda247', type: 'youtube' },
       { name: 'Oliveboard Banking Prep', url: 'https://www.oliveboard.in', type: 'website' },
       { name: 'Testbook Bank Exam', url: 'https://testbook.com', type: 'website' },
-      { name: 'Study IQ Banking', url: 'https://www.youtube.com/c/StudyIQeducation', type: 'youtube' },
+      { name: 'Study IQ Banking', url: 'https://www.youtube.com/@studyiqeducationltd', type: 'youtube' },
       { name: 'PracticeMock Free Tests', url: 'https://www.practicemock.com', type: 'website' }
     ]
   },
@@ -333,10 +333,9 @@ const careers = [
     freeResources: [
       { name: 'RRB Official Website', url: 'https://indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,1,304,366,554', type: 'website' },
       { name: 'RRB NTPC / Group D Notifications', url: 'https://rrbapply.gov.in', type: 'website' },
-      { name: 'wifistudy Railway', url: 'https://www.youtube.com/c/wifistudy', type: 'youtube' },
-      { name: 'Adda247 Railway', url: 'https://www.youtube.com/c/adda247', type: 'youtube' },
-      { name: 'Testbook Railway Exams', url: 'https://testbook.com', type: 'website' },
-      { name: 'RRB Free Mock Tests', url: 'https://www.rrbapply.gov.in', type: 'website' }
+      { name: 'wifistudy Railway', url: 'https://www.youtube.com/@wifistudyStudios', type: 'youtube' },
+      { name: 'Adda247 Railway', url: 'https://www.youtube.com/@adda247', type: 'youtube' },
+      { name: 'Testbook Railway Exams', url: 'https://testbook.com', type: 'website' }
     ]
   },
   {
@@ -370,11 +369,11 @@ const careers = [
     freeResources: [
       { name: 'Join Indian Army', url: 'https://joinindianarmy.nic.in', type: 'website' },
       { name: 'Indian Navy Careers', url: 'https://www.joinindiannavy.gov.in', type: 'website' },
-      { name: 'Indian Air Force Career', url: 'https://indianairforce.nic.in', type: 'website' },
-      { name: 'SSBCrackExams', url: 'https://www.youtube.com/c/ssbcrackexams', type: 'youtube' },
-      { name: 'Defence Direct Education', url: 'https://www.youtube.com/c/defencedirecteducation', type: 'youtube' },
+      { name: 'Indian Air Force Career', url: 'https://careerairforce.nic.in', type: 'website' },
+      { name: 'SSBCrack (Defence Prep)', url: 'https://www.youtube.com/c/SSBCrackVideos', type: 'youtube' },
+      { name: 'Defence Direct Education', url: 'https://www.youtube.com/@defencedirecteducation', type: 'youtube' },
       { name: 'NDA Official (UPSC)', url: 'https://www.upsc.gov.in', type: 'website' },
-      { name: 'Agniveer Vayu/Army/Navy Portal', url: 'https://agnipathvayu.cdac.in', type: 'website' }
+      { name: 'Agniveer Recruitment Portal', url: 'https://agnipath.cdac.in', type: 'website' }
     ]
   },
   {
@@ -406,14 +405,13 @@ const careers = [
       'Prepare a strong resume and LinkedIn profile'
     ],
     freeResources: [
-      { name: 'GATE Official Website', url: 'https://gate.iitd.ac.in', type: 'website' },
-      { name: 'GATE Overflow (Free PYQs)', url: 'https://gateoverflow.in', type: 'website' },
+      { name: 'GATE Official Website', url: 'https://gate.iisc.ac.in', type: 'website' },
       { name: 'NPTEL (IIT Free Courses)', url: 'https://nptel.ac.in', type: 'website' },
-      { name: 'Neso Academy (YouTube)', url: 'https://www.youtube.com/c/NesoAcademy', type: 'youtube' },
-      { name: 'Gate Smashers (YouTube)', url: 'https://www.youtube.com/c/GateSmashers', type: 'youtube' },
+      { name: 'Neso Academy (YouTube)', url: 'https://www.youtube.com/@NesoAcademy', type: 'youtube' },
+      { name: 'Gate Smashers (YouTube)', url: 'https://www.youtube.com/@GateSmashers', type: 'youtube' },
       { name: 'GeeksforGeeks', url: 'https://www.geeksforgeeks.org', type: 'website' },
-      { name: 'ISC-IIA (Free GATE lectures)', url: 'https://www.youtube.com/c/ISCIIA', type: 'youtube' },
-      { name: 'Unacademy GATE', url: 'https://www.youtube.com/c/unacademygate', type: 'youtube' }
+      { name: 'ISC-IIA (Free GATE lectures)', url: 'https://www.youtube.com/@ISCIIA', type: 'youtube' },
+      { name: 'GeeksforGeeks GATE', url: 'https://www.geeksforgeeks.org/gate/', type: 'website' }
     ]
   },
   {
@@ -448,12 +446,12 @@ const careers = [
     ],
     freeResources: [
       { name: 'freeCodeCamp', url: 'https://www.freecodecamp.org', type: 'website' },
-      { name: 'CS50 (Harvard - YouTube)', url: 'https://www.youtube.com/cs50', type: 'youtube' },
-      { name: 'CodeWithHarry (YouTube)', url: 'https://www.youtube.com/c/CodeWithHarry', type: 'youtube' },
+      { name: 'CS50 (Harvard - YouTube)', url: 'https://www.youtube.com/@cs50', type: 'youtube' },
+      { name: 'CodeWithHarry (YouTube)', url: 'https://www.youtube.com/@CodeWithHarry', type: 'youtube' },
       { name: 'LeetCode', url: 'https://leetcode.com', type: 'website' },
       { name: 'HackerRank', url: 'https://www.hackerrank.com', type: 'website' },
-      { name: 'Apna College (YouTube)', url: 'https://www.youtube.com/c/ApnaCollegeOfficial', type: 'youtube' },
-      { name: 'Take U Forward (DSA)', url: 'https://www.youtube.com/c/takeUforward', type: 'youtube' },
+      { name: 'Apna College (YouTube)', url: 'https://www.youtube.com/@ApnaCollegeOfficial', type: 'youtube' },
+      { name: 'Take U Forward (DSA)', url: 'https://www.youtube.com/@takeUforward', type: 'youtube' },
       { name: 'Roadmap.sh (Career Paths)', url: 'https://roadmap.sh', type: 'website' },
       { name: 'GeeksforGeeks', url: 'https://www.geeksforgeeks.org', type: 'website' }
     ]
@@ -491,9 +489,9 @@ const careers = [
       { name: 'CTET Official (CBSE)', url: 'https://ctet.nic.in', type: 'website' },
       { name: 'UGC NET Official', url: 'https://ugcnet.nta.nic.in', type: 'website' },
       { name: 'KVS Recruitment', url: 'https://kvs.ac.in', type: 'website' },
-      { name: 'Adda247 Teaching', url: 'https://www.youtube.com/c/adda247', type: 'youtube' },
-      { name: 'wifistudy Teaching', url: 'https://www.youtube.com/c/wifistudy', type: 'youtube' },
-      { name: 'Study IQ Education', url: 'https://www.youtube.com/c/StudyIQeducation', type: 'youtube' },
+      { name: 'Adda247 Teaching', url: 'https://www.youtube.com/@adda247', type: 'youtube' },
+      { name: 'wifistudy Teaching', url: 'https://www.youtube.com/@wifistudyStudios', type: 'youtube' },
+      { name: 'Study IQ Education', url: 'https://www.youtube.com/@studyiqeducationltd', type: 'youtube' },
       { name: 'Teachmint (Online Teaching)', url: 'https://teachmint.com', type: 'website' }
     ]
   },
@@ -529,9 +527,9 @@ const careers = [
     freeResources: [
       { name: 'NEET Official (NTA)', url: 'https://neet.nta.nic.in', type: 'website' },
       { name: 'AIIMS Exam', url: 'https://www.aiimsexams.ac.in', type: 'website' },
-      { name: 'Physics Wallah (YouTube)', url: 'https://www.youtube.com/c/physicswallah', type: 'youtube' },
-      { name: 'Unacademy NEET', url: 'https://www.youtube.com/c/unacademyneet', type: 'youtube' },
-      { name: 'Khan Academy Biology', url: 'https://www.youtube.com/khanacademyscience', type: 'youtube' },
+      { name: 'Physics Wallah (YouTube)', url: 'https://www.youtube.com/@physicswallah', type: 'youtube' },
+      { name: 'Unacademy NEET', url: 'https://www.youtube.com/@unacademyneet', type: 'youtube' },
+      { name: 'Khan Academy Biology', url: 'https://www.youtube.com/@khanacademy', type: 'youtube' },
       { name: 'NCERT Official (Free Books)', url: 'https://ncert.nic.in', type: 'website' },
       { name: 'Marrow (Medical App)', url: 'https://marrow.com', type: 'website' }
     ]
@@ -566,11 +564,11 @@ const careers = [
       'Keep all documents ready (age, education, caste, domicile certificates)'
     ],
     freeResources: [
-      { name: 'State Police Recruitment Portals', url: 'https://www.police recruiting.gov.in', type: 'website' },
+      { name: 'CAPF (SSC Recruitment)', url: 'https://ssc.nic.in', type: 'website' },
       { name: 'SSC (CAPF Recruitment)', url: 'https://ssc.nic.in', type: 'website' },
-      { name: 'Adda247 Defence', url: 'https://www.youtube.com/c/adda247', type: 'youtube' },
-      { name: 'Khan Sir Police Prep', url: 'https://www.youtube.com/c/khansirofficial', type: 'youtube' },
-      { name: 'SSBCrackExams', url: 'https://www.youtube.com/c/ssbcrackexams', type: 'youtube' },
+      { name: 'Adda247 Defence', url: 'https://www.youtube.com/@adda247', type: 'youtube' },
+      { name: 'Khan Sir Police Prep', url: 'https://www.youtube.com/@khansirofficial', type: 'youtube' },
+      { name: 'SSBCrack (Defence Prep)', url: 'https://www.youtube.com/c/SSBCrackVideos', type: 'youtube' },
       { name: 'Testbook Police Exams', url: 'https://testbook.com', type: 'website' }
     ]
   },
@@ -606,11 +604,10 @@ const careers = [
     freeResources: [
       { name: 'ICAR Official', url: 'https://icar.org.in', type: 'website' },
       { name: 'Agriculture Information', url: 'https://agricoop.nic.in', type: 'website' },
-      { name: 'Krishi Vigyan Kendra', url: 'https://kvk.icar.gov.in', type: 'website' },
-      { name: 'Un Agricultural Science', url: 'https://www.youtube.com/c/unacademy', type: 'youtube' },
-      { name: 'Agriculture Wale (YouTube)', url: 'https://www.youtube.com/c/AgricultureWale', type: 'youtube' },
+      { name: 'IARI (Indian Agri Research)', url: 'https://www.iari.res.in', type: 'website' },
+      { name: 'Agriculture Wale (YouTube)', url: 'https://www.youtube.com/@AgricultureWale', type: 'youtube' },
       { name: 'PM-KISAN Portal', url: 'https://pmkisan.gov.in', type: 'website' },
-      { name: 'Agriculture Job Updates', url: 'https://www.agrigater.com', type: 'website' }
+      { name: 'Farmer Portal (Govt of India)', url: 'https://www.farmer.gov.in', type: 'website' }
     ]
   },
   {
@@ -646,11 +643,11 @@ const careers = [
     freeResources: [
       { name: 'CLAT Official (Consortium)', url: 'https://consortiumofnlus.ac.in', type: 'website' },
       { name: 'AIBE Official (BCI)', url: 'https://www.barindia.org', type: 'website' },
-      { name: 'Legal Bites (YouTube)', url: 'https://www.youtube.com/c/LegalBites', type: 'youtube' },
-      { name: 'Law School 101', url: 'https://www.youtube.com/c/lawschool101', type: 'youtube' },
+      { name: 'Legal Bites (YouTube)', url: 'https://www.youtube.com/@LegalBites', type: 'youtube' },
+      { name: 'Law School 101', url: 'https://www.youtube.com/@lawschool101', type: 'youtube' },
       { name: 'Live Law', url: 'https://www.livelaw.in', type: 'website' },
-      { name: 'SCC Online (Free)', url: 'https://www.scconline.com', type: 'website' },
-      { name: 'NLUD Free Resources', url: 'https://nludelhi.ac.in', type: 'website' }
+      { name: 'Indian Kanoon (Free Judgments)', url: 'https://indiankanoon.org', type: 'website' },
+      { name: 'India Code (Free Statutes)', url: 'https://www.indiacode.nic.in', type: 'website' }
     ]
   }
 ];

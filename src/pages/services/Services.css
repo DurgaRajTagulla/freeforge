@@ -1026,6 +1026,16 @@
   color: #64748b;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .tool-card:hover {
+    transform: none;
+  }
+  .process-btn:not(:disabled):hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 /* ===== Mobile Responsive ===== */
 @media (max-width: 768px) {
   .services-page {

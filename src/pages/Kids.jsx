@@ -5,9 +5,6 @@ const activityId = (label) => {
   const map = {
     'Alphabet & Number Match': 'alphabet-match',
     'Count the Objects': 'count-the-objects',
-    'Shape Matching': 'shape-matching',
-    'Color Recognition': 'color-recognition',
-    'Vehicle Identification': 'vehicle-identification',
     'Trace Letters': 'trace-letters',
     'Addition Race': 'addition-race',
     'Subtraction Challenge': 'subtraction-challenge',
@@ -70,9 +67,6 @@ const SECTIONS = [
     items: [
       { icon: '🔤', name: 'Alphabet & Number Match', desc: 'Match letters and numbers in grid' },
       { icon: '🔢', name: 'Count the Objects', desc: 'Practice counting skills' },
-      { icon: '🔺', name: 'Shape Matching', desc: 'Match shapes to their names' },
-      { icon: '🌈', name: 'Color Recognition', desc: 'Learn and identify colors' },
-      { icon: '🚗', name: 'Vehicle Identification', desc: 'Identify different vehicles' },
       { icon: '✋', name: 'Trace Letters', desc: 'Practice writing letters' },
     ],
   },

@@ -24,6 +24,9 @@ import TruthDareGame from '../games/TruthDareGame';
 import CountdownTimer from '../tools/CountdownTimer';
 import StopwatchTool from '../tools/StopwatchTool';
 import CompassTool from '../tools/CompassTool';
+import WeatherTool from '../tools/WeatherTool';
+import TypingSpeedTool from '../tools/TypingSpeedTool';
+import MarkdownNotesTool from '../tools/MarkdownNotesTool';
 import './Services.css';
 
 const tools = {
@@ -70,6 +73,9 @@ const tools = {
   'stopwatch': { title: 'Stopwatch', desc: 'Precision stopwatch with laps', category: 'utility', accepts: null, multiple: false },
   'compass': { title: 'Compass', desc: 'Digital compass using device orientation', category: 'utility', accepts: null, multiple: false },
   'qr-code-generator': { title: 'QR Code Generator', desc: 'Generate QR codes for text, URLs and more', category: 'utility', accepts: null, multiple: false },
+  'weather': { title: 'Weather', desc: 'Current weather, 7-day forecast and live conditions', category: 'utility', accepts: null, multiple: false },
+  'typing-speed': { title: 'Typing Speed Test', desc: 'Test and improve your typing speed and accuracy', category: 'utility', accepts: null, multiple: false },
+  'markdown-notes': { title: 'Markdown Notes', desc: 'Write notes with markdown formatting, auto-saved locally', category: 'utility', accepts: null, multiple: false },
 };
 
 function ServicePage() {
@@ -140,6 +146,7 @@ function ServicePage() {
 
   // Interest Calculator
   const [intTakenDate, setIntTakenDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [intEndDate, setIntEndDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [intAmount, setIntAmount] = useState('');
   const [intRate, setIntRate] = useState('');
   const [intResult, setIntResult] = useState(null);
@@ -1147,6 +1154,10 @@ function ServicePage() {
                   <input type="date" className="option-input" value={intTakenDate} onChange={e => setIntTakenDate(e.target.value)} />
                 </div>
                 <div className="option-item">
+                  <label>Calculate Interest Until</label>
+                  <input type="date" className="option-input" value={intEndDate} onChange={e => setIntEndDate(e.target.value)} />
+                </div>
+                <div className="option-item">
                   <label>Principal Amount (₹)</label>
                   <input type="number" className="option-input" value={intAmount} onChange={e => setIntAmount(Math.max(0, Number(e.target.value)))} placeholder="e.g. 10000" min={1} />
                 </div>
@@ -1158,10 +1169,10 @@ function ServicePage() {
             </div>
             <div className="service-actions">
               <button className="process-btn" onClick={() => {
-                if (!intTakenDate || !intAmount || !intRate) return;
+                if (!intTakenDate || !intEndDate || !intAmount || !intRate) return;
                 const taken = new Date(intTakenDate);
-                const now = new Date();
-                const diffMs = now - taken;
+                const end = new Date(intEndDate);
+                const diffMs = end - taken;
                 const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
                 const totalMonths = diffMs / (1000 * 60 * 60 * 24 * 30.4375);
                 const totalYears = totalMonths / 12;
@@ -1442,6 +1453,15 @@ function ServicePage() {
             )}
           </div>
         )}
+
+        {/* --- Weather --- */}
+        {toolId === 'weather' && <WeatherTool />}
+
+        {/* --- Typing Speed --- */}
+        {toolId === 'typing-speed' && <TypingSpeedTool />}
+
+        {/* --- Markdown Notes --- */}
+        {toolId === 'markdown-notes' && <MarkdownNotesTool />}
 
         <canvas ref={canvasRef} hidden />
 

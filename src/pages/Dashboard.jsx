@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  Upload, Shield, Lock, FileText, ArrowRight, Check, Wrench, Flame, Star,
-  Gamepad2, GraduationCap, Briefcase, Newspaper, Map, HelpCircle, LandPlot,
-  Image, Merge, Calculator, Wifi, QrCode, Ruler, Scale, ChevronRight, Target, Puzzle, Brain, Zap
+  Shield, Lock, ArrowRight, Check, Wrench, Flame, Gamepad2, FileText,
+  Image, Merge, Calculator, Wifi, QrCode, Ruler,
+  Target, Puzzle, Brain, Zap, Code, Hash, X,
+  Cloud
 } from 'lucide-react';
 import './Dashboard.css';
 
@@ -14,6 +15,9 @@ function Dashboard() {
     { icon: Merge, label: 'Merge PDF', path: '/service/merge-pdf' },
     { icon: Calculator, label: 'EMI Calculator', path: '/service/emi-calculator' },
     { icon: QrCode, label: 'QR Generator', path: '/service/qr-code-generator' },
+    { icon: Ruler, label: 'Unit Converter', path: '/service/unit-converter' },
+    { icon: Code, label: 'JSON Parser', path: '/service/json-parser' },
+    { icon: Cloud, label: 'Weather', path: '/service/weather' },
   ];
 
   const popularGames = [
@@ -21,13 +25,8 @@ function Dashboard() {
     { icon: Target, label: '2048', path: '/games/game-2048' },
     { icon: Puzzle, label: 'Sudoku', path: '/games/sudoku' },
     { icon: Brain, label: 'Memory Cards', path: '/games/memory-cards' },
-  ];
-
-  const stats = [
-    { value: '24+', label: 'Free Tools' },
-    { value: '14', label: 'Browser Games' },
-    { value: '40+', label: 'Kids Activities' },
-    { value: '100%', label: 'Free & Private' },
+    { icon: Hash, label: 'Minesweeper', path: '/games/minesweeper' },
+    { icon: X, label: 'Tic Tac Toe', path: '/games/tic-tac-toe' },
   ];
 
   return (
@@ -38,91 +37,24 @@ function Dashboard() {
             <Flame className="hero-flame-icon" size={64} />
             <h1 className="hero-title">FreeForge</h1>
             <p className="hero-subtitle">
-              Free all-in-one platform. Build ATS-friendly resumes, use 24+ tools (image, PDF, calculator, QR, converters), play 14 browser games, explore Kids Learning Hub (40+ activities), discover Career Guide (14 paths), read multi-language News, find Tour Guides, and access Government Help services — all free, all private, all in your browser.
+              Everything you need, all in one place. Access 24+ free tools, play 14 browser games, explore career guides, learn with kids activities, read multi-language news, find tour guides, and more. No sign-ups, no servers — just your browser.
             </p>
             <div className="hero-actions">
-              <button className="cta-button primary" onClick={() => navigate('/editor')}>
+              <button className="cta-button primary" onClick={() => navigate('/services')}>
+                <Wrench size={20} />
+                Browse All Services
+                <ArrowRight className="cta-icon" />
+              </button>
+              <button className="cta-button outline" onClick={() => navigate('/games')}>
+                <Gamepad2 size={20} />
+                Play Free Games
+                <ArrowRight className="cta-icon" />
+              </button>
+              <button className="cta-button outline" onClick={() => navigate('/editor')}>
                 <FileText size={20} />
-                Start Building Resume
+                Build Resume
                 <ArrowRight className="cta-icon" />
               </button>
-              <button className="cta-button outline" onClick={() => navigate('/services')}>
-                Explore All Tools
-                <ArrowRight className="cta-icon" />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="stats-bar">
-          {stats.map((stat, i) => (
-            <div className="stat-item" key={i}>
-              <span className="stat-value">{stat.value}</span>
-              <span className="stat-label">{stat.label}</span>
-            </div>
-          ))}
-        </section>
-
-        <section className="featured-section">
-          <div className="featured-card">
-            <div className="featured-badge">
-              <Star size={14} />
-              Our #1 Priority
-            </div>
-            <div className="featured-content">
-              <div className="featured-text">
-                <h2 className="featured-title">Free Resume Builder</h2>
-                <p className="featured-description">
-                  Build professional, ATS-friendly resumes completely free. Your data never leaves your browser — no servers, no databases, no tracking.
-                </p>
-                <div className="featured-features">
-                  <div className="featured-feature">
-                    <Lock size={16} />
-                    <span>100% Private</span>
-                  </div>
-                  <div className="featured-feature">
-                    <FileText size={16} />
-                    <span>ATS-Optimized PDF</span>
-                  </div>
-                  <div className="featured-feature">
-                    <Check size={16} />
-                    <span>Rich Text Editor</span>
-                  </div>
-                  <div className="featured-feature">
-                    <Upload size={16} />
-                    <span>Import JSON/PDF</span>
-                  </div>
-                </div>
-                <button className="cta-button primary" onClick={() => navigate('/editor')}>
-                  Start Building Resume
-                  <ArrowRight className="cta-icon" />
-                </button>
-              </div>
-              <div className="featured-visual">
-                <div className="resume-preview">
-                  <div className="resume-header">
-                    <div className="resume-name-line" />
-                    <div className="resume-title-line" />
-                    <div className="resume-contact-line" />
-                  </div>
-                  <div className="resume-section">
-                    <div className="resume-section-line" />
-                    <div className="resume-content-lines">
-                      <div className="resume-line full" />
-                      <div className="resume-line full" />
-                      <div className="resume-line short" />
-                    </div>
-                  </div>
-                  <div className="resume-section">
-                    <div className="resume-section-line" />
-                    <div className="resume-content-lines">
-                      <div className="resume-line full" />
-                      <div className="resume-line full" />
-                      <div className="resume-line short" />
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -170,62 +102,6 @@ function Dashboard() {
                 <span className="tool-label">{game.label}</span>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section className="explore-section">
-          <h2 className="section-title">Explore More</h2>
-          <p className="section-subtitle">Discover everything FreeForge has to offer</p>
-          <div className="explore-grid">
-            <div className="explore-card games" onClick={() => navigate('/games')}>
-              <div className="explore-card-bg" />
-              <Gamepad2 size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">Free Browser Games</h3>
-              <p className="explore-card-desc">Play Snake, 2048, Sudoku, Memory Cards and 10+ more games. No downloads needed!</p>
-              <span className="explore-card-tag">14 Games</span>
-            </div>
-            <div className="explore-card kids" onClick={() => navigate('/kids')}>
-              <div className="explore-card-bg" />
-              <GraduationCap size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">Kids Learning Hub</h3>
-              <p className="explore-card-desc">Fun educational activities for kids — alphabets, numbers, science, math games and more.</p>
-              <span className="explore-card-tag">40+ Activities</span>
-            </div>
-            <div className="explore-card career" onClick={() => navigate('/career-guide')}>
-              <div className="explore-card-bg" />
-              <Briefcase size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">Career Guide</h3>
-              <p className="explore-card-desc">Explore 14 career paths — UPSC, Banking, IT, Engineering, Teaching, Defence and more.</p>
-              <span className="explore-card-tag">14 Paths</span>
-            </div>
-            <div className="explore-card news" onClick={() => navigate('/news')}>
-              <div className="explore-card-bg" />
-              <Newspaper size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">News Feed</h3>
-              <p className="explore-card-desc">Stay updated with multi-language news from BBC, The Hindu, Indian Express and more.</p>
-              <span className="explore-card-tag">3 Languages</span>
-            </div>
-            <div className="explore-card tour" onClick={() => navigate('/tour-guide')}>
-              <div className="explore-card-bg" />
-              <Map size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">Tour Guide</h3>
-              <p className="explore-card-desc">Explore famous temples, tourist destinations across India with detailed guides.</p>
-              <span className="explore-card-tag">27+ Destinations</span>
-            </div>
-            <div className="explore-card survey" onClick={() => navigate('/land-survey')}>
-              <div className="explore-card-bg" />
-              <LandPlot size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">Land Survey</h3>
-              <p className="explore-card-desc">GPS land measurement & area calculator. Walk your boundary, get area in cents/acres. Cross-check with AP & Telangana records.</p>
-              <span className="explore-card-tag">GPS-Based</span>
-            </div>
-            <div className="explore-card help" onClick={() => navigate('/help')}>
-              <div className="explore-card-bg" />
-              <HelpCircle size={40} className="explore-card-icon" />
-              <h3 className="explore-card-title">I Need Help</h3>
-              <p className="explore-card-desc">Indian government services directory — tax, passport, legal help, cyber crime and more.</p>
-              <span className="explore-card-tag">14 Categories</span>
-            </div>
           </div>
         </section>
 

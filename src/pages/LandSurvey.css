@@ -39,7 +39,7 @@
 /* Main grid */
 .survey-main-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 380px;
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -56,7 +56,7 @@
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid #334155;
-  height: 420px;
+  height: 500px;
 }
 
 .survey-map {
@@ -263,6 +263,111 @@
 
 .survey-mode-btn:hover:not(.active) {
   color: #94a3b8;
+}
+
+.survey-btn-undo {
+  color: #f59e0b !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+  justify-content: center;
+}
+.survey-btn-undo:hover {
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+
+/* Point markers on map */
+.survey-point-marker {
+  background: none !important;
+  border: none !important;
+}
+.survey-point-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.survey-centroid-marker {
+  background: none !important;
+  border: none !important;
+}
+.survey-centroid-dot {
+  font-size: 24px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+/* Point list panel */
+.survey-point-list {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.survey-point-list-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+.survey-point-list-header svg {
+  color: #3b82f6;
+}
+.survey-point-list-body {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.survey-point-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.survey-point-item:last-child {
+  border-bottom: none;
+}
+.survey-point-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #f1f5f9;
+  flex-shrink: 0;
+}
+.survey-point-coords {
+  flex: 1;
+  color: #94a3b8;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.survey-point-dist {
+  color: #64748b;
+  font-size: 11px;
+  flex-shrink: 0;
 }
 
 .survey-manual-hint {
@@ -579,6 +684,90 @@
   background: rgba(217, 70, 239, 0.2);
 }
 
+.survey-portal-mini.central.isro {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.survey-portal-mini.central.isro:hover {
+  background: rgba(34, 197, 94, 0.2);
+}
+
+/* Collapsible details */
+.survey-details {
+  margin-top: 4px;
+  border-top: 1px solid #334155;
+  padding-top: 8px;
+}
+.survey-details summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #60a5fa;
+  cursor: pointer;
+  padding: 4px 0;
+  list-style: none;
+}
+.survey-details summary::-webkit-details-marker {
+  display: none;
+}
+.survey-details summary svg {
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+.survey-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0 4px;
+}
+.survey-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.survey-detail-row > span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+.survey-detail-row .survey-survey-no-input {
+  display: flex;
+  gap: 6px;
+}
+.survey-detail-row .survey-survey-no-input input {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.survey-detail-row .survey-survey-no-input input:focus {
+  border-color: #3b82f6;
+}
+.survey-detail-row .survey-btn-sm {
+  padding: 5px 10px;
+  font-size: 11px;
+}
+.survey-detail-row .survey-portal-row {
+  display: flex;
+  gap: 6px;
+}
+.survey-detail-row .survey-portal-mini {
+  padding: 5px 10px;
+  font-size: 11px;
+  gap: 4px;
+}
+.survey-btn-sm svg {
+  flex-shrink: 0;
+}
+
 .survey-bhuvan-option {
   margin-bottom: 12px;
   padding: 14px;
@@ -807,9 +996,6 @@
 
 /* Tools section */
 .survey-tools-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
   margin-bottom: 20px;
 }
 

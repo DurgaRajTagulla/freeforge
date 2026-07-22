@@ -1272,3 +1272,18 @@
   .level-btn { padding: 6px 14px; font-size: 12px; }
   .numpad-btn { width: 34px; height: 34px; font-size: 15px; }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .game-start-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .simon-btn:hover:not(:disabled) {
+    transform: none;
+    opacity: 1;
+  }
+  .game-icon-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+  }
+}
