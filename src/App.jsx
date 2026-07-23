@@ -22,7 +22,7 @@ function Loading() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#94a3b8' }}>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 32, marginBottom: 8, animation: 'spin 1s linear infinite' }}>⚡</div>
+        <div style={{ marginBottom: 8 }}><Flame size={32} className="spin" /></div>
         <p>Loading...</p>
       </div>
     </div>

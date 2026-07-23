@@ -351,6 +351,9 @@ a {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
