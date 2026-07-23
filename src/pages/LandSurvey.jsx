@@ -120,6 +120,17 @@ export default function LandSurvey() {
     }
   }, []);
 
+  const removeHistoryEntry = useCallback((id) => {
+    const updated = history.filter(e => e.id !== id);
+    setHistory(updated);
+    localStorage.setItem('survey-history', JSON.stringify(updated));
+  }, [history]);
+
+  const clearAllHistory = useCallback(() => {
+    setHistory([]);
+    localStorage.removeItem('survey-history');
+  }, []);
+
   const saveToHistory = useCallback((areaData, pointCount, center, sNo) => {
     const entry = {
       id: Date.now(), date: new Date().toLocaleString(), ...areaData,
@@ -609,10 +620,18 @@ export default function LandSurvey() {
 
       {history.length > 0 && (
         <div className="survey-history-section">
-          <h3><FileText size={18} /> Survey History</h3>
+          <div className="survey-history-header">
+            <h3><FileText size={18} /> Survey History</h3>
+            <button className="survey-btn survey-btn-sm survey-btn-danger" onClick={clearAllHistory} title="Clear all history">
+              <Trash2 size={14} /> Clear All
+            </button>
+          </div>
           <div className="survey-history-grid">
             {history.map(entry => (
               <div key={entry.id} className="survey-history-card">
+                <button className="survey-history-remove" onClick={() => removeHistoryEntry(entry.id)} title="Remove entry">
+                  <X size={14} />
+                </button>
                 <div className="survey-history-date">{entry.date}</div>
                 <div className="survey-history-area">
                   <span className="survey-history-val">{formatNum(entry.cents)}</span>
