@@ -58,11 +58,14 @@ function AccuracyCircle({ center, accuracy }) {
   );
 }
 
-function MapController({ center, onMapClick }) {
+function MapController({ followPos, onMapClick }) {
   const map = useMap();
+  const prevPos = useRef(null);
   useEffect(() => {
-    if (center) map.setView(center, map.getZoom() < 15 ? 17 : map.getZoom());
-  }, [center, map]);
+    if (!followPos) { prevPos.current = null; return; }
+    if (prevPos.current === null) map.setView(followPos, 18);
+    prevPos.current = followPos;
+  }, [followPos, map]);
   useMapEvents({
     click(e) {
       if (onMapClick) onMapClick(e.latlng);
@@ -150,7 +153,7 @@ export default function LandSurvey() {
           if (prev.length === 0) return [[latitude, longitude]];
           const last = prev[prev.length - 1];
           const dist = Math.sqrt((last[0] - latitude) ** 2 + (last[1] - longitude) ** 2) * 111320;
-          if (dist < 0.5) return prev;
+          if (dist < 3) return prev;
           return [...prev, [latitude, longitude]];
         });
       },
@@ -302,7 +305,7 @@ export default function LandSurvey() {
                 attribution='&copy; <a href="https://openstreetmap.org/copyright">OSM</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <MapController center={null} onMapClick={manualMode ? (latlng) => {
+              <MapController followPos={currentPos} onMapClick={manualMode ? (latlng) => {
                 setPath(prev => [...prev, [latlng.lat, latlng.lng]]);
               } : null} />
               <LocateButton onLocate={(pos) => setMapCenter(pos)} />
