@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Polygon, Marker, Circle, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import { area, length } from '@turf/turf';
+import { jsPDF } from 'jspdf';
 import { MapPin, Navigation, Crosshair, Ruler, LandPlot, Trash2, Download, ExternalLink, Search, Info, AlertCircle, CheckCircle, Compass, ArrowLeft, FileText, LocateFixed, X, Map as MapIcon } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import './LandSurvey.css';
@@ -120,6 +121,7 @@ export default function LandSurvey() {
   const [showStartInfo, setShowStartInfo] = useState(false);
   const [gpsMsg, setGpsMsg] = useState('');
   const [fitKey, setFitKey] = useState(0);
+  const mapRef = useRef(null);
   const pathRef = useRef(path);
   pathRef.current = path;
 
@@ -359,6 +361,144 @@ export default function LandSurvey() {
 
   const perimeterKm = calculatedArea ? (calculatedArea.perimeter / 1000).toFixed(2) : null;
 
+  const handleDownloadImage = async () => {
+    const html2canvas = (await import('html2canvas')).default;
+    const mapEl = mapRef.current;
+    if (!mapEl) return;
+    const mapCanvas = await html2canvas(mapEl, { useCORS: true, scale: 2 });
+    const mapW = mapCanvas.width;
+    const mapH = mapCanvas.height;
+    const infoH = 220;
+    const canvas = document.createElement('canvas');
+    canvas.width = mapW;
+    canvas.height = mapH + infoH;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(mapCanvas, 0, 0);
+    const grad = ctx.createLinearGradient(0, mapH, 0, mapH + infoH);
+    grad.addColorStop(0, '#1e293b');
+    grad.addColorStop(1, '#0f172a');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, mapH, mapW, infoH);
+    ctx.fillStyle = '#22c55e';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText('Land Survey Report', 16, mapH + 28);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '11px sans-serif';
+    ctx.fillText(new Date().toLocaleString(), 16, mapH + 46);
+    const unitLabels = { sqft: 'Sq Ft', sqyd: 'Sq Yd', cents: 'Cents', acres: 'Acres', hectares: 'Hectares', sqm: 'Sq M' };
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '12px sans-serif';
+    const c = calculatedArea;
+    if (c) {
+      let x1 = 16, x2 = mapW / 2 + 8, y = mapH + 72;
+      ['cents', 'acres', 'sqft', 'sqyd', 'hectares', 'sqm'].forEach((u, i) => {
+        const col = i < 3 ? x1 : x2;
+        const row = i % 3;
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(unitLabels[u] + ':', col, y + row * 22);
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillText(formatNum(c[u]), col + 70, y + row * 22);
+      });
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Perimeter:', x1, y + 66);
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillText(c.perimeter.toFixed(1) + ' m', x1 + 70, y + 66);
+    }
+    if (centroid) {
+      const yPos = mapH + 170;
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Coordinates:', 16, yPos);
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillText(centroid[0].toFixed(6) + ', ' + centroid[1].toFixed(6), 16, yPos + 18);
+    }
+    if (locationInfo) {
+      const yPos = mapH + 206;
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Location:', 16, yPos);
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillText([locationInfo.village, locationInfo.mandal, locationInfo.district].filter(Boolean).join(', '), 16, yPos + 18);
+    }
+    const link = document.createElement('a');
+    link.download = `land-survey-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+
+  const handleDownloadPDF = async () => {
+    const html2canvas = (await import('html2canvas')).default;
+    const mapEl = mapRef.current;
+    if (!mapEl) return;
+    const mapCanvas = await html2canvas(mapEl, { useCORS: true, scale: 2 });
+    const imgData = mapCanvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfW = 190;
+    const mapImgH = (mapCanvas.height * pdfW) / mapCanvas.width;
+    pdf.addImage(imgData, 'PNG', 10, 10, pdfW, mapImgH);
+    let y = mapImgH + 20;
+    pdf.setFontSize(14);
+    pdf.setTextColor(34, 197, 94);
+    pdf.text('Land Survey Report', 10, y);
+    y += 6;
+    pdf.setFontSize(8);
+    pdf.setTextColor(148, 163, 184);
+    pdf.text(new Date().toLocaleString(), 10, y);
+    y += 8;
+    const unitLabels = { sqft: 'Sq Ft', sqyd: 'Sq Yd', cents: 'Cents', acres: 'Acres', hectares: 'Hectares', sqm: 'Sq M' };
+    pdf.setFontSize(9);
+    const c = calculatedArea;
+    if (c) {
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Cents:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(formatNum(c.cents), 40, y);
+      y += 5;
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Acres:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(formatNum(c.acres), 40, y);
+      y += 5;
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Sq Ft:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(formatNum(c.sqft), 40, y);
+      y += 5;
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Sq Yd:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(formatNum(c.sqyd), 40, y);
+      y += 5;
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Hectares:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(formatNum(c.hectares), 40, y);
+      y += 5;
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Sq M:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(formatNum(c.sqm), 40, y);
+      y += 5;
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Perimeter:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(c.perimeter.toFixed(1) + ' m', 40, y);
+      y += 8;
+    }
+    if (centroid) {
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Coordinates:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text(centroid[0].toFixed(6) + ', ' + centroid[1].toFixed(6), 10, y + 5);
+      y += 12;
+    }
+    if (locationInfo) {
+      pdf.setTextColor(148, 163, 184);
+      pdf.text('Location:', 10, y);
+      pdf.setTextColor(241, 245, 249);
+      pdf.text([locationInfo.village, locationInfo.mandal, locationInfo.district].filter(Boolean).join(', '), 10, y + 5);
+    }
+    pdf.save(`land-survey-${Date.now()}.pdf`);
+  };
+
   return (
     <div className="survey-page">
       <div className="survey-header">
@@ -381,7 +521,7 @@ export default function LandSurvey() {
 
       <div className="survey-main-grid">
         <div className="survey-map-section">
-          <div className="survey-map-container">
+          <div className="survey-map-container" ref={mapRef}>
             <MapContainer center={mapCenter} zoom={17} className="survey-map" zoomControl={false}>
               <TileLayer
                 attribution='&copy; <a href="https://openstreetmap.org/copyright">OSM</a>'
@@ -580,6 +720,14 @@ export default function LandSurvey() {
                   </div>
                 </div>
               </details>
+              <div className="survey-export-actions">
+                <button className="survey-btn survey-btn-sm survey-btn-export" onClick={handleDownloadImage}>
+                  <Download size={14} /> Download Image
+                </button>
+                <button className="survey-btn survey-btn-sm survey-btn-export" onClick={handleDownloadPDF}>
+                  <FileText size={14} /> Download PDF
+                </button>
+              </div>
             </div>
           ) : (
             <div className="survey-placeholder">
