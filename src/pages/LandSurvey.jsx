@@ -325,18 +325,6 @@ export default function LandSurvey() {
                   <div className="survey-gps-pulse" />
                 </Marker>
               )}
-              {path.map((pos, idx) => (
-                <Marker
-                  key={idx}
-                  position={pos}
-                  icon={L.divIcon({
-                    className: 'survey-point-marker',
-                    html: `<div class="survey-point-dot" style="background:${tracking ? '#f97316' : '#3b82f6'}">${idx + 1}</div>`,
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 12]
-                  })}
-                />
-              ))}
               {path.length >= 2 && (
                 <Polyline
                   positions={path}
@@ -435,32 +423,8 @@ export default function LandSurvey() {
 
         <div className="survey-results-section">
           {path.length > 0 && !calculatedArea && (
-            <div className="survey-point-list">
-              <div className="survey-point-list-header">
-                <MapPin size={16} />
-                <span>Boundary Points ({path.length})</span>
-              </div>
-              <div className="survey-point-list-body">
-                {path.map((pos, idx) => {
-                  const prev = idx > 0 ? path[idx - 1] : null;
-                  const segDist = prev
-                    ? Math.sqrt((prev[0] - pos[0]) ** 2 + (prev[1] - pos[1]) ** 2) * 111320
-                    : 0;
-                  return (
-                    <div key={idx} className="survey-point-item">
-                      <span className="survey-point-num">{idx + 1}</span>
-                      <span className="survey-point-coords">
-                        {pos[0].toFixed(6)}, {pos[1].toFixed(6)}
-                      </span>
-                      {segDist > 0 && (
-                        <span className="survey-point-dist">
-                          {segDist < 1 ? '<1m' : `${Math.round(segDist)}m`}
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="survey-point-badge">
+              <MapPin size={14} /> {path.length} points recorded
             </div>
           )}
           {calculatedArea ? (

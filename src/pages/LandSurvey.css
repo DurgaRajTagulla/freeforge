@@ -276,24 +276,7 @@
   background: rgba(245, 158, 11, 0.1) !important;
 }
 
-/* Point markers on map */
-.survey-point-marker {
-  background: none !important;
-  border: none !important;
-}
-.survey-point-dot {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 800;
-  color: #fff;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
+/* Centroid marker */
 .survey-centroid-marker {
   background: none !important;
   border: none !important;
@@ -304,70 +287,14 @@
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
-/* Point list panel */
-.survey-point-list {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 14px;
-  overflow: hidden;
-}
-.survey-point-list-header {
+/* Point badge */
+.survey-point-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: #0f172a;
-  border-bottom: 1px solid #334155;
+  gap: 6px;
   font-size: 13px;
-  font-weight: 700;
-  color: #f1f5f9;
-}
-.survey-point-list-header svg {
-  color: #3b82f6;
-}
-.survey-point-list-body {
-  max-height: 260px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-.survey-point-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 14px;
-  font-size: 12px;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
-  font-family: 'SF Mono', 'Fira Code', monospace;
-}
-.survey-point-item:last-child {
-  border-bottom: none;
-}
-.survey-point-num {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #334155;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: #f1f5f9;
-  flex-shrink: 0;
-}
-.survey-point-coords {
-  flex: 1;
   color: #94a3b8;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.survey-point-dist {
-  color: #64748b;
-  font-size: 11px;
-  flex-shrink: 0;
+  padding: 8px 0;
 }
 
 .survey-manual-hint {
