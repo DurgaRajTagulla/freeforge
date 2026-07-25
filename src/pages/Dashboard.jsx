@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Shield, Lock, ArrowRight, Check, Wrench, Flame, Gamepad2, FileText,
   Image, Merge, Calculator, Wifi, QrCode, Ruler,
-  Target, Puzzle, Brain, Zap, Code, Hash, X,
+  Target, Puzzle, Brain, Zap, Hash, X,
   Cloud
 } from 'lucide-react';
 import './Dashboard.css';
@@ -16,7 +16,6 @@ function Dashboard() {
     { icon: Calculator, label: 'EMI Calculator', path: '/service/emi-calculator' },
     { icon: QrCode, label: 'QR Generator', path: '/service/qr-code-generator' },
     { icon: Ruler, label: 'Unit Converter', path: '/service/unit-converter' },
-    { icon: Code, label: 'JSON Parser', path: '/service/json-parser' },
     { icon: Cloud, label: 'Weather', path: '/service/weather' },
   ];
 
