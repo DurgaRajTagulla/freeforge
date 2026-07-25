@@ -137,6 +137,28 @@
   box-shadow: 0 8px 30px rgba(5, 150, 105, 0.45);
 }
 
+.cta-button.survey {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(217, 119, 6, 0.3);
+}
+
+.cta-button.survey:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(217, 119, 6, 0.45);
+}
+
+.cta-button.kids {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+}
+
+.cta-button.kids:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
+}
+
 /* Tools Preview Section */
 .tools-preview-section {
   margin-bottom: 60px;

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  Shield, Lock, ArrowRight, Check, Wrench, Flame, Gamepad2, FileText,
+  Shield, Lock, ArrowRight, Check, Flame, FileText,
   Image, Merge, Calculator, Wifi, QrCode, Ruler,
   Target, Puzzle, Brain, Zap, Hash, X,
-  Cloud
+  Cloud, LandPlot, GraduationCap
 } from 'lucide-react';
 import './Dashboard.css';
 
@@ -44,14 +44,14 @@ function Dashboard() {
                 Build Resume
                 <ArrowRight className="cta-icon" />
               </button>
-              <button className="cta-button primary" onClick={() => navigate('/services')}>
-                <Wrench size={20} />
-                Explore Tools
+              <button className="cta-button survey" onClick={() => navigate('/land-survey')}>
+                <LandPlot size={20} />
+                Land Survey
                 <ArrowRight className="cta-icon" />
               </button>
-              <button className="cta-button games" onClick={() => navigate('/games')}>
-                <Gamepad2 size={20} />
-                Play Games
+              <button className="cta-button kids" onClick={() => navigate('/kids')}>
+                <GraduationCap size={20} />
+                Kids Hub
                 <ArrowRight className="cta-icon" />
               </button>
             </div>
