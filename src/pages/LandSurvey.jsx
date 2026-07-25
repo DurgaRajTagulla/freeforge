@@ -117,6 +117,7 @@ export default function LandSurvey() {
   const [geocoding, setGeocoding] = useState(false);
   const [manualMode, setManualMode] = useState(false);
   const [showSurveyGuide, setShowSurveyGuide] = useState(false);
+  const [showStartInfo, setShowStartInfo] = useState(false);
   const [gpsMsg, setGpsMsg] = useState('');
   const [fitKey, setFitKey] = useState(0);
   const pathRef = useRef(path);
@@ -126,6 +127,12 @@ export default function LandSurvey() {
     const saved = localStorage.getItem('survey-history');
     if (saved) {
       try { setHistory(JSON.parse(saved)); } catch {}
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth <= 640) {
+      setShowStartInfo(true);
     }
   }, []);
 
@@ -355,17 +362,21 @@ export default function LandSurvey() {
   return (
     <div className="survey-page">
       <div className="survey-header">
-        <div className="survey-header-top">
-          <div>
-            <h1 className="survey-title">
-              <LandPlot size={28} />
-              Land Survey
-            </h1>
-            <p className="survey-desc">
-              Walk around your land boundary to measure your area for free.
-            </p>
-          </div>
-        </div>
+            <div className="survey-header-top">
+              <div>
+                <h1 className="survey-title">
+                  <LandPlot size={28} />
+                  Land Survey
+                </h1>
+                <p className="survey-desc">
+                  Walk around your land boundary to measure your area for free.
+                </p>
+              </div>
+              <button className="survey-guide-info-btn" onClick={() => setShowStartInfo(true)} title="Guide Info">
+                <Info size={18} />
+                <span>Guide Info</span>
+              </button>
+            </div>
       </div>
 
       <div className="survey-main-grid">
@@ -576,7 +587,7 @@ export default function LandSurvey() {
               <h3>Start a Survey</h3>
               <p>Tap <strong>"Start Survey"</strong> and walk around your land boundary. For small spaces or indoors, switch to <strong>Manual Mode</strong> and click points on the map.</p>
               <div className="survey-tips">
-                <h4>Two ways to survey:</h4>
+                <h4>Guide Info:</h4>
                 <ul>
                   <li><strong>After tapping Start Survey, wait 10-15 seconds for GPS to settle (aim for ±10m accuracy) before walking</strong></li>
                   <li><strong>GPS Mode</strong> — Walk the boundary, phone tracks automatically</li>
@@ -724,6 +735,34 @@ export default function LandSurvey() {
               <span>Tip: If Bhuvan shows "We couldn't find exact match", try the older viewer at <strong>bhuvan-app1.nrsc.gov.in/bhuvan2d</strong></span>
             </div>
             <button className="survey-btn survey-btn-primary survey-guide-gotit" onClick={() => setShowSurveyGuide(false)}>
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showStartInfo && (
+        <div className="survey-guide-overlay" onClick={() => setShowStartInfo(false)}>
+          <div className="survey-guide-modal survey-start-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="survey-guide-close" onClick={() => setShowStartInfo(false)}>
+              <X size={18} />
+            </button>
+            <div className="survey-start-info-content">
+              <Compass size={40} />
+              <h3>Start a Survey</h3>
+              <p>Tap <strong>"Start Survey"</strong> and walk around your land boundary. For small spaces or indoors, switch to <strong>Manual Mode</strong> and click points on the map.</p>
+              <div className="survey-tips">
+                <h4>Guide Info:</h4>
+                <ul>
+                  <li><strong>After tapping Start Survey, wait 10-15 seconds for GPS to settle (aim for ±10m accuracy) before walking</strong></li>
+                  <li><strong>GPS Mode</strong> — Walk the boundary, phone tracks automatically</li>
+                  <li><strong>Manual Mode</strong> — Click points on the map for small rooms</li>
+                  <li>Complete at least 3 points for area calculation</li>
+                  <li>GPS works best outdoors with clear sky view</li>
+                </ul>
+              </div>
+            </div>
+            <button className="survey-btn survey-btn-primary survey-guide-gotit" onClick={() => setShowStartInfo(false)}>
               Got it!
             </button>
           </div>

@@ -337,7 +337,7 @@ const categories = [
     ],
     websites: [
       { name: 'RBI (Reserve Bank of India)', url: 'https://www.rbi.org.in' },
-      { name: 'RBI Banking Ombudsman', url: 'https://cms.rbi.org.in/cms/cmsindex.aspx?pageid=204' },
+      { name: 'RBI Banking Ombudsman', url: 'https://rbi.org.in/Scripts/Complaint.aspx' },
       { name: 'NPCI (UPI/Digital Payments)', url: 'https://www.npci.org.in' },
       { name: 'SEBI (Capital Markets)', url: 'https://www.sebi.gov.in' },
       { name: 'BankBazaar (Compare Rates)', url: 'https://www.bankbazaar.com' },
@@ -565,10 +565,10 @@ const categories = [
     ],
     websites: [
       { name: 'National Consumer Helpline', url: 'https://consumerhelpline.gov.in' },
-      { name: 'e-Daakhil (Online Complaint)', url: 'https://edaakhil.nic.in' },
+      { name: 'e-Daakhil (Online Complaint)', url: 'https://consumerhelpline.gov.in' },
       { name: 'Department of Consumer Affairs', url: 'https://consumeraffairs.nic.in' },
       { name: 'Cyber Crime Portal', url: 'https://cybercrime.gov.in' },
-      { name: 'Consumer VOICE', url: 'https://www.consumervoice.in' }
+      { name: 'Consumer VOICE', url: 'https://www.consumer-voice.org' }
     ]
   },
   {
@@ -622,8 +622,8 @@ const categories = [
       { name: 'Women Helpline (181)', url: 'https://wcd.nic.in' },
       { name: 'National Commission for Women', url: 'https://ncw.nic.in' },
       { name: 'NCRB (Crime Data)', url: 'https://ncrb.gov.in' },
-      { name: 'One Stop Centre Scheme', url: 'https://wcd.nic.in/scheme-one-stop-centre' },
-      { name: 'SHe-Box (Online Complaint)', url: 'https://shebox.nic.in' },
+      { name: 'Ministry of Women & Child Development', url: 'https://wcd.nic.in' },
+      { name: 'SHe-Box (Online Complaint)', url: 'https://shebox.wcd.gov.in' },
       { name: 'Legal Services Authority (Free Aid)', url: 'https://nalsa.nic.in' }
     ]
   },
@@ -729,11 +729,11 @@ const categories = [
       'Use mediation/legal aid for faster resolution'
     ],
     websites: [
-      { name: 'E-Mutation Portal', url: 'https://dilrmp.gov.in' },
+      { name: 'E-Mutation / Land Records', url: 'https://dilrmp.gov.in/dilrmp' },
       { name: 'State RERA Portals', url: 'https://www.rera.in' },
       { name: 'E-Stamping (SHCIL)', url: 'https://www.shcilestamp.com' },
-      { name: 'Land Records Portal', url: 'https://dilrmp.gov.in' },
-      { name: 'Sub-Registrar Lookup', url: 'https://www.indiafilings.com/learn/sub-registrar' },
+      { name: 'Land Records Portal', url: 'https://dilrmp.gov.in/dilrmp' },
+      { name: 'Sub-Registrar Guide', url: 'https://www.indiafilings.com/learn/tag/sub-registrar' },
       { name: 'Legal Services Authority', url: 'https://nalsa.nic.in' }
     ]
   },
@@ -782,10 +782,10 @@ const categories = [
       'Keep all documents and reference numbers safe'
     ],
     websites: [
-      { name: 'e-FIR Portal (varies by state)', url: 'https://efir.npoliceonline.com' },
+      { name: 'e-FIR (NCRB)', url: 'https://ncrb.gov.in/en/e-fir' },
       { name: 'NCRB (Crime Statistics)', url: 'https://ncrb.gov.in' },
       { name: 'National Human Rights Commission', url: 'https://nhrc.nic.in' },
-      { name: 'Police Complaints Authority', url: 'https://www.pca.gov.in' },
+      { name: 'NCRB (Crime Statistics)', url: 'https://ncrb.gov.in' },
       { name: 'Legal Services Authority', url: 'https://nalsa.nic.in' }
     ]
   },
@@ -838,7 +838,7 @@ const categories = [
     websites: [
       { name: 'Childline India (1098)', url: 'https://www.childlineindia.org' },
       { name: 'NCPCR', url: 'https://ncpcr.gov.in' },
-      { name: 'POCSO e-Box', url: 'https://www.poscomebox.nic.in' },
+      { name: 'SHe-Box (Sexual Harassment)', url: 'https://shebox.wcd.gov.in' },
       { name: 'National Commission for Protection of Child Rights', url: 'https://ncpcr.gov.in' },
       { name: 'Bachpan Bachao Andolan', url: 'https://www.bba.org.in' }
     ]
@@ -890,7 +890,7 @@ const categories = [
     ],
     websites: [
       { name: 'Elder Line (14567)', url: 'https://elderline.in' },
-      { name: 'National Council for Older Persons', url: 'https://ncop.nic.in' },
+      { name: 'Social Justice (Senior Citizens)', url: 'https://socialjustice.gov.in' },
       { name: 'Maintenance and Welfare of Parents Act', url: 'https://legislative.gov.in' },
       { name: 'Legal Services Authority', url: 'https://nalsa.nic.in' },
       { name: 'National Portal for Senior Citizens', url: 'https://www.seniorcitizens.in' }

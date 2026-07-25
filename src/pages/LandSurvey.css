@@ -1372,6 +1372,63 @@
   justify-content: center;
 }
 
+.survey-guide-info-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.survey-guide-info-btn:hover {
+  color: #f1f5f9;
+  border-color: #475569;
+  background: #334155;
+}
+
+.survey-start-info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.survey-start-info-content svg {
+  color: #3b82f6;
+  opacity: 0.6;
+}
+
+.survey-start-info-content h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #f1f5f9;
+}
+
+.survey-start-info-content p {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0;
+}
+
+.survey-start-info-content .survey-tips {
+  text-align: left;
+}
+
 @media (max-width: 640px) {
   .survey-guide-modal {
     padding: 18px;
@@ -1440,5 +1497,13 @@
 
   .survey-points {
     margin-left: 0;
+  }
+
+  .survey-placeholder {
+    display: none;
+  }
+
+  .survey-guide-info-btn {
+    display: inline-flex;
   }
 }
