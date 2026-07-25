@@ -62,7 +62,7 @@ export default function TwoCarsGame() {
       ctx.strokeRect(o.x, o.y, OBSTACLE_W, OBSTACLE_H);
     });
 
-    const drawCar = (x, y, color) => {
+    const drawCar = (x, y, color, label) => {
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.roundRect(x, y, CAR_W, CAR_H, 8);
@@ -72,12 +72,23 @@ export default function TwoCarsGame() {
       ctx.fillRect(x + CAR_W - 16, y + 8, 8, 14);
       ctx.fillRect(x + 8, y + CAR_H - 22, 8, 14);
       ctx.fillRect(x + CAR_W - 16, y + CAR_H - 22, 8, 14);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x + CAR_W / 2, y + CAR_H / 2 + 4);
     };
 
     const lx = leftLane.current ? 15 : W / 2 + 15;
     const rx = rightLane.current ? W / 2 - CAR_W - 15 : W - CAR_W - 15;
-    drawCar(lx, CAR_Y, '#3b82f6');
-    drawCar(rx, CAR_Y, '#22c55e');
+    drawCar(lx, CAR_Y, '#3b82f6', 'A/D');
+    drawCar(rx, CAR_Y, '#22c55e', '←/→');
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('A/D', 10, H - 8);
+    ctx.textAlign = 'right';
+    ctx.fillText('←/→', W - 10, H - 8);
 
     if (stateRef.current === 'gameover') {
       ctx.fillStyle = 'rgba(0,0,0,0.6)';
@@ -107,8 +118,6 @@ export default function TwoCarsGame() {
     let hit = false;
     obstacles.current.forEach(o => {
       o.y += speed.current;
-      const sameLeft = o.lane === 0 && leftLane.current;
-      const sameRight = o.lane === 1 && rightLane.current;
       if (o.y + OBSTACLE_H > CAR_Y && o.y < CAR_Y + CAR_H) {
         if (o.lane === 0 && leftLane.current) hit = true;
         if (o.lane === 1 && rightLane.current) hit = true;
@@ -144,19 +153,23 @@ export default function TwoCarsGame() {
   useEffect(() => {
     const h = (e) => {
       if (stateRef.current !== 'playing') return;
-      if (e.key === ' ' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        leftLane.current = !leftLane.current;
-        rightLane.current = !rightLane.current;
-      }
+      if (e.key === 'a' || e.key === 'A') { e.preventDefault(); leftLane.current = true; }
+      if (e.key === 'd' || e.key === 'D') { e.preventDefault(); leftLane.current = false; }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); rightLane.current = true; }
+      if (e.key === 'ArrowRight') { e.preventDefault(); rightLane.current = false; }
     };
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, []);
 
-  const tap = () => {
-    if (stateRef.current === 'playing') {
+  const tap = (e) => {
+    if (stateRef.current !== 'playing') return;
+    const r = canvasRef.current?.getBoundingClientRect();
+    if (!r) return;
+    const cx = e.clientX - r.left;
+    if (cx < W / 2) {
       leftLane.current = !leftLane.current;
+    } else {
       rightLane.current = !rightLane.current;
     }
   };
@@ -178,8 +191,10 @@ export default function TwoCarsGame() {
           <div className="game-info">
             <span style={{ fontSize: 48 }}>🚗</span>
             <h2>Two Cars</h2>
-            <p>Control two cars at once! Tap or press Space/Up to switch lanes.</p>
-            <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Dodge obstacles in both lanes simultaneously</p>
+            <p>Control each car individually! Dodge obstacles in both lanes.</p>
+            <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>
+              Blue car: <strong>A</strong> (left) / <strong>D</strong> (right) &nbsp;|&nbsp; Green car: <strong>←</strong> (left) / <strong>→</strong> (right)
+            </p>
             <button className="game-start-btn" onClick={() => setGameState('playing')}>Start Game</button>
           </div>
         </div>
@@ -202,7 +217,8 @@ export default function TwoCarsGame() {
       </div>
       <div className="game-info" style={{ padding: '10px 20px' }}>
         <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>
-          {gameState === 'playing' ? 'Tap or press Space/Up to switch lanes' : 'Tap/Space to switch both cars at once'}
+          <span style={{ color: '#3b82f6' }}>Blue</span>: A/D &nbsp;|&nbsp; <span style={{ color: '#22c55e' }}>Green</span>: ←/→<br />
+          Tap left/right half of screen to switch each car
         </p>
       </div>
     </div>
