@@ -2,6 +2,8 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper, LandPlot } from 'lucide-react';
 import './App.css';
+import ChatBot from './components/ChatBot';
+import './components/ChatBot.css';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Editor = lazy(() => import('./pages/Editor'));
@@ -143,6 +145,7 @@ function App() {
             </Routes>
           </Suspense>
         </main>
+        <ChatBot />
       </div>
     </Router>
   );
