@@ -58,14 +58,22 @@ function AccuracyCircle({ center, accuracy }) {
   );
 }
 
-function MapController({ followPos, onMapClick }) {
+function MapController({ followPos, fitPath, onMapClick }) {
   const map = useMap();
   const prevPos = useRef(null);
+  const hasFit = useRef(false);
   useEffect(() => {
     if (!followPos) { prevPos.current = null; return; }
     if (prevPos.current === null) map.setView(followPos, 18);
     prevPos.current = followPos;
   }, [followPos, map]);
+  useEffect(() => {
+    if (!fitPath) { hasFit.current = false; return; }
+    if (hasFit.current) return;
+    const bounds = L.latLngBounds(fitPath);
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 20 });
+    hasFit.current = true;
+  }, [fitPath, map]);
   useMapEvents({
     click(e) {
       if (onMapClick) onMapClick(e.latlng);
@@ -316,7 +324,7 @@ export default function LandSurvey() {
                 attribution='&copy; <a href="https://openstreetmap.org/copyright">OSM</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <MapController followPos={currentPos} onMapClick={manualMode ? (latlng) => {
+              <MapController followPos={currentPos} fitPath={!tracking && path.length >= 3 ? path : null} onMapClick={manualMode ? (latlng) => {
                 setPath(prev => [...prev, [latlng.lat, latlng.lng]]);
               } : null} />
               <LocateButton onLocate={(pos) => setMapCenter(pos)} />
