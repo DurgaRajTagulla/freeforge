@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessageCircle, X, Send, Bot } from 'lucide-react';
+import { X, Send, Bot } from 'lucide-react';
 
 const knowledge = [
   { keywords: ['resume', 'builder', 'cv', 'editor', 'create resume'], response: 'Our **Resume Builder** helps you create a professional resume with a drag-and-drop editor. You can format text, add images, and export as PDF.', link: { text: 'Go to Resume Builder →', to: '/editor' } },
@@ -86,7 +86,7 @@ export default function ChatBot() {
   return (
     <>
       <button className={`chatbot-toggle ${open ? 'open' : ''}`} onClick={() => setOpen(!open)} aria-label="Chat">
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
+        {open ? <X size={22} /> : <Bot size={22} />}
       </button>
       {open && (
         <div className="chatbot-panel">
