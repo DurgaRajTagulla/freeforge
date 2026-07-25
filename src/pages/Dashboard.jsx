@@ -39,19 +39,19 @@ function Dashboard() {
               Everything you need, all in one place. Access 24+ free tools, play 14 browser games, explore career guides, learn with kids activities, read multi-language news, find tour guides, and more. No sign-ups, no servers — just your browser.
             </p>
             <div className="hero-actions">
+            <button className="cta-button resume" onClick={() => navigate('/editor')}>
+                <FileText size={20} />
+                Build Resume
+                <ArrowRight className="cta-icon" />
+              </button>
               <button className="cta-button primary" onClick={() => navigate('/services')}>
                 <Wrench size={20} />
-                All Services
+                Explore Tools
                 <ArrowRight className="cta-icon" />
               </button>
               <button className="cta-button games" onClick={() => navigate('/games')}>
                 <Gamepad2 size={20} />
                 Play Games
-                <ArrowRight className="cta-icon" />
-              </button>
-              <button className="cta-button resume" onClick={() => navigate('/editor')}>
-                <FileText size={20} />
-                Build Resume
                 <ArrowRight className="cta-icon" />
               </button>
             </div>
