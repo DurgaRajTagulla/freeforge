@@ -368,6 +368,10 @@ a {
   align-items: center;
   justify-content: center;
   animation: spinReverse 1s linear infinite;
+  position: relative;
+}
+.loading-ring .spin-fix {
+  animation: spin 1s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

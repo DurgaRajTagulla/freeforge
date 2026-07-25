@@ -25,7 +25,7 @@ function Loading() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
       <div className="loading-ring">
-        <Flame size={48} style={{ color: '#f97316', filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.4))' }} />
+        <Flame size={48} className="spin-fix" style={{ color: '#f97316', filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.4))' }} />
       </div>
     </div>
   );
