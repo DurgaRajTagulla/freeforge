@@ -369,9 +369,6 @@ a {
   justify-content: center;
   animation: spinReverse 1s linear infinite;
 }
-.loading-ring .spin {
-  animation: spin 1.2s linear infinite;
-}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

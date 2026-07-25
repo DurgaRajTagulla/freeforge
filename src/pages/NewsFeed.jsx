@@ -212,7 +212,7 @@ export default function NewsFeed() {
       {loading ? (
         <div className="newsfeed-loading">
           <div className="loading-ring">
-            <Flame size={32} className="spin" style={{ color: '#f97316' }} />
+            <Flame size={32} style={{ color: '#f97316' }} />
           </div>
           <span className="newsfeed-loading-text">Fetching latest news...</span>
         </div>
