@@ -5,6 +5,7 @@ import './App.css';
 import ChatBot from './components/ChatBot';
 import './components/ChatBot.css';
 
+
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Editor = lazy(() => import('./pages/Editor'));
 const Games = lazy(() => import('./pages/Games'));
@@ -22,11 +23,8 @@ const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','wor
 
 function Loading() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#94a3b8' }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ marginBottom: 8 }}><Flame size={32} className="spin" /></div>
-        <p>Loading...</p>
-      </div>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+      <Flame size={48} className="spin" style={{ color: '#f97316', filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.4))' }} />
     </div>
   );
 }

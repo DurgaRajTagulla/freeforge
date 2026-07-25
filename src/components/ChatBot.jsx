@@ -17,7 +17,7 @@ const knowledge = [
   { keywords: ['compass'], response: 'Use your device orientation as a **digital compass**. Works on mobile devices with built-in sensors.', link: { text: 'Open Compass →', to: '/service/compass' } },
   { keywords: ['timer', 'countdown', 'stopwatch'], response: 'Set a **Countdown Timer** with alarm or use the **Stopwatch** with lap tracking for precision timing.', link: { text: 'Timers →', to: '/services' } },
   { keywords: ['game', 'games', 'play'], response: 'We have **14 free browser games**: Snake, 2048, Sudoku, Minesweeper, Hangman, Tic-Tac-Toe, Memory Cards, Whack-a-Mole, Simon Says, Spin Wheel, Dice Roller, Coin Toss, Truth or Dare, and Word Search!', link: { text: 'Play Games →', to: '/games' } },
-  { keywords: ['snake'], response: '**Snake Game** — Classic snake with 3 difficulty levels (Easy/Medium/Hard), obstacles, and high scores. Use arrow keys or WASD.', link: { text: 'Play Snake →', to: '/games/snake-game' } },
+  { keywords: ['snake'], response: '**Snake Game** — Classic snake with 3 difficulty levels (Easy/Medium/Hard), obstacles, and high scores.', link: { text: 'Play Snake →', to: '/games/snake-game' } },
   { keywords: ['2048'], response: '**2048** — Slide tiles and merge matching numbers to reach 2048. Has undo support!', link: { text: 'Play 2048 →', to: '/games/game-2048' } },
   { keywords: ['sudoku'], response: '**Sudoku** — Logic puzzle with 3 difficulty levels, hints, and a timer.', link: { text: 'Play Sudoku →', to: '/games/sudoku' } },
   { keywords: ['minesweeper'], response: '**Minesweeper** — Flag all mines without detonating them. 3 difficulty levels with timer.', link: { text: 'Play Minesweeper →', to: '/games/minesweeper' } },
@@ -26,14 +26,14 @@ const knowledge = [
   { keywords: ['memory', 'memory cards'], response: '**Memory Cards** — Flip cards and find matching pairs across 3 grid sizes.', link: { text: 'Play Memory →', to: '/games/memory-cards' } },
   { keywords: ['whack', 'mole'], response: '**Whack-a-Mole** — Tap moles as they pop up. 30 seconds to get the highest score!', link: { text: 'Play Whack-a-Mole →', to: '/games/whack-a-mole' } },
   { keywords: ['simon', 'simon says'], response: '**Simon Says** — Remember and repeat increasingly long color sequences.', link: { text: 'Play Simon Says →', to: '/games/simon-says' } },
-  { keywords: ['spin', 'wheel', 'spin wheel'], response: '**Spin Wheel** — Create a custom spin wheel with your own items. Great for decision-making!', link: { text: 'Spin Wheel →', to: '/games/spin-wheel' } },
+  { keywords: ['spin', 'wheel', 'spin wheel'], response: '**Spin Wheel** — Create a custom spin wheel with your own items.', link: { text: 'Spin Wheel →', to: '/games/spin-wheel' } },
   { keywords: ['dice', 'roller'], response: '**Dice Roller** — Roll 1-6 dice at once with a history log of all rolls.', link: { text: 'Dice Roller →', to: '/games/dice-roller' } },
   { keywords: ['coin', 'coin toss'], response: '**Coin Toss** — Heads or tails with streak tracking and flip history.', link: { text: 'Coin Toss →', to: '/games/coin-toss' } },
   { keywords: ['truth', 'dare'], response: '**Truth or Dare** — Party game with random challenges. Add your own truths and dares!', link: { text: 'Truth or Dare →', to: '/games/truth-or-dare' } },
   { keywords: ['word search'], response: '**Word Search** — Find hidden words in a letter grid. Words can be horizontal, vertical, or diagonal.', link: { text: 'Word Search →', to: '/games/word-search' } },
   { keywords: ['kids', 'kids hub', 'children', 'activity', 'learning'], response: '**Kids Hub** has fun learning activities: math games, drawing canvas, alphabet match, shape matching, and quizzes for children.', link: { text: 'Explore Kids Hub →', to: '/kids' } },
   { keywords: ['career', 'career guide', 'job', 'guidance'], response: '**Career Guide** provides career guidance, job search tips, and professional development resources.', link: { text: 'Career Guide →', to: '/career-guide' } },
-  { keywords: ['news', 'news feed'], response: '**News Feed** brings you multi-language news from various sources. Read articles in your preferred language.', link: { text: 'News Feed →', to: '/news' } },
+  { keywords: ['news', 'news feed'], response: '**News Feed** brings you multi-language news from various sources.', link: { text: 'News Feed →', to: '/news' } },
   { keywords: ['tour', 'tour guide', 'travel'], response: '**Tour Guide** helps you find travel guides and explore destinations.', link: { text: 'Tour Guide →', to: '/tour-guide' } },
   { keywords: ['survey', 'land survey', 'land', 'gps'], response: '**Land Survey** measures land area using GPS. Walk the boundary to calculate area in cents/acres/sqft. Supports AP and Telangana cross-check with Meebhoomi and Dharani portals.', link: { text: 'Land Survey →', to: '/land-survey' } },
   { keywords: ['help', 'need help', 'support'], response: 'Visit the **I Need Help** page for FAQs, troubleshooting tips, and support information.', link: { text: 'Help Page →', to: '/help' } },
@@ -44,7 +44,7 @@ const knowledge = [
   { keywords: ['thank', 'thanks'], response: 'You\'re welcome! 😊 Is there anything else you\'d like to know?' },
 ];
 
-function getAnswer(query) {
+function getLocalAnswer(query) {
   const q = query.toLowerCase();
   let best = null, bestScore = 0;
   for (const item of knowledge) {
@@ -54,7 +54,7 @@ function getAnswer(query) {
     }
     if (score > bestScore) { bestScore = score; best = item; }
   }
-  return bestScore > 0 ? best : { response: 'I\'m not sure about that. Try asking about specific tools, games, or features! You can say things like "show me games", "what tools do you have", "resume builder", etc.', link: null };
+  return bestScore > 0 ? best : null;
 }
 
 const suggestions = ['What tools do you have?', 'Show me games', 'Tell me about FreeForge', 'Resume builder', 'Image tools', 'Land Survey'];
@@ -75,12 +75,12 @@ export default function ChatBot() {
     const q = text.trim();
     if (!q) return;
     setShowSuggestions(false);
-    setMessages(prev => [...prev, { role: 'user', text: q }]);
-    const result = getAnswer(q);
-    setTimeout(() => {
-      setMessages(prev => [...prev, { role: 'bot', text: result.response, link: result.link }]);
-    }, 300);
     setInput('');
+    setMessages(prev => [...prev, { role: 'user', text: q }]);
+    const match = getLocalAnswer(q);
+    const reply = match ? match.response : 'Sorry, I don\'t have info on that. Try asking about **tools**, **games**, **Resume Builder**, or browse the site manually.';
+    const link = match?.link || null;
+    setTimeout(() => setMessages(prev => [...prev, { role: 'bot', text: reply, link }]), 200);
   };
 
   return (
