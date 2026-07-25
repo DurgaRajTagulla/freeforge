@@ -58,22 +58,22 @@ function AccuracyCircle({ center, accuracy }) {
   );
 }
 
-function MapController({ followPos, fitPath, onMapClick }) {
+function MapController({ followPos, fitPath, fitKey, onMapClick }) {
   const map = useMap();
   const prevPos = useRef(null);
-  const hasFit = useRef(false);
+  const prevFitKey = useRef(null);
   useEffect(() => {
     if (!followPos) { prevPos.current = null; return; }
     if (prevPos.current === null) map.setView(followPos, 18);
     prevPos.current = followPos;
   }, [followPos, map]);
   useEffect(() => {
-    if (!fitPath) { hasFit.current = false; return; }
-    if (hasFit.current) return;
+    if (!fitPath) { prevFitKey.current = null; return; }
+    if (prevFitKey.current === fitKey) return;
     const bounds = L.latLngBounds(fitPath);
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 20 });
-    hasFit.current = true;
-  }, [fitPath, map]);
+    prevFitKey.current = fitKey;
+  }, [fitPath, fitKey, map]);
   useMapEvents({
     click(e) {
       if (onMapClick) onMapClick(e.latlng);
@@ -118,6 +118,7 @@ export default function LandSurvey() {
   const [manualMode, setManualMode] = useState(false);
   const [showSurveyGuide, setShowSurveyGuide] = useState(false);
   const [gpsMsg, setGpsMsg] = useState('');
+  const [fitKey, setFitKey] = useState(0);
   const pathRef = useRef(path);
   pathRef.current = path;
 
@@ -139,10 +140,10 @@ export default function LandSurvey() {
     localStorage.removeItem('survey-history');
   }, []);
 
-  const saveToHistory = useCallback((areaData, pointCount, center, sNo) => {
+  const saveToHistory = useCallback((areaData, coords, center, sNo) => {
     const entry = {
       id: Date.now(), date: new Date().toLocaleString(), ...areaData,
-      points: pointCount, centroid: center, surveyNo: sNo || ''
+      points: coords.length, pathData: coords, centroid: center, surveyNo: sNo || ''
     };
     const updated = [entry, ...history].slice(0, 20);
     setHistory(updated);
@@ -159,6 +160,10 @@ export default function LandSurvey() {
     setGpsMsg('Acquiring GPS signal...');
     setGpsStatus('acquiring');
 
+    let firstPointSet = false;
+    let lastPointTime = 0;
+    const trackStartTime = Date.now();
+
     const id = navigator.geolocation.watchPosition(
       (pos) => {
         const { latitude, longitude, accuracy: acc } = pos.coords;
@@ -166,15 +171,33 @@ export default function LandSurvey() {
         setCurrentPos([latitude, longitude]);
         setMapCenter([latitude, longitude]);
         setGpsStatus('tracking');
-        const msg = acc > 30 ? 'Low accuracy indoors — keep walking' : '';
-        setGpsMsg(msg);
-        setPath(prev => {
-          if (prev.length === 0) return [[latitude, longitude]];
-          const last = prev[prev.length - 1];
-          const dist = Math.sqrt((last[0] - latitude) ** 2 + (last[1] - longitude) ** 2) * 111320;
-          if (dist < 3) return prev;
-          return [...prev, [latitude, longitude]];
-        });
+        const elapsed = Date.now() - trackStartTime;
+        if (!firstPointSet) {
+          if (elapsed < 8000 || acc > 15) {
+            if (elapsed > 15000) {
+              firstPointSet = true;
+              lastPointTime = Date.now();
+              setGpsMsg('GPS ready (low accuracy — results may vary)');
+              setPath(prev => [...prev, [latitude, longitude]]);
+              return;
+            }
+            if (acc > 30) setGpsMsg(`GPS settling... (${Math.round(acc)}m accuracy)`);
+            else setGpsMsg(`Wait for GPS to settle — current accuracy ±${Math.round(acc)}m`);
+            return;
+          }
+          firstPointSet = true;
+          lastPointTime = Date.now();
+          setGpsMsg('GPS ready — start walking');
+          setPath(prev => [...prev, [latitude, longitude]]);
+          return;
+        }
+        const now = Date.now();
+        if (now - lastPointTime < 3000) return;
+        const last = pathRef.current[pathRef.current.length - 1];
+        const dist = Math.sqrt((last[0] - latitude) ** 2 + (last[1] - longitude) ** 2) * 111320;
+        if (dist < 3) return;
+        lastPointTime = now;
+        setPath(prev => [...prev, [latitude, longitude]]);
       },
       (err) => {
         setGpsStatus('error');
@@ -213,7 +236,7 @@ export default function LandSurvey() {
       const center = [avgLat, avgLng];
       setCentroid(center);
       reverseGeocode(avgLat, avgLng);
-      saveToHistory(converted, path.length, center, surveyNo);
+      saveToHistory(converted, path, center, surveyNo);
     } else {
       setGpsMsg('Walk at least 3 corners of your land to calculate area.');
     }
@@ -256,6 +279,35 @@ export default function LandSurvey() {
     setCurrentPos(null);
     setGpsStatus('idle');
     setGpsMsg('');
+  }, [watchId]);
+
+  const loadSurvey = useCallback((entry) => {
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      setWatchId(null);
+    }
+    setTracking(false);
+    setCurrentPos(null);
+    setGpsStatus('idle');
+    setGpsMsg('');
+    if (entry.pathData && entry.pathData.length > 0) {
+      setPath(entry.pathData);
+      setCentroid(entry.centroid || null);
+      if (entry.centroid) setMapCenter(entry.centroid);
+      setFitKey(k => k + 1);
+      setCalculatedArea({
+        sqft: entry.sqft, sqyd: entry.sqyd, cents: entry.cents,
+        acres: entry.acres, hectares: entry.hectares, sqm: entry.sqm,
+        perimeter: entry.perimeter
+      });
+    } else if (entry.centroid) {
+      setPath([]);
+      setCentroid(entry.centroid);
+      setMapCenter(entry.centroid);
+      setCalculatedArea(null);
+      setFitKey(k => k + 1);
+      setGpsMsg('Path data not available for this entry');
+    }
   }, [watchId]);
 
   const handleStartStop = () => {
@@ -310,7 +362,7 @@ export default function LandSurvey() {
               Land Survey
             </h1>
             <p className="survey-desc">
-              Walk around your land boundary to measure area. Supports <strong>AP</strong> &amp; <strong>Telangana</strong> cross-check.
+              Walk around your land boundary to measure your area for free.
             </p>
           </div>
         </div>
@@ -324,7 +376,7 @@ export default function LandSurvey() {
                 attribution='&copy; <a href="https://openstreetmap.org/copyright">OSM</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <MapController followPos={currentPos} fitPath={!tracking && path.length >= 3 ? path : null} onMapClick={manualMode ? (latlng) => {
+              <MapController followPos={currentPos} fitPath={!tracking && path.length >= 3 ? path : null} fitKey={fitKey} onMapClick={manualMode ? (latlng) => {
                 setPath(prev => [...prev, [latlng.lat, latlng.lng]]);
               } : null} />
               <LocateButton onLocate={(pos) => setMapCenter(pos)} />
@@ -526,6 +578,7 @@ export default function LandSurvey() {
               <div className="survey-tips">
                 <h4>Two ways to survey:</h4>
                 <ul>
+                  <li><strong>After tapping Start Survey, wait 10-15 seconds for GPS to settle (aim for ±10m accuracy) before walking</strong></li>
                   <li><strong>GPS Mode</strong> — Walk the boundary, phone tracks automatically</li>
                   <li><strong>Manual Mode</strong> — Click points on the map for small rooms</li>
                   <li>Complete at least 3 points for area calculation</li>
@@ -600,7 +653,7 @@ export default function LandSurvey() {
           </div>
           <div className="survey-history-grid">
             {history.map(entry => (
-              <div key={entry.id} className="survey-history-card">
+              <div key={entry.id} className="survey-history-card" onClick={() => loadSurvey(entry)}>
                 <button className="survey-history-remove" onClick={() => removeHistoryEntry(entry.id)} title="Remove entry">
                   <X size={14} />
                 </button>
@@ -611,6 +664,7 @@ export default function LandSurvey() {
                 </div>
                 <div className="survey-history-meta">
                   {entry.acres} acres &middot; {entry.points} points
+                  {entry.pathData ? <span className="survey-history-badge">Map</span> : <span className="survey-history-badge old">No map</span>}
                 </div>
                 {entry.surveyNo && <div className="survey-history-survey-no">Survey #: {entry.surveyNo}</div>}
                 {entry.centroid && (

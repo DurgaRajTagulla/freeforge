@@ -41,15 +41,15 @@ function Dashboard() {
             <div className="hero-actions">
               <button className="cta-button primary" onClick={() => navigate('/services')}>
                 <Wrench size={20} />
-                Browse All Services
+                All Services
                 <ArrowRight className="cta-icon" />
               </button>
-              <button className="cta-button outline" onClick={() => navigate('/games')}>
+              <button className="cta-button games" onClick={() => navigate('/games')}>
                 <Gamepad2 size={20} />
-                Play Free Games
+                Play Games
                 <ArrowRight className="cta-icon" />
               </button>
-              <button className="cta-button outline" onClick={() => navigate('/editor')}>
+              <button className="cta-button resume" onClick={() => navigate('/editor')}>
                 <FileText size={20} />
                 Build Resume
                 <ArrowRight className="cta-icon" />
