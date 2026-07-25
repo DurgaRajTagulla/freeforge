@@ -1,9 +1,18 @@
 import { useNavigate } from 'react-router-dom';
-import { Zap, Brain, Puzzle, Hash, Sparkles } from 'lucide-react';
+import { Zap, Brain, Puzzle, Hash, Sparkles, Swords } from 'lucide-react';
 import '../pages/games/Games.css';
 import '../pages/services/Services.css';
 
 const categories = [
+  {
+    name: 'Action Games', icon: Swords, iconColor: '#ef4444',
+    games: [
+      { id: 'two-cars', icon: '🚗', desc: 'Control two cars, dodge obstacles in both lanes' },
+      { id: 'hill-climb', icon: '🏎️', desc: 'Drive over hilly terrain, go the distance' },
+      { id: 'gun-shooting', icon: '🎯', desc: 'Shoot moving targets against the clock' },
+      { id: 'arrow-game', icon: '🏹', desc: 'Aim, charge and shoot arrows at targets' },
+    ],
+  },
   {
     name: 'Fun Games', icon: Zap, iconColor: '#22c55e',
     games: [
