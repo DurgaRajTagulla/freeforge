@@ -354,6 +354,24 @@ a {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+@keyframes spinReverse {
+  to { transform: rotate(-360deg); }
+}
+
+.loading-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(249, 115, 22, 0.15);
+  border-top-color: #f97316;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spinReverse 1s linear infinite;
+}
+.loading-ring .spin {
+  animation: spin 1.2s linear infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

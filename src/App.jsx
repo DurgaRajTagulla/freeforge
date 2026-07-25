@@ -24,7 +24,9 @@ const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','wor
 function Loading() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-      <Flame size={48} className="spin" style={{ color: '#f97316', filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.4))' }} />
+      <div className="loading-ring">
+        <Flame size={48} className="spin" style={{ color: '#f97316', filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.4))' }} />
+      </div>
     </div>
   );
 }
