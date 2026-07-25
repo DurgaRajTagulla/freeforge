@@ -56,29 +56,29 @@ function Navbar() {
         <Wrench size={16} />
         Tools
       </Link>
+      <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
+        <GraduationCap size={16} />
+        Kids Hub
+      </Link>
       <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`} onClick={closeMenu}>
         <Gamepad2 size={16} />
         Games
-      </Link>
-      <Link to="/career-guide" className={`nav-link ${location.pathname === '/career-guide' ? 'active' : ''}`} onClick={closeMenu}>
-        <Briefcase size={16} />
-        Career Guide
-      </Link>
-      <Link to="/help" className={`nav-link ${location.pathname === '/help' ? 'active' : ''}`} onClick={closeMenu}>
-        <HelpCircle size={16} />
-        I Need Help
-      </Link>
-      <Link to="/tour-guide" className={`nav-link ${location.pathname === '/tour-guide' ? 'active' : ''}`} onClick={closeMenu}>
-        <Map size={16} />
-        Tour Guide
       </Link>
       <Link to="/land-survey" className={`nav-link ${location.pathname === '/land-survey' ? 'active' : ''}`} onClick={closeMenu}>
         <LandPlot size={16} />
         Land Survey
       </Link>
-      <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
-        <GraduationCap size={16} />
-        Kids Hub
+      <Link to="/career-guide" className={`nav-link ${location.pathname === '/career-guide' ? 'active' : ''}`} onClick={closeMenu}>
+        <Briefcase size={16} />
+        Career Guide
+      </Link>
+      <Link to="/tour-guide" className={`nav-link ${location.pathname === '/tour-guide' ? 'active' : ''}`} onClick={closeMenu}>
+        <Map size={16} />
+        Tour Guide
+      </Link>
+      <Link to="/help" className={`nav-link ${location.pathname === '/help' ? 'active' : ''}`} onClick={closeMenu}>
+        <HelpCircle size={16} />
+        I Need Help
       </Link>
       <Link to="/news" className={`nav-link ${location.pathname === '/news' ? 'active' : ''}`} onClick={closeMenu}>
         <Newspaper size={16} />
