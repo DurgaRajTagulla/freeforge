@@ -65,18 +65,20 @@ export default function HillClimbGame() {
       ctx.fill();
     }
 
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
-
     ctx.strokeStyle = '#22c55e';
     ctx.lineWidth = 3;
     ctx.beginPath();
+    let minY = H;
     for (let x = 0; x < W; x++) {
       const gx = x + terrainOff.current;
       const gy = getGroundY(gx);
+      if (gy < minY) minY = gy;
       x === 0 ? ctx.moveTo(x, gy) : ctx.lineTo(x, gy);
     }
     ctx.stroke();
+
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, minY, W, H - minY);
 
     ctx.fillStyle = '#22c55e';
     ctx.globalAlpha = 0.3;
@@ -164,10 +166,7 @@ export default function HillClimbGame() {
       return;
     }
 
-    const gx = carX.current + terrainOff.current;
-    const gyd = getGroundY(Math.floor(gx));
-    const gyu = getGroundY(Math.ceil(gx));
-    if (Math.abs(gy - carY.current - CAR_H / 2) > 30) {
+    if (Math.abs(gy - carY.current - CAR_H / 2) > 50) {
       stateRef.current = 'gameover';
       setGameState('gameover');
       saveHighScore(Math.round(scoreVal.current));
@@ -186,7 +185,7 @@ export default function HillClimbGame() {
     if (gameState !== 'playing') return;
     stateRef.current = 'playing';
     carX.current = 80;
-    carY.current = GROUND_Y - 50;
+    carY.current = getGroundY(80) - CAR_H / 2;
     carVx.current = 0;
     carVy.current = 0;
     terrainOff.current = 0;
@@ -195,7 +194,7 @@ export default function HillClimbGame() {
     setScore(0);
     animRef.current = requestAnimationFrame(tick);
     return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
-  }, [gameState, tick]);
+  }, [gameState, tick, getGroundY]);
 
   useEffect(() => {
     const down = (e) => {
