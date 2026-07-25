@@ -20,10 +20,6 @@ import SpinWheelGame from '../games/SpinWheelGame';
 import DiceRollerGame from '../games/DiceRollerGame';
 import CoinTossGame from '../games/CoinTossGame';
 import TruthDareGame from '../games/TruthDareGame';
-import TwoCarsGame from '../games/TwoCarsGame';
-import HillClimbGame from '../games/HillClimbGame';
-import GunShootingGame from '../games/GunShootingGame';
-import ArrowGame from '../games/ArrowGame';
 
 import CountdownTimer from '../tools/CountdownTimer';
 import StopwatchTool from '../tools/StopwatchTool';
@@ -72,10 +68,6 @@ const tools = {
   'dice-roller': { title: 'Dice Roller', desc: 'Roll 1-6 dice with history', category: 'game', accepts: null, multiple: false, howToPlay: ['Select how many dice to roll (1-6)', 'Click Roll to roll all dice', 'View the total and roll history below', 'Track your cumulative score across rolls'] },
   'coin-toss': { title: 'Coin Toss', desc: 'Heads or tails with streak stats', category: 'game', accepts: null, multiple: false, howToPlay: ['Click the coin or press Space to flip', 'Choose Heads or Tails before flipping', 'Track your streak of consecutive correct guesses', 'View flip history and streak stats'] },
   'truth-or-dare': { title: 'Truth or Dare', desc: 'Truth or Dare challenges for groups', category: 'game', accepts: null, multiple: false, howToPlay: ['Choose Truth for a question or Dare for a challenge', 'Click the button to get a random prompt', 'Add custom truths and dares of your own', 'Great for parties and group gatherings'] },
-  'two-cars': { title: 'Two Cars', desc: 'Control two cars at once, dodge obstacles in both lanes', category: 'game', accepts: null, multiple: false, howToPlay: ['Tap or press Space/Up to switch both cars to opposite lanes', 'Dodge obstacles in both lanes simultaneously', 'Score increases the longer you survive', 'Speed increases as your score grows'] },
-  'hill-climb': { title: 'Hill Climb', desc: 'Drive over hilly terrain and go the distance', category: 'game', accepts: null, multiple: false, howToPlay: ['Press Right Arrow to accelerate', 'Press Left Arrow to brake', 'Drive over hills without flipping', 'Don\'t run out of fuel!'] },
-  'gun-shooting': { title: 'Gun Shooting', desc: 'Shoot moving targets against the clock', category: 'game', accepts: null, multiple: false, howToPlay: ['Move your mouse to aim', 'Click to shoot the targets', 'Each target hit scores a point', 'You have 30 seconds — be quick!'] },
-  'arrow-game': { title: 'Arrow Game', desc: 'Aim, charge and shoot arrows at targets', category: 'game', accepts: null, multiple: false, howToPlay: ['Move mouse to adjust aim angle', 'Hold click to charge power', 'Release to shoot the arrow', 'Watch the wind — it affects trajectory'] },
 
   'countdown-timer': { title: 'Countdown Timer', desc: 'Set a countdown alarm', category: 'utility', accepts: null, multiple: false },
   'stopwatch': { title: 'Stopwatch', desc: 'Precision stopwatch with laps', category: 'utility', accepts: null, multiple: false },
@@ -1406,18 +1398,6 @@ function ServicePage() {
 
         {/* --- Truth or Dare --- */}
         {toolId === 'truth-or-dare' && <TruthDareGame />}
-
-        {/* --- Two Cars --- */}
-        {toolId === 'two-cars' && <TwoCarsGame />}
-
-        {/* --- Hill Climb --- */}
-        {toolId === 'hill-climb' && <HillClimbGame />}
-
-        {/* --- Gun Shooting --- */}
-        {toolId === 'gun-shooting' && <GunShootingGame />}
-
-        {/* --- Arrow Game --- */}
-        {toolId === 'arrow-game' && <ArrowGame />}
 
         {/* --- Countdown Timer --- */}
         {toolId === 'countdown-timer' && <CountdownTimer />}
