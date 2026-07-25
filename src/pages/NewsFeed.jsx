@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Newspaper, RefreshCw, Clock, ExternalLink, AlertCircle, Rss, X, Loader } from 'lucide-react';
+import { Newspaper, RefreshCw, Clock, ExternalLink, AlertCircle, Rss, X, Loader, Flame } from 'lucide-react';
 import './NewsFeed.css';
 
 const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
@@ -211,7 +211,9 @@ export default function NewsFeed() {
 
       {loading ? (
         <div className="newsfeed-loading">
-          <div className="newsfeed-spinner"></div>
+          <div className="loading-ring">
+            <Flame size={32} className="spin" style={{ color: '#f97316' }} />
+          </div>
           <span className="newsfeed-loading-text">Fetching latest news...</span>
         </div>
       ) : error ? (
