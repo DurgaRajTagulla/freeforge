@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
-import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper, LandPlot } from 'lucide-react';
+import { Flame, Menu, X, FileText, Wrench, Gamepad2, Briefcase, HelpCircle, Map, GraduationCap, Newspaper, LandPlot, BookOpen } from 'lucide-react';
 import './App.css';
 import ChatBot from './components/ChatBot';
 import './components/ChatBot.css';
@@ -18,6 +18,18 @@ const CareerGuide = lazy(() => import('./pages/CareerGuide'));
 const NewsFeed = lazy(() => import('./pages/NewsFeed'));
 const TourGuide = lazy(() => import('./pages/TourGuide'));
 const LandSurvey = lazy(() => import('./pages/LandSurvey'));
+const FormulaHub = lazy(() => import('./pages/FormulaHub'));
+const PeriodicTable = lazy(() => import('./pages/PeriodicTable'));
+const StudentsHub = lazy(() => import('./pages/StudentsHub'));
+const GraphPlotter = lazy(() => import('./pages/GraphPlotter'));
+const LogicGateSimulator = lazy(() => import('./pages/LogicGateSimulator'));
+const SFDBMDGenerator = lazy(() => import('./pages/SFDBMDGenerator'));
+const ECEHub = lazy(() => import('./pages/ECEHub'));
+const ResistorColorCode = lazy(() => import('./pages/ResistorColorCode'));
+const Timer555 = lazy(() => import('./pages/Timer555'));
+const SignalPlotter = lazy(() => import('./pages/SignalPlotter'));
+const OpAmpDesigner = lazy(() => import('./pages/OpAmpDesigner'));
+const FilterDesignTool = lazy(() => import('./pages/FilterDesignTool'));
 
 const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare'];
 
@@ -61,6 +73,10 @@ function Navbar() {
       <Link to="/kids" className={`nav-link ${location.pathname === '/kids' ? 'active' : ''}`} onClick={closeMenu}>
         <GraduationCap size={16} />
         Kids Hub
+      </Link>
+      <Link to="/students-hub" className={`nav-link ${location.pathname === '/students-hub' ? 'active' : ''}`} onClick={closeMenu}>
+        <BookOpen size={16} />
+        Students Hub
       </Link>
       <Link to="/games" className={`nav-link ${location.pathname === '/games' || isGameService ? 'active' : ''}`} onClick={closeMenu}>
         <Gamepad2 size={16} />
@@ -131,6 +147,18 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/editor" element={<Editor />} />
+              <Route path="/formula-hub" element={<FormulaHub />} />
+              <Route path="/periodic-table" element={<PeriodicTable />} />
+              <Route path="/students-hub" element={<StudentsHub />} />
+              <Route path="/graph-plotter" element={<GraphPlotter />} />
+              <Route path="/logic-gate-simulator" element={<LogicGateSimulator />} />
+              <Route path="/sfd-bmd-generator" element={<SFDBMDGenerator />} />
+              <Route path="/ece-hub" element={<ECEHub />} />
+              <Route path="/resistor-color-code" element={<ResistorColorCode />} />
+              <Route path="/timer-555" element={<Timer555 />} />
+              <Route path="/signal-plotter" element={<SignalPlotter />} />
+              <Route path="/op-amp-designer" element={<OpAmpDesigner />} />
+              <Route path="/filter-design-tool" element={<FilterDesignTool />} />
               <Route path="/games" element={<Games />} />
               <Route path="/games/:toolId" element={<ServicePage />} />
               <Route path="/services" element={<Services />} />

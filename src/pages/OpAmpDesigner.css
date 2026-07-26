@@ -1,0 +1,57 @@
+.opamp-page { min-height: 100vh; background: linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#1a1a2e 100%); }
+.opamp-header { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: linear-gradient(135deg,rgba(59,130,246,0.08) 0%,rgba(96,165,250,0.08) 100%); border-bottom: 1px solid #1e293b; }
+.opamp-back { background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #94a3b8; padding: 8px; cursor: pointer; display: flex; transition: all 0.15s; }
+.opamp-back:hover { color: #f1f5f9; border-color: #475569; }
+.opamp-title { font-size: 20px; font-weight: 700; color: #f1f5f9; margin: 0; }
+.opamp-body { max-width: 680px; margin: 0 auto; padding: 24px 20px 40px; display: flex; flex-direction: column; gap: 20px; }
+.opamp-config-tabs { display: flex; gap: 6px; }
+.opamp-config { flex: 1; padding: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.opamp-config.active { border-color: #3b82f6; color: #3b82f6; background: rgba(59,130,246,0.08); }
+.opamp-config:hover { border-color: #475569; color: #e2e8f0; }
+.opamp-diagram { display: flex; justify-content: center; }
+.opamp-svg { width: 100%; max-width: 460px; height: auto; }
+.opamp-fields { display: flex; gap: 10px; flex-wrap: wrap; }
+.opamp-field { flex: 1; min-width: 100px; }
+.opamp-field label { display: block; font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 3px; }
+.opamp-input { width: 100%; padding: 8px 10px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; font-size: 13px; outline: none; font-family: inherit; box-sizing: border-box; }
+.opamp-input:focus { border-color: #3b82f6; }
+
+.opamp-supply-section { background: #1a1a2e; border: 1px solid #334155; border-radius: 10px; padding: 14px; }
+.opamp-supply-title { font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.opamp-supply-fields { display: flex; gap: 10px; }
+
+.opamp-tol-section { }
+.opamp-tol-row { display: flex; align-items: center; gap: 10px; }
+.opamp-tol-label { font-size: 11px; color: #64748b; font-weight: 600; min-width: 110px; }
+.opamp-tol-slider { flex: 1; accent-color: #3b82f6; }
+.opamp-tol-val { font-size: 12px; color: #3b82f6; font-weight: 700; min-width: 36px; }
+
+.opamp-results { display: flex; gap: 10px; }
+.opamp-res-card { flex: 1; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px; text-align: center; position: relative; }
+.opamp-res-card span { display: block; font-size: 10px; color: #64748b; margin-bottom: 4px; }
+.opamp-res-card strong { font-size: 18px; color: #3b82f6; }
+.opamp-res-card strong.sat-warn { color: #ef4444; }
+.opamp-tol-range { display: block; font-size: 9px; color: #94a3b8; margin-top: 4px; font-family: monospace; }
+.opamp-sat-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; color: #ef4444; background: rgba(239,68,68,0.1); padding: 2px 8px; border-radius: 4px; margin-top: 4px; }
+
+.opamp-current-section { background: #1a1a2e; border: 1px solid #334155; border-radius: 10px; padding: 14px; }
+.opamp-curr-title { font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.opamp-curr-grid { display: flex; gap: 10px; margin-bottom: 8px; }
+.opamp-curr-card { flex: 1; background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 10px; text-align: center; }
+.opamp-curr-card span { display: block; font-size: 9px; color: #64748b; }
+.opamp-curr-card strong { font-size: 13px; color: #22c55e; font-family: monospace; }
+.opamp-curr-dir { font-size: 8px !important; color: #475569 !important; font-style: italic; margin-top: 2px; }
+.opamp-curr-note { font-size: 10px; color: #64748b; line-height: 1.5; padding: 8px; background: #0f172a; border-radius: 6px; }
+
+.opamp-freq-section { }
+.opamp-freq-toggle { padding: 7px 14px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #3b82f6; font-size: 11px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.opamp-freq-toggle:hover { border-color: #3b82f6; background: rgba(59,130,246,0.08); }
+.opamp-freq-panel { margin-top: 10px; border: 1px solid #334155; border-radius: 8px; overflow: hidden; }
+.opamp-freq-plot { width: 100%; height: auto; display: block; }
+.opamp-freq-info { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 12px; background: #1a1a2e; border-top: 1px solid #334155; font-size: 10px; color: #64748b; }
+.opamp-freq-info strong { color: #e2e8f0; }
+
+@media (max-width: 640px) {
+  .opamp-body { padding: 16px; }
+  .opamp-curr-grid { flex-direction: column; }
+}

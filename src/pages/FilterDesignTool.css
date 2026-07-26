@@ -1,0 +1,39 @@
+.fdt-page { min-height: 100vh; background: linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#1a1a2e 100%); }
+.fdt-header { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: linear-gradient(135deg,rgba(236,72,153,0.08) 0%,rgba(244,114,182,0.08) 100%); border-bottom: 1px solid #1e293b; }
+.fdt-back { background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #94a3b8; padding: 8px; cursor: pointer; display: flex; transition: all 0.15s; }
+.fdt-back:hover { color: #f1f5f9; border-color: #475569; }
+.fdt-title { font-size: 20px; font-weight: 700; color: #f1f5f9; margin: 0; }
+.fdt-body { max-width: 740px; margin: 0 auto; padding: 24px 20px 40px; display: flex; flex-direction: column; gap: 16px; }
+.fdt-type-tabs, .fdt-mode-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.fdt-type, .fdt-mode { padding: 7px 14px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #94a3b8; font-size: 11px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.fdt-type.active, .fdt-mode.active { border-color: #ec4899; color: #ec4899; background: rgba(236,72,153,0.08); }
+.fdt-type:hover, .fdt-mode:hover { border-color: #475569; color: #e2e8f0; }
+
+.fdt-schematic-wrap { display: flex; justify-content: center; background: #1a1a2e; border: 1px solid #334155; border-radius: 10px; padding: 16px; }
+.fdt-schematic { width: 100%; max-width: 340px; height: auto; }
+
+.fdt-fields { display: flex; gap: 10px; flex-wrap: wrap; }
+.fdt-field { flex: 1; min-width: 100px; }
+.fdt-field label { display: block; font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 3px; }
+.fdt-input { width: 100%; padding: 8px 10px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; font-size: 13px; outline: none; font-family: inherit; box-sizing: border-box; }
+.fdt-input:focus { border-color: #ec4899; }
+
+.fdt-result { padding: 16px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; text-align: center; }
+.fdt-result strong { font-size: 16px; color: #ec4899; }
+.fdt-result-hint { display: block; font-size: 12px; color: #94a3b8; margin-top: 6px; }
+
+.fdt-test-section { background: #1a1a2e; border: 1px solid #334155; border-radius: 10px; padding: 14px; }
+.fdt-test-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fdt-test-label { font-size: 11px; color: #64748b; }
+.fdt-test-input { width: 90px; padding: 5px 8px; background: #1e293b; border: 1px solid #334155; border-radius: 4px; color: #e2e8f0; font-size: 12px; outline: none; font-family: inherit; }
+.fdt-test-input:focus { border-color: #ec4899; }
+.fdt-test-unit { font-size: 11px; color: #64748b; }
+.fdt-test-result { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: #94a3b8; }
+.fdt-test-result strong { color: #ec4899; }
+
+.fdt-plot-wrap { border: 1px solid #334155; border-radius: 10px; overflow: hidden; }
+.fdt-plot { width: 100%; height: auto; display: block; }
+
+.fdt-desc { font-size: 11px; color: #64748b; background: #1a1a2e; border: 1px solid #334155; border-radius: 8px; padding: 10px; line-height: 1.5; text-align: center; }
+
+@media (max-width: 640px) { .fdt-body { padding: 16px; } }

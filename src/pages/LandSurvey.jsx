@@ -48,6 +48,26 @@ function convertArea(sqft) {
   };
 }
 
+class GPSKalmanFilter {
+  constructor() {
+    this.lat = null; this.lng = null;
+    this.latP = 1; this.lngP = 1;
+    this.q = 0.01; this.r = 25;
+  }
+  update(lat, lng, accuracy) {
+    this.r = Math.max(accuracy * accuracy, 1);
+    this.latP += this.q; this.lngP += this.q;
+    const kLat = this.latP / (this.latP + this.r);
+    if (this.lat !== null) this.lat += kLat * (lat - this.lat); else this.lat = lat;
+    this.latP = (1 - kLat) * this.latP;
+    const kLng = this.lngP / (this.lngP + this.r);
+    if (this.lng !== null) this.lng += kLng * (lng - this.lng); else this.lng = lng;
+    this.lngP = (1 - kLng) * this.lngP;
+    return [this.lat, this.lng];
+  }
+  reset() { this.lat = null; this.lng = null; this.latP = 1; this.lngP = 1; }
+}
+
 function AccuracyCircle({ center, accuracy }) {
   if (!center || !accuracy) return null;
   return (
@@ -117,11 +137,18 @@ export default function LandSurvey() {
   const [locationInfo, setLocationInfo] = useState(null);
   const [geocoding, setGeocoding] = useState(false);
   const [manualMode, setManualMode] = useState(false);
+  const [surveyMode, setSurveyMode] = useState('walk');
+  const [cornerPhase, setCornerPhase] = useState('idle');
+  const [cornerSamples, setCornerSamples] = useState(0);
   const [showSurveyGuide, setShowSurveyGuide] = useState(false);
   const [showStartInfo, setShowStartInfo] = useState(false);
   const [gpsMsg, setGpsMsg] = useState('');
   const [fitKey, setFitKey] = useState(0);
   const mapRef = useRef(null);
+  const gpsReadyTimer = useRef(null);
+  const kfRef = useRef(new GPSKalmanFilter());
+  const cornerReadingsRef = useRef([]);
+  const cornerPhaseRef = useRef('idle');
   const pathRef = useRef(path);
   pathRef.current = path;
 
@@ -164,14 +191,21 @@ export default function LandSurvey() {
       setGpsMsg('Geolocation not supported on this device');
       return;
     }
+    if (gpsReadyTimer.current) clearTimeout(gpsReadyTimer.current);
+    kfRef.current.reset();
     setPath([]);
     setCalculatedArea(null);
-    setGpsMsg('Acquiring GPS signal...');
-    setGpsStatus('acquiring');
+    cornerReadingsRef.current = [];
+    setCornerSamples(0);
+    cornerPhaseRef.current = 'idle';
+    setCornerPhase('idle');
+    setGpsMsg(surveyMode === 'corner' ? 'GPS ready — tap &quot;Record Corner&quot;' : 'Acquiring GPS signal...');
+    setGpsStatus(surveyMode === 'corner' ? 'tracking' : 'acquiring');
 
     let firstPointSet = false;
     let lastPointTime = 0;
     const trackStartTime = Date.now();
+    const mode = surveyMode;
 
     const id = navigator.geolocation.watchPosition(
       (pos) => {
@@ -179,7 +213,33 @@ export default function LandSurvey() {
         setAccuracy(Math.round(acc));
         setCurrentPos([latitude, longitude]);
         setMapCenter([latitude, longitude]);
+
+        if (mode === 'corner') {
+          setGpsStatus('tracking');
+          if (cornerPhaseRef.current === 'collecting') {
+            const readings = cornerReadingsRef.current;
+            readings.push({ lat: latitude, lng: longitude, accuracy: acc });
+            setCornerSamples(readings.length);
+            if (readings.length >= 8) {
+              const recent = readings.slice(-5);
+              const latVar = recent.reduce((s, r) => s + Math.abs(r.lat - recent[0].lat), 0) / recent.length;
+              const lngVar = recent.reduce((s, r) => s + Math.abs(r.lng - recent[0].lng), 0) / recent.length;
+              if ((latVar < 0.00002 && lngVar < 0.00002) || readings.length >= 20) {
+                cornerPhaseRef.current = 'ready';
+                setCornerPhase('ready');
+                setGpsMsg('Corner ready — tap &quot;Lock Corner&quot;');
+              } else {
+                setGpsMsg(`Collecting sample ${readings.length} — stand still...`);
+              }
+            } else {
+              setGpsMsg(`Collecting sample ${readings.length}/8 — stand still...`);
+            }
+          }
+          return;
+        }
+
         setGpsStatus('tracking');
+        const [fLat, fLng] = kfRef.current.update(latitude, longitude, acc);
         const elapsed = Date.now() - trackStartTime;
         if (!firstPointSet) {
           if (elapsed < 8000 || acc > 15) {
@@ -187,7 +247,9 @@ export default function LandSurvey() {
               firstPointSet = true;
               lastPointTime = Date.now();
               setGpsMsg('GPS ready (low accuracy — results may vary)');
-              setPath(prev => [...prev, [latitude, longitude]]);
+              if (gpsReadyTimer.current) clearTimeout(gpsReadyTimer.current);
+              gpsReadyTimer.current = setTimeout(() => setGpsMsg(''), 3000);
+              setPath(prev => [...prev, [fLat, fLng]]);
               return;
             }
             if (acc > 30) setGpsMsg(`GPS settling... (${Math.round(acc)}m accuracy)`);
@@ -197,16 +259,18 @@ export default function LandSurvey() {
           firstPointSet = true;
           lastPointTime = Date.now();
           setGpsMsg('GPS ready — start walking');
-          setPath(prev => [...prev, [latitude, longitude]]);
+          if (gpsReadyTimer.current) clearTimeout(gpsReadyTimer.current);
+          gpsReadyTimer.current = setTimeout(() => setGpsMsg(''), 2500);
+          setPath(prev => [...prev, [fLat, fLng]]);
           return;
         }
         const now = Date.now();
         if (now - lastPointTime < 3000) return;
         const last = pathRef.current[pathRef.current.length - 1];
-        const dist = Math.sqrt((last[0] - latitude) ** 2 + (last[1] - longitude) ** 2) * 111320;
+        const dist = Math.sqrt((last[0] - fLat) ** 2 + (last[1] - fLng) ** 2) * 111320;
         if (dist < 3) return;
         lastPointTime = now;
-        setPath(prev => [...prev, [latitude, longitude]]);
+        setPath(prev => [...prev, [fLat, fLng]]);
       },
       (err) => {
         setGpsStatus('error');
@@ -220,15 +284,18 @@ export default function LandSurvey() {
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
     );
     setWatchId(id);
-  }, []);
+  }, [surveyMode]);
 
   const stopTracking = useCallback(() => {
+    if (gpsReadyTimer.current) clearTimeout(gpsReadyTimer.current);
     if (watchId !== null) {
       navigator.geolocation.clearWatch(watchId);
       setWatchId(null);
     }
     setTracking(false);
     setGpsStatus('idle');
+    cornerPhaseRef.current = 'idle';
+    setCornerPhase('idle');
 
     if (path.length >= 3) {
       const closedPath = [...path, path[0]];
@@ -250,6 +317,35 @@ export default function LandSurvey() {
       setGpsMsg('Walk at least 3 corners of your land to calculate area.');
     }
   }, [watchId, path, saveToHistory]);
+
+  const recordCorner = useCallback(() => {
+    cornerReadingsRef.current = [];
+    cornerPhaseRef.current = 'collecting';
+    setCornerPhase('collecting');
+    setCornerSamples(0);
+    setGpsMsg('Collecting GPS samples — stand still...');
+  }, []);
+
+  const lockCorner = useCallback(() => {
+    const readings = cornerReadingsRef.current;
+    if (readings.length === 0) return;
+    const avgLat = readings.reduce((s, r) => s + r.lat, 0) / readings.length;
+    const avgLng = readings.reduce((s, r) => s + r.lng, 0) / readings.length;
+    setPath(prev => [...prev, [avgLat, avgLng]]);
+    cornerReadingsRef.current = [];
+    cornerPhaseRef.current = 'idle';
+    setCornerPhase('idle');
+    setCornerSamples(0);
+    setGpsMsg('Corner locked! Move to next corner, tap "Record Corner"');
+  }, []);
+
+  const cancelCorner = useCallback(() => {
+    cornerReadingsRef.current = [];
+    cornerPhaseRef.current = 'idle';
+    setCornerPhase('idle');
+    setCornerSamples(0);
+    setGpsMsg('Tap "Record Corner" at each corner point');
+  }, []);
 
   const reverseGeocode = useCallback(async (lat, lng) => {
     setGeocoding(true);
@@ -277,6 +373,7 @@ export default function LandSurvey() {
   }, []);
 
   const resetSurvey = useCallback(() => {
+    if (gpsReadyTimer.current) clearTimeout(gpsReadyTimer.current);
     if (watchId !== null) {
       navigator.geolocation.clearWatch(watchId);
       setWatchId(null);
@@ -288,6 +385,10 @@ export default function LandSurvey() {
     setCurrentPos(null);
     setGpsStatus('idle');
     setGpsMsg('');
+    cornerPhaseRef.current = 'idle';
+    setCornerPhase('idle');
+    cornerReadingsRef.current = [];
+    setCornerSamples(0);
   }, [watchId]);
 
   const loadSurvey = useCallback((entry) => {
@@ -542,11 +643,14 @@ export default function LandSurvey() {
                   pathOptions={{ color: tracking ? '#f97316' : '#3b82f6', weight: 3, opacity: 0.9 }}
                 />
               )}
-              {!tracking && path.length >= 3 && (
+              {(surveyMode === 'corner' || !tracking) && path.length >= 3 && (
                 <Polygon
                   positions={[...path, path[0]]}
                   pathOptions={{
-                    color: '#22c55e', weight: 2, fillColor: '#22c55e', fillOpacity: 0.15
+                    color: tracking ? '#3b82f6' : '#22c55e',
+                    weight: 2,
+                    fillColor: tracking ? '#3b82f6' : '#22c55e',
+                    fillOpacity: 0.12
                   }}
                 />
               )}
@@ -565,6 +669,31 @@ export default function LandSurvey() {
                 <AccuracyCircle center={currentPos} accuracy={accuracy} />
               )}
             </MapContainer>
+            {tracking && gpsMsg && surveyMode === 'walk' && (
+              <div className="survey-gps-overlay">
+                <div className="survey-gps-overlay-content">
+                  <div className="survey-gps-spinner" />
+                  <div className="survey-gps-overlay-text">{gpsMsg}</div>
+                </div>
+              </div>
+            )}
+            {tracking && surveyMode === 'corner' && cornerPhase === 'collecting' && (
+              <div className="survey-gps-overlay">
+                <div className="survey-gps-overlay-content">
+                  <div className="survey-gps-spinner" />
+                  <div className="survey-gps-overlay-text">{gpsMsg}</div>
+                </div>
+              </div>
+            )}
+            {tracking && surveyMode === 'corner' && cornerPhase === 'ready' && (
+              <div className="survey-gps-overlay">
+                <div className="survey-gps-overlay-content">
+                  <div className="survey-corner-ready-icon">✓</div>
+                  <div className="survey-gps-overlay-text">Corner ready — tap &quot;Lock Corner&quot;</div>
+                  <div className="survey-corner-ready-hint">Accuracy: ±{accuracy || '?'}m · {cornerSamples} samples</div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="survey-controls">
@@ -579,7 +708,7 @@ export default function LandSurvey() {
                 </span>
               </div>
               {accuracy && <span className="survey-accuracy">Accuracy: ±{accuracy}m</span>}
-              {path.length > 0 && <span className="survey-points">{path.length} points</span>}
+              {path.length > 0 && <span className="survey-points">{surveyMode === 'corner' ? `${path.length} corners` : `${path.length} points`}</span>}
             </div>
 
             <div className="survey-btn-group">
@@ -597,7 +726,49 @@ export default function LandSurvey() {
               </button>
             </div>
 
-            {path.length > 0 && !tracking && (
+            {tracking && surveyMode === 'corner' && (
+              <div className="survey-corner-controls">
+                {cornerPhase === 'idle' && (
+                  <>
+                    <button className="survey-btn survey-btn-corner-record" onClick={recordCorner}>
+                      <MapPin size={16} /> Record Corner
+                    </button>
+                    <div className="survey-corner-hint">
+                      <Navigation size={12} />
+                      {path.length === 0
+                        ? 'Stand at corner point 1, then tap "Record Corner"'
+                        : `Move to next corner (${path.length + 1}), then tap "Record Corner"`}
+                    </div>
+                  </>
+                )}
+                {cornerPhase === 'collecting' && (
+                  <div className="survey-corner-collecting">
+                    <div className="survey-corner-samples-label">Collecting samples — stand still...</div>
+                    <div className="survey-corner-progress">
+                      <div className="survey-corner-bar-track">
+                        <div className="survey-corner-bar-fill" style={{ width: `${Math.min((cornerSamples / 20) * 100, 100)}%` }} />
+                      </div>
+                      <span className="survey-corner-samples">{cornerSamples}/20</span>
+                    </div>
+                    <button className="survey-btn survey-btn-sm survey-btn-secondary" onClick={cancelCorner}>
+                      <X size={14} /> Cancel Corner
+                    </button>
+                  </div>
+                )}
+                {cornerPhase === 'ready' && (
+                  <>
+                    <div className="survey-corner-ready-banner">
+                      <CheckCircle size={16} /> Ready to lock
+                    </div>
+                    <button className="survey-btn survey-btn-corner-lock" onClick={lockCorner}>
+                      <CheckCircle size={16} /> Lock Corner
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+
+            {path.length > 0 && !tracking && surveyMode === 'walk' && (
               <button className="survey-btn survey-btn-ghost survey-btn-undo" onClick={() => setPath(prev => prev.slice(0, -1))}>
                 <ArrowLeft size={14} />
                 Undo Last Point ({path.length})
@@ -606,29 +777,58 @@ export default function LandSurvey() {
 
             <div className="survey-mode-toggle">
               <button
-                className={`survey-mode-btn ${!manualMode ? 'active' : ''}`}
-                onClick={() => setManualMode(false)}
+                className={`survey-mode-btn ${surveyMode === 'walk' ? 'active' : ''}`}
+                onClick={() => setSurveyMode('walk')}
+                disabled={tracking}
               >
                 <Navigation size={14} />
-                GPS
+                Walk
               </button>
               <button
-                className={`survey-mode-btn ${manualMode ? 'active' : ''}`}
-                onClick={() => setManualMode(true)}
+                className={`survey-mode-btn ${surveyMode === 'corner' ? 'active' : ''}`}
+                onClick={() => setSurveyMode('corner')}
+                disabled={tracking}
               >
                 <MapPin size={14} />
-                Manual
+                Corner
               </button>
             </div>
 
-            {manualMode && (
+            {surveyMode === 'walk' && (
+              <div className="survey-mode-toggle">
+                <button
+                  className={`survey-mode-btn ${!manualMode ? 'active' : ''}`}
+                  onClick={() => setManualMode(false)}
+                  disabled={tracking}
+                >
+                  <Navigation size={14} />
+                  GPS
+                </button>
+                <button
+                  className={`survey-mode-btn ${manualMode ? 'active' : ''}`}
+                  onClick={() => setManualMode(true)}
+                  disabled={tracking}
+                >
+                  <MapPin size={14} />
+                  Manual
+                </button>
+              </div>
+            )}
+
+            {manualMode && surveyMode === 'walk' && (
               <div className="survey-manual-hint">
                 <MapPin size={14} />
                 Click on the map to place boundary points
               </div>
             )}
 
-            {gpsMsg && <div className="survey-gps-msg"><AlertCircle size={14} />{gpsMsg}</div>}
+            {!tracking && surveyMode === 'corner' && path.length === 0 && (
+              <div className="survey-manual-hint">
+                <MapPin size={14} />
+                Stand at each corner and tap "Record Corner" to collect averaged GPS samples
+              </div>
+            )}
+
           </div>
         </div>
 
@@ -733,15 +933,26 @@ export default function LandSurvey() {
             <div className="survey-placeholder">
               <Compass size={48} />
               <h3>Start a Survey</h3>
-              <p>Tap <strong>"Start Survey"</strong> and walk around your land boundary. For small spaces or indoors, switch to <strong>Manual Mode</strong> and click points on the map.</p>
+              <p>Choose a mode below, then tap <strong>"Start Survey"</strong>.</p>
               <div className="survey-tips">
-                <h4>Guide Info:</h4>
+                <div className="survey-mode-info">
+                  <div className="survey-mode-info-icon">🚶</div>
+                  <div>
+                    <strong>Walk Mode</strong>
+                    <p>Walk around your land boundary. GPS tracks automatically with Kalman filtering. For small areas, select <strong>Manual</strong> and tap points on the map. GPS settling takes 10–15s.</p>
+                  </div>
+                </div>
+                <div className="survey-mode-info">
+                  <div className="survey-mode-info-icon">🎯</div>
+                  <div>
+                    <strong>Corner Mode</strong>
+                    <p>Government-style precision. Stand at each corner, tap <strong>"Record Corner"</strong>, wait for GPS to average readings, then <strong>"Lock Corner"</strong>. Clean straight boundary lines.</p>
+                  </div>
+                </div>
                 <ul>
-                  <li><strong>After tapping Start Survey, wait 10-15 seconds for GPS to settle (aim for ±10m accuracy) before walking</strong></li>
-                  <li><strong>GPS Mode</strong> — Walk the boundary, phone tracks automatically</li>
-                  <li><strong>Manual Mode</strong> — Click points on the map for small rooms</li>
                   <li>Complete at least 3 points for area calculation</li>
                   <li>GPS works best outdoors with clear sky view</li>
+                  <li>Always verify with official records (Meebhoomi / Dharani)</li>
                 </ul>
               </div>
             </div>
@@ -898,15 +1109,26 @@ export default function LandSurvey() {
             <div className="survey-start-info-content">
               <Compass size={40} />
               <h3>Start a Survey</h3>
-              <p>Tap <strong>"Start Survey"</strong> and walk around your land boundary. For small spaces or indoors, switch to <strong>Manual Mode</strong> and click points on the map.</p>
+              <p>Choose a mode below, then tap <strong>"Start Survey"</strong>.</p>
               <div className="survey-tips">
-                <h4>Guide Info:</h4>
+                <div className="survey-mode-info">
+                  <div className="survey-mode-info-icon">🚶</div>
+                  <div>
+                    <strong>Walk Mode</strong>
+                    <p>Walk around your land boundary. GPS tracks automatically with Kalman filtering. For small areas, select <strong>Manual</strong> and tap points on the map. GPS settling takes 10–15s.</p>
+                  </div>
+                </div>
+                <div className="survey-mode-info">
+                  <div className="survey-mode-info-icon">🎯</div>
+                  <div>
+                    <strong>Corner Mode</strong>
+                    <p>Government-style precision. Stand at each corner, tap <strong>"Record Corner"</strong>, wait for GPS to average readings, then <strong>"Lock Corner"</strong>. Clean straight boundary lines.</p>
+                  </div>
+                </div>
                 <ul>
-                  <li><strong>After tapping Start Survey, wait 10-15 seconds for GPS to settle (aim for ±10m accuracy) before walking</strong></li>
-                  <li><strong>GPS Mode</strong> — Walk the boundary, phone tracks automatically</li>
-                  <li><strong>Manual Mode</strong> — Click points on the map for small rooms</li>
                   <li>Complete at least 3 points for area calculation</li>
                   <li>GPS works best outdoors with clear sky view</li>
+                  <li>Always verify with official records (Meebhoomi / Dharani)</li>
                 </ul>
               </div>
             </div>

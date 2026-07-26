@@ -1,0 +1,137 @@
+.sh-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a1a2e 100%);
+}
+
+.sh-header {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+  border-bottom: 1px solid #1e293b;
+  padding: 52px 20px 44px;
+  text-align: center;
+}
+
+.sh-header-content { max-width: 700px; margin: 0 auto; }
+
+.sh-header-icon { color: #38bdf8; margin-bottom: 14px; }
+
+.sh-header-title {
+  font-size: 38px; font-weight: 800; margin: 0 0 10px;
+  background: linear-gradient(135deg, #f1f5f9 0%, #38bdf8 50%, #fbbf24 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.sh-header-subtitle { color: #94a3b8; font-size: 15px; line-height: 1.7; margin: 0; }
+
+.sh-grid {
+  max-width: 1100px; margin: 0 auto; padding: 48px 20px 40px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+
+.sh-card {
+  position: relative; overflow: hidden;
+  background: #1e293b; border: 1px solid #334155; border-radius: 20px;
+  padding: 28px 24px 22px;
+  cursor: pointer; transition: all 0.3s;
+  display: flex; flex-direction: column; align-items: flex-start;
+  aspect-ratio: 1;
+}
+
+.sh-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.sh-card:hover {
+  border-color: var(--card-accent); transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.sh-card-glow {
+  position: absolute; top: -60px; left: -60px; right: -60px; height: 200px;
+  pointer-events: none; opacity: 0; transition: opacity 0.4s;
+}
+
+.sh-card:hover .sh-card-glow { opacity: 1; }
+
+.sh-card-icon-wrap {
+  width: 48px; height: 48px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px; position: relative;
+}
+.sh-card-icon-wrap svg { width: 26px; height: 26px; }
+
+.sh-card-title {
+  font-size: 18px; font-weight: 700; color: #f1f5f9;
+  margin: 0 0 8px; position: relative;
+}
+
+.sh-card-desc {
+  font-size: 12px; color: #94a3b8; line-height: 1.5;
+  margin: 0 0 12px; position: relative;
+}
+
+.sh-card-features {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-bottom: 14px; position: relative;
+}
+
+.sh-card-tag {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 5px;
+}
+
+.sh-card-action {
+  margin-top: auto; display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--card-accent); position: relative;
+  transition: gap 0.2s;
+}
+
+.sh-card:hover .sh-card-action { gap: 10px; }
+
+.sh-card-arrow { transition: transform 0.2s; }
+.sh-card:hover .sh-card-arrow { transform: translateX(4px); }
+
+.sh-topics {
+  max-width: 960px; margin: 0 auto; padding: 0 20px 80px;
+}
+
+.sh-topics-title {
+  font-size: 22px; font-weight: 700; color: #f1f5f9;
+  text-align: center; margin: 0 0 28px;
+}
+
+.sh-topics-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+
+.sh-topic-card {
+  display: flex; align-items: center; gap: 10px;
+  background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+  padding: 16px 18px;
+  color: #94a3b8; font-size: 14px; font-weight: 500;
+  transition: all 0.2s;
+}
+
+.sh-topic-card:hover {
+  border-color: #475569; color: #e2e8f0; transform: translateY(-2px);
+}
+
+.sh-topic-card svg { color: #38bdf8; flex-shrink: 0; }
+
+@media (max-width: 768px) {
+  .sh-header-title { font-size: 28px; }
+  .sh-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 32px 16px 24px; }
+  .sh-card { padding: 20px 16px 16px; aspect-ratio: unset; min-height: 220px; }
+  .sh-topics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .sh-header { padding: 36px 16px 32px; }
+  .sh-header-title { font-size: 24px; }
+  .sh-header-icon { width: 36px; height: 36px; }
+  .sh-grid { gap: 10px; padding: 24px 12px 20px; }
+  .sh-card { padding: 16px 12px 14px; }
+  .sh-card-title { font-size: 16px; }
+  .sh-card-icon-wrap { width: 40px; height: 40px; margin-bottom: 10px; }
+  .sh-card-icon-wrap svg { width: 22px; height: 22px; }
+}

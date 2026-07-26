@@ -1,0 +1,40 @@
+.ece-page { min-height: 100vh; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a1a2e 100%); }
+.ece-header {
+  position: relative;
+  background: linear-gradient(135deg, rgba(168,85,247,0.08) 0%, rgba(59,130,246,0.08) 100%);
+  border-bottom: 1px solid #1e293b; padding: 48px 20px 40px; text-align: center;
+}
+.ece-back { position: absolute; left: 24px; top: 24px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #94a3b8; padding: 8px; cursor: pointer; display: flex; transition: all 0.15s; }
+.ece-back:hover { color: #f1f5f9; border-color: #475569; }
+.ece-header-content { max-width: 700px; margin: 0 auto; }
+.ece-header-icon { color: #a855f7; margin-bottom: 14px; }
+.ece-header-title {
+  font-size: 34px; font-weight: 800; margin: 0 0 10px;
+  background: linear-gradient(135deg,#f1f5f9 0%,#a855f7 50%,#60a5fa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.ece-header-subtitle { color: #94a3b8; font-size: 15px; line-height: 1.7; margin: 0; }
+.ece-grid {
+  max-width: 1100px; margin: 0 auto; padding: 40px 20px 60px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
+}
+.ece-card {
+  position: relative; overflow: hidden;
+  background: #1e293b; border: 1px solid #334155; border-radius: 16px;
+  padding: 28px 24px; cursor: pointer; transition: all 0.3s;
+  display: flex; flex-direction: column;
+}
+.ece-card:hover { border-color: var(--card-accent); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+.ece-card-glow { position: absolute; top: -60px; left: -60px; right: -60px; height: 200px; pointer-events: none; opacity: 0; transition: opacity 0.4s; }
+.ece-card:hover .ece-card-glow { opacity: 1; }
+.ece-card-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; position: relative; }
+.ece-card-title { font-size: 18px; font-weight: 700; color: #f1f5f9; margin: 0 0 8px; position: relative; }
+.ece-card-desc { font-size: 13px; color: #94a3b8; line-height: 1.6; margin: 0 0 auto; position: relative; }
+.ece-card-action { margin-top: 16px; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--card-accent); position: relative; transition: gap 0.2s; }
+.ece-card:hover .ece-card-action { gap: 10px; }
+.ece-card-arrow { transition: transform 0.2s; }
+.ece-card:hover .ece-card-arrow { transform: translateX(4px); }
+@media (max-width: 640px) {
+  .ece-header-title { font-size: 26px; }
+  .ece-grid { grid-template-columns: 1fr; padding: 24px 16px 40px; }
+}

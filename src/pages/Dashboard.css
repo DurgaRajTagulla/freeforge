@@ -159,6 +159,8 @@
   box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
 }
 
+
+
 /* Tools Preview Section */
 .tools-preview-section {
   margin-bottom: 60px;
@@ -523,6 +525,7 @@
     padding: 8px 14px;
     font-size: 13px;
   }
+
 }
 
 @media (hover: none) and (pointer: coarse) {

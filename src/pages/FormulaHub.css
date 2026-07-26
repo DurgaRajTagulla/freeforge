@@ -1,0 +1,206 @@
+.fh-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a1a2e 100%);
+}
+
+.fh-header {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+  border-bottom: 1px solid #1e293b;
+  padding: 48px 20px 40px;
+  text-align: center;
+}
+
+.fh-header-content { max-width: 800px; margin: 0 auto; }
+.fh-header-icon { color: #fbbf24; margin-bottom: 12px; }
+
+.fh-header-title {
+  font-size: 36px; font-weight: 800; margin: 0 0 8px;
+  background: linear-gradient(135deg, #f1f5f9 0%, #fbbf24 50%, #60a5fa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.fh-header-subtitle { color: #94a3b8; font-size: 15px; max-width: 600px; margin: 0 auto; }
+
+.fh-controls {
+  max-width: 1000px; margin: 0 auto; padding: 24px 20px 0;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.fh-search-wrap {
+  position: relative;
+}
+
+.fh-search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: #64748b; pointer-events: none;
+}
+
+.fh-search {
+  width: 100%; padding: 14px 14px 14px 46px;
+  background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+  color: #f1f5f9; font-size: 15px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.fh-search:focus { border-color: #fbbf24; box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); }
+.fh-search::placeholder { color: #64748b; }
+
+.fh-filters { display: flex; gap: 12px; flex-wrap: wrap; }
+.fh-subject-tabs, .fh-class-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.fh-subject-tab, .fh-class-tab {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border: 1px solid #334155; border-radius: 8px;
+  background: transparent; color: #94a3b8; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+
+.fh-subject-tab:hover, .fh-class-tab:hover { border-color: #475569; color: #e2e8f0; }
+
+.fh-subject-tab.active {
+  background: rgba(251, 191, 36, 0.12); border-color: #fbbf24; color: #fbbf24;
+}
+
+.fh-class-tab.active {
+  background: rgba(59, 130, 246, 0.12); border-color: #3b82f6; color: #60a5fa;
+}
+
+.fh-content {
+  max-width: 1000px; margin: 0 auto; padding: 24px 20px 60px;
+}
+
+.fh-topic-section { margin-bottom: 32px; }
+
+.fh-topic-title {
+  font-size: 20px; font-weight: 700; color: #f1f5f9;
+  margin: 0 0 16px; padding-bottom: 8px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.fh-formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.fh-card {
+  background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+  padding: 16px; transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.fh-card:hover { border-color: #475569; transform: translateY(-2px); }
+.fh-card:active { transform: translateY(0); }
+
+.fh-card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+
+.fh-card-subject {
+  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+
+.fh-card.mathematics .fh-card-subject { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.fh-card.physics .fh-card-subject { background: rgba(59,130,246,0.12); color: #60a5fa; }
+.fh-card.chemistry .fh-card-subject { background: rgba(34,197,94,0.12); color: #22c55e; }
+
+.fh-card-class { font-size: 11px; color: #64748b; }
+
+.fh-card-title {
+  font-size: 15px; font-weight: 600; color: #e2e8f0; margin: 0 0 8px;
+}
+
+.fh-card-formula {
+  font-family: 'Times New Roman', 'DejaVu Serif', serif;
+  font-size: 17px; font-weight: 700;
+  color: #fbbf24; padding: 10px 12px;
+  background: #0f172a; border-radius: 8px;
+  margin-bottom: 8px; text-align: center; line-height: 1.5;
+}
+
+.fh-card-desc { font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.4; }
+
+.fh-empty {
+  text-align: center; padding: 80px 20px;
+}
+
+.fh-empty svg { color: #64748b; opacity: 0.5; margin-bottom: 16px; }
+.fh-empty h3 { font-size: 20px; color: #94a3b8; margin: 0 0 8px; }
+.fh-empty p { font-size: 14px; color: #64748b; }
+
+.fh-modal {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: fhFade 0.15s ease;
+}
+@keyframes fhFade { from { opacity: 0; } to { opacity: 1; } }
+
+.fh-modal-card {
+  background: #1e293b; border: 1px solid #334155; border-radius: 16px;
+  width: 100%; max-width: 500px; padding: 28px; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: fhSlide 0.2s ease;
+  max-height: 90vh; overflow-y: auto;
+}
+@keyframes fhSlide { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.fh-modal-close {
+  position: absolute; top: 12px; right: 12px;
+  background: none; border: none; color: #64748b; cursor: pointer; padding: 4px; border-radius: 6px;
+  transition: all 0.15s; font-family: inherit;
+}
+.fh-modal-close:hover { color: #f1f5f9; background: rgba(255,255,255,0.06); }
+
+.fh-modal-subject-bar {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 5px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  margin-bottom: 12px;
+}
+.fh-modal-subject-bar[data-subject="Mathematics"] { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.fh-modal-subject-bar[data-subject="Physics"] { background: rgba(59,130,246,0.12); color: #60a5fa; }
+.fh-modal-subject-bar[data-subject="Chemistry"] { background: rgba(34,197,94,0.12); color: #22c55e; }
+
+.fh-modal-title {
+  font-size: 22px; font-weight: 700; color: #f1f5f9;
+  margin: 0 0 12px;
+}
+
+.fh-modal-formula {
+  font-family: 'Times New Roman', 'DejaVu Serif', serif;
+  font-size: 20px; font-weight: 700;
+  color: #fbbf24; padding: 14px 16px;
+  background: #0f172a; border-radius: 10px;
+  margin-bottom: 10px; text-align: center; line-height: 1.6;
+}
+
+.fh-modal-desc {
+  font-size: 13px; color: #94a3b8; margin: 0 0 20px;
+  font-style: italic;
+}
+
+.fh-modal-sections { display: flex; flex-direction: column; gap: 14px; }
+
+.fh-modal-section {
+  background: #0f172a; border-radius: 10px; padding: 14px 16px;
+}
+
+.fh-modal-section-header {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: #60a5fa;
+  margin-bottom: 8px;
+}
+
+.fh-modal-section-body {
+  font-size: 14px; color: #e2e8f0; margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .fh-header { padding: 32px 16px 28px; }
+  .fh-header-title { font-size: 26px; }
+  .fh-formula-grid { grid-template-columns: 1fr; }
+  .fh-filters { flex-direction: column; }
+  .fh-modal-card { padding: 20px; margin: 10px; }
+}
