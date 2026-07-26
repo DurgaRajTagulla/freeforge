@@ -1,0 +1,50 @@
+.bb-page { min-height: 100vh; background: linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#1a1a2e 100%); }
+.bb-header { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: linear-gradient(135deg,rgba(139,92,246,0.08) 0%,rgba(99,102,241,0.08) 100%); border-bottom: 1px solid #1e293b; }
+.bb-back { background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #94a3b8; padding: 8px; cursor: pointer; display: flex; transition: all 0.15s; }
+.bb-back:hover { color: #f1f5f9; border-color: #475569; }
+.bb-title { font-size: 20px; font-weight: 700; color: #f1f5f9; margin: 0; }
+.bb-badge { font-size: 10px; font-weight: 600; color: #a855f7; background: rgba(168,85,247,0.12); padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.bb-layout { display: flex; gap: 0; max-width: 1100px; margin: 0 auto; min-height: calc(100vh - 62px); }
+.bb-sidebar { width: 200px; min-width: 200px; background: #1a1a2e; border-right: 1px solid #1e293b; padding: 12px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; }
+.bb-sidebar-section { margin-bottom: 8px; }
+.bb-sidebar-title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 6px; display: flex; align-items: center; gap: 4px; }
+.bb-palette-btn {
+  width: 100%; display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  background: transparent; border: 1px solid transparent; border-radius: 6px;
+  color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.12s; text-align: left; font-family: inherit;
+}
+.bb-palette-btn:hover { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+.bb-palette-btn.active { background: rgba(139,92,246,0.08); border-color: #a855f7; color: #a855f7; }
+.bb-palette-icon { font-size: 14px; font-weight: 800; width: 24px; text-align: center; }
+.bb-palette-label { flex: 1; }
+.bb-palette-pins { font-size: 9px; color: #64748b; }
+.bb-tool-btn {
+  width: 100%; display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  background: transparent; border: 1px solid transparent; border-radius: 6px;
+  color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.12s; text-align: left; font-family: inherit;
+}
+.bb-tool-btn:hover { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+.bb-tool-btn.active { background: rgba(59,130,246,0.08); border-color: #3b82f6; color: #3b82f6; }
+.bb-tool-btn.danger { color: #ef4444; }
+.bb-tool-btn.danger:hover { background: rgba(239,68,68,0.08); border-color: #ef4444; }
+.bb-tool-btn:disabled { opacity: 0.3; cursor: default; }
+.bb-config-panel { padding: 10px; background: #1e293b; border-radius: 8px; margin-top: 4px; }
+.bb-config-label { display: block; font-size: 10px; color: #64748b; margin-bottom: 3px; }
+.bb-config-input { width: 100%; padding: 6px 8px; background: #0f172a; border: 1px solid #334155; border-radius: 5px; color: #e2e8f0; font-size: 12px; outline: none; font-family: inherit; box-sizing: border-box; }
+.bb-config-input:focus { border-color: #a855f7; }
+.bb-config-unit { font-size: 10px; color: #64748b; margin-top: 2px; display: block; }
+.bb-sim-results { padding: 10px; background: #1e293b; border-radius: 8px; margin-top: 4px; }
+.bb-sim-error { color: #ef4444; font-size: 11px; margin: 4px 0; }
+.bb-sim-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 11px; border-bottom: 1px solid #0f172a; }
+.bb-sim-label { color: #64748b; }
+.bb-sim-val { font-weight: 600; color: #22c55e; }
+.bb-sim-more { font-size: 10px; color: #64748b; text-align: center; margin: 4px 0 0; }
+.bb-canvas-area { flex: 1; display: flex; flex-direction: column; }
+.bb-canvas-toolbar { padding: 8px 14px; background: #1a1a2e; border-bottom: 1px solid #1e293b; min-height: 32px; }
+.bb-status { font-size: 12px; color: #94a3b8; }
+.bb-canvas { width: 100%; height: auto; cursor: crosshair; }
+@media (max-width: 800px) {
+  .bb-layout { flex-direction: column; }
+  .bb-sidebar { width: 100%; min-width: unset; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 8px; }
+  .bb-sidebar-section { min-width: 120px; flex: 1; }
+}

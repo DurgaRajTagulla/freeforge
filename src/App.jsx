@@ -30,6 +30,7 @@ const Timer555 = lazy(() => import('./pages/Timer555'));
 const SignalPlotter = lazy(() => import('./pages/SignalPlotter'));
 const OpAmpDesigner = lazy(() => import('./pages/OpAmpDesigner'));
 const FilterDesignTool = lazy(() => import('./pages/FilterDesignTool'));
+const CodePlayground = lazy(() => import('./pages/CodePlayground'));
 
 const GAME_IDS = ['snake-game','game-2048','sudoku','minesweeper','hangman','word-search','simon-says','whack-a-mole','tic-tac-toe','memory-cards','spin-wheel','dice-roller','coin-toss','truth-or-dare'];
 
@@ -159,6 +160,7 @@ function App() {
               <Route path="/signal-plotter" element={<SignalPlotter />} />
               <Route path="/op-amp-designer" element={<OpAmpDesigner />} />
               <Route path="/filter-design-tool" element={<FilterDesignTool />} />
+              <Route path="/code-playground" element={<CodePlayground />} />
               <Route path="/games" element={<Games />} />
               <Route path="/games/:toolId" element={<ServicePage />} />
               <Route path="/services" element={<Services />} />

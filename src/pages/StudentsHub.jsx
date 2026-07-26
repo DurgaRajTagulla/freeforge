@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, FunctionSquare, Atom, ArrowRight, Calculator, Brain, Beaker, Ruler, Sigma, FlaskConical, Hash, LineChart, BarChart3, CircuitBoard } from 'lucide-react';
+import { BookOpen, FunctionSquare, Atom, ArrowRight, LineChart, BarChart3, CircuitBoard, Code } from 'lucide-react';
 import './StudentsHub.css';
 
 const cards = [
@@ -43,6 +43,14 @@ const cards = [
     features: ['Resistor Code', '555 Timer', 'Signal Plotter', 'Op-Amp'],
     color: '#f97316',
   },
+  {
+    icon: Code,
+    title: 'Code Playground',
+    desc: 'Write and run JavaScript code in your browser with live console output.',
+    route: '/code-playground',
+    features: ['JavaScript', 'Live Output', 'Examples', 'Console'],
+    color: '#6366f1',
+  },
 ];
 
 export default function StudentsHub() {
@@ -80,43 +88,7 @@ export default function StudentsHub() {
         ))}
       </div>
 
-      <div className="sh-topics">
-        <h2 className="sh-topics-title">What you'll find inside</h2>
-        <div className="sh-topics-grid">
-          <div className="sh-topic-card">
-            <Calculator size={24} />
-            <span>Algebra</span>
-          </div>
-          <div className="sh-topic-card">
-            <Sigma size={24} />
-            <span>Calculus</span>
-          </div>
-          <div className="sh-topic-card">
-            <Brain size={24} />
-            <span>Trigonometry</span>
-          </div>
-          <div className="sh-topic-card">
-            <Ruler size={24} />
-            <span>Geometry</span>
-          </div>
-          <div className="sh-topic-card">
-            <Beaker size={24} />
-            <span>Chemistry</span>
-          </div>
-          <div className="sh-topic-card">
-            <Atom size={24} />
-            <span>Physics</span>
-          </div>
-          <div className="sh-topic-card">
-            <FlaskConical size={24} />
-            <span>Equilibrium</span>
-          </div>
-          <div className="sh-topic-card">
-            <Hash size={24} />
-            <span>Statistics</span>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 }

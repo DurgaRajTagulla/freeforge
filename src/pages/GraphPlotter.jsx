@@ -157,14 +157,21 @@ export default function GraphPlotter() {
     if (parsed) setFn(() => parsed);
   };
 
-  const handleMouseDown = (e) => {
-    dragStart.current = { x: e.clientX, y: e.clientY, xMin, xMax, yMin, yMax };
+  const getClientPos = (e) => {
+    if (e.touches) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
   };
 
-  const handleMouseMove = (e) => {
+  const handleDragStart = (e) => {
+    const pos = getClientPos(e);
+    dragStart.current = { x: pos.x, y: pos.y, xMin, xMax, yMin, yMax };
+  };
+
+  const handleDragMove = (e) => {
     if (!dragStart.current) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
+    const pos = getClientPos(e);
+    const dx = pos.x - dragStart.current.x;
+    const dy = pos.y - dragStart.current.y;
     const W = canvasRef.current?.getBoundingClientRect().width || 600;
     const H = canvasRef.current?.getBoundingClientRect().height || 400;
     const xRange = dragStart.current.xMax - dragStart.current.xMin;
@@ -175,7 +182,7 @@ export default function GraphPlotter() {
     setYMax(dragStart.current.yMax + (dy / H) * yRange);
   };
 
-  const handleMouseUp = () => { dragStart.current = null; };
+  const handleDragEnd = () => { dragStart.current = null; };
 
   const handleWheel = (e) => {
     e.preventDefault();
@@ -257,7 +264,8 @@ export default function GraphPlotter() {
         </div>
 
         <div className="gp-canvas-wrap" ref={containerRef}
-          onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}
+          onMouseDown={handleDragStart} onMouseMove={handleDragMove} onMouseUp={handleDragEnd} onMouseLeave={handleDragEnd}
+          onTouchStart={handleDragStart} onTouchMove={handleDragMove} onTouchEnd={handleDragEnd}
           onWheel={handleWheel}>
           <canvas ref={canvasRef} className="gp-canvas" />
           <div className="gp-canvas-hint"><Move size={14} /> Drag to pan · Scroll to zoom</div>
