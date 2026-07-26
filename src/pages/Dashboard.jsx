@@ -3,7 +3,7 @@ import {
   Shield, Lock, ArrowRight, Check, Flame, FileText,
   Image, Merge, Calculator, Wifi, QrCode, Ruler,
   Target, Puzzle, Brain, Zap, Hash, X,
-  Cloud, LandPlot, GraduationCap
+  Cloud, LandPlot, GraduationCap, BookOpen
 } from 'lucide-react';
 import './Dashboard.css';
 
@@ -52,6 +52,11 @@ function Dashboard() {
               <button className="cta-button kids" onClick={() => navigate('/kids')}>
                 <GraduationCap size={20} />
                 Kids Hub
+                <ArrowRight className="cta-icon" />
+              </button>
+              <button className="cta-button students" onClick={() => navigate('/students-hub')}>
+                <BookOpen size={20} />
+                Students Hub
                 <ArrowRight className="cta-icon" />
               </button>
             </div>
