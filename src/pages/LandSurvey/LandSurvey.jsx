@@ -52,11 +52,28 @@ class GPSKalmanFilter {
   constructor() {
     this.lat = null; this.lng = null;
     this.latP = 1; this.lngP = 1;
-    this.q = 0.01; this.r = 25;
+    this.q = 0.2; this.r = 25;
+    this.lastTime = 0;
   }
-  update(lat, lng, accuracy) {
+  update(lat, lng, accuracy, timestamp) {
+    const now = timestamp || Date.now();
+    const dt = this.lastTime ? Math.max((now - this.lastTime) / 1000, 0.05) : 1;
+    this.lastTime = now;
+
     this.r = Math.max(accuracy * accuracy, 1);
-    this.latP += this.q; this.lngP += this.q;
+
+    if (this.lat !== null) {
+      const dLat = lat - this.lat;
+      const dLng = lng - this.lng;
+      const dist = Math.sqrt(dLat * dLat + dLng * dLng) * 111320;
+      const speed = dist / dt;
+      this.q = speed > 0.8 ? 20 : 0.2;
+    } else {
+      this.q = 0.2;
+    }
+
+    this.latP = Math.min(this.latP + this.q, 200);
+    this.lngP = Math.min(this.lngP + this.q, 200);
     const kLat = this.latP / (this.latP + this.r);
     if (this.lat !== null) this.lat += kLat * (lat - this.lat); else this.lat = lat;
     this.latP = (1 - kLat) * this.latP;
@@ -65,7 +82,7 @@ class GPSKalmanFilter {
     this.lngP = (1 - kLng) * this.lngP;
     return [this.lat, this.lng];
   }
-  reset() { this.lat = null; this.lng = null; this.latP = 1; this.lngP = 1; }
+  reset() { this.lat = null; this.lng = null; this.latP = 1; this.lngP = 1; this.q = 0.2; this.lastTime = 0; }
 }
 
 function AccuracyCircle({ center, accuracy }) {
@@ -239,10 +256,10 @@ export default function LandSurvey() {
         }
 
         setGpsStatus('tracking');
-        const [fLat, fLng] = kfRef.current.update(latitude, longitude, acc);
+        const [fLat, fLng] = kfRef.current.update(latitude, longitude, acc, pos.timestamp);
         const elapsed = Date.now() - trackStartTime;
         if (!firstPointSet) {
-          if (elapsed < 8000 || acc > 15) {
+          if (elapsed < 4000 || acc > 15) {
             if (elapsed > 15000) {
               firstPointSet = true;
               lastPointTime = Date.now();
@@ -265,10 +282,10 @@ export default function LandSurvey() {
           return;
         }
         const now = Date.now();
-        if (now - lastPointTime < 3000) return;
+        if (now - lastPointTime < 1000) return;
         const last = pathRef.current[pathRef.current.length - 1];
         const dist = Math.sqrt((last[0] - fLat) ** 2 + (last[1] - fLng) ** 2) * 111320;
-        if (dist < 3) return;
+        if (dist < 2) return;
         lastPointTime = now;
         setPath(prev => [...prev, [fLat, fLng]]);
       },
@@ -281,7 +298,7 @@ export default function LandSurvey() {
         };
         setGpsMsg(msgs[err.code] || 'GPS error occurred');
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 5000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 500 }
     );
     setWatchId(id);
   }, [surveyMode]);

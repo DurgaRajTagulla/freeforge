@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Zap, Brain, Puzzle, Hash, Sparkles } from 'lucide-react';
-import '../pages/games/Games.css';
-import '../pages/services/Services.css';
+import './games/Games.css';
+import '../Services/Services.css';
 
 const categories = [
   {

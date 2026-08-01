@@ -36,7 +36,7 @@ function speak(text, lang) {
 }
 
 const voiceMap = {
-  a: 'ay', b: 'bee', c: 'see', d: 'dee', e: 'ee', f: 'ef', g: 'jee',
+  a: 'ey', b: 'bee', c: 'see', d: 'dee', e: 'ee', f: 'ef', g: 'jee',
   h: 'aych', i: 'eye', j: 'jay', k: 'kay', l: 'el', m: 'em', n: 'en',
   o: 'oh', p: 'pee', q: 'cue', r: 'ar', s: 'es', t: 'tee',
   u: 'you', v: 'vee', w: 'double-you', x: 'ex', y: 'wye', z: 'zee'

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Eye, Plus, X, Printer, FileJson, Upload, FileText, Loader2 } from 'lucide-react';
-import RichTextEditor from '../components/RichTextEditor';
-import { generatePDF } from '../utils/pdfGenerator';
-import { extractResumeFromPDF } from '../utils/pdfParser';
+import RichTextEditor from '../../components/RichTextEditor/RichTextEditor';
+import { generatePDF } from '../../utils/pdfGenerator';
+import { extractResumeFromPDF } from '../../utils/pdfParser';
 import './Editor.css';
 
 const STORAGE_KEY = 'freeforge_data';
