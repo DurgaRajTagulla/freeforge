@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Search, X, Atom } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, X, Atom, ArrowLeft } from 'lucide-react';
 import './PeriodicTable.css';
 
 const ELEMENTS = [
@@ -140,6 +141,7 @@ const CAT_COLORS = {
 const CAT_ORDER = ['Non-metal','Noble Gas','Alkali Metal','Alkaline Earth','Metalloid','Halogen','Other Metal','Transition Metal','Lanthanide','Actinide'];
 
 function PeriodicTable() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState('');
 
@@ -164,6 +166,7 @@ function PeriodicTable() {
   return (
     <div className="pt-page">
       <div className="pt-header">
+        <button className="pt-back" onClick={() => navigate('/students-hub')}><ArrowLeft size={20} /></button>
         <div className="pt-header-content">
           <Atom size={40} className="pt-header-icon" />
           <h1 className="pt-header-title">Periodic Table</h1>

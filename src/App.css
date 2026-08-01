@@ -66,6 +66,8 @@ a {
   display: flex;
   align-items: center;
   gap: 32px;
+  flex: 1;
+  min-width: 0;
 }
 
 .navbar-logo {
@@ -86,6 +88,18 @@ a {
   display: flex;
   align-items: center;
   gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.navbar-links::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .nav-link {

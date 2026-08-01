@@ -168,6 +168,7 @@ function Dashboard() {
 
       <footer className="dashboard-footer">
         <p>FreeForge — Free All-in-One Tool Suite</p>
+        <p>© {new Date().getFullYear()} FreeForge. All rights reserved. For inquiries, contact us at freeforge3@gmail.com.</p>
       </footer>
     </div>
   );

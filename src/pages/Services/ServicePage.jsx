@@ -4,7 +4,8 @@ import { Upload, Download, ArrowLeft, Loader2, FileText } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import { jsPDF } from 'jspdf';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
-import { getDocument } from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions, version } from 'pdfjs-dist';
+GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${version}/build/pdf.worker.min.mjs`;
 import Cropper from 'react-easy-crop';
 import SnakeGame from '../Games/games/SnakeGame';
 import Game2048 from '../Games/games/Game2048';
@@ -305,6 +306,7 @@ function ServicePage() {
 
   // PDF password
   const [pdfPassword, setPdfPassword] = useState('');
+  const [processError, setProcessError] = useState('');
 
   // Page numbers options
   const [pageNumStart, setPageNumStart] = useState(1);
@@ -383,6 +385,7 @@ function ServicePage() {
     const selected = Array.from(e.target.files || []);
     setFiles(prev => tool.multiple ? [...prev, ...selected] : selected);
     setOutputUrl(null);
+    setProcessError('');
     const urls = selected.map(f => URL.createObjectURL(f));
     setPreviewUrls(prev => tool.multiple ? [...prev, ...urls] : urls);
     if (e.target) e.target.value = '';
@@ -544,8 +547,24 @@ function ServicePage() {
         }
         case 'unlock-pdf': {
           const bytes = await files[0].arrayBuffer();
-          const pdf = await PDFDocument.load(bytes, { password: pdfPassword });
-          const saved = await pdf.save();
+          const pdf = await getDocument({ data: bytes, password: pdfPassword }).promise;
+          const unlocked = await PDFDocument.create();
+          const pageCanvas = document.createElement('canvas');
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 2 });
+            pageCanvas.width = viewport.width;
+            pageCanvas.height = viewport.height;
+            await page.render({ canvasContext: pageCanvas.getContext('2d'), viewport }).promise;
+            const pngBlob = await canvasToBlob(pageCanvas, 'image/png');
+            if (!pngBlob) continue;
+            const pngBytes = new Uint8Array(await pngBlob.arrayBuffer());
+            const image = await unlocked.embedPng(pngBytes);
+            const size = page.getViewport({ scale: 1 });
+            const newPage = unlocked.addPage([size.width, size.height]);
+            newPage.drawImage(image, { x: 0, y: 0, width: size.width, height: size.height });
+          }
+          const saved = await unlocked.save();
           setOutputUrl(URL.createObjectURL(new Blob([saved], { type: 'application/pdf' })));
           setOutputName('unlocked_' + files[0].name);
           break;
@@ -566,6 +585,14 @@ function ServicePage() {
       }
     } catch (err) {
       console.error('Process error:', err);
+      let message = 'Processing failed. Please try again.';
+      if (err?.name === 'PasswordException') {
+        message = 'Incorrect password. Please enter the correct PDF password and try again.';
+      } else if (toolId === 'unlock-pdf' && err?.message?.includes('password')) {
+        message = 'This PDF is password protected. Please enter the correct password.';
+      }
+      setProcessError(message);
+      setOutputUrl(null);
     } finally {
       setLoading(false);
     }
@@ -1475,6 +1502,7 @@ function ServicePage() {
               <Download size={20} /> Download {outputName}
             </button>
           )}
+          {processError && <div className="process-error">{processError}</div>}
         </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Search, FunctionSquare, Atom, Beaker, X, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, FunctionSquare, Atom, Beaker, X, BookOpen, ArrowLeft } from 'lucide-react';
 import './FormulaHub.css';
 
 const formulas = [
@@ -132,6 +133,7 @@ const formulas = [
 ];
 
 function FormulaHub() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [activeSubject, setActiveSubject] = useState('all');
   const [activeClass, setActiveClass] = useState('all');
@@ -165,6 +167,7 @@ function FormulaHub() {
   return (
     <div className="fh-page">
       <div className="fh-header">
+        <button className="fh-back" onClick={() => navigate('/students-hub')}><ArrowLeft size={20} /></button>
         <div className="fh-header-content">
           <FunctionSquare size={40} className="fh-header-icon" />
           <h1 className="fh-header-title">Formula Hub</h1>
