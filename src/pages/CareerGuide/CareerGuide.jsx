@@ -411,7 +411,7 @@ const careers = [
       { name: 'Gate Smashers (YouTube)', url: 'https://www.youtube.com/@GateSmashers', type: 'youtube' },
       { name: 'GeeksforGeeks', url: 'https://www.geeksforgeeks.org', type: 'website' },
       { name: 'ISC-IIA (Free GATE lectures)', url: 'https://www.youtube.com/@ISCIIA', type: 'youtube' },
-      { name: 'GeeksforGeeks GATE', url: 'https://www.geeksforgeeks.org/gate/', type: 'website' }
+      { name: 'Gate Overflow (Practice & Doubts)', url: 'https://gateoverflow.in', type: 'website' }
     ]
   },
   {

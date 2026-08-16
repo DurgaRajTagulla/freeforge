@@ -55,10 +55,10 @@ const categories = [
       'Download and save the ITR acknowledgement (ITR-V)'
     ],
     websites: [
-      { name: 'Income Tax e-Filing Portal', url: 'https://incometax.gov.in' },
+      { name: 'Income Tax e-Filing Portal', url: 'https://www.incometax.gov.in' },
       { name: 'TRACES (TDS)', url: 'https://www.tdscpc.gov.in' },
       { name: 'Form 26AS / AIS', url: 'https://www.tdscpc.gov.in/app/login.xhtml' },
-      { name: 'Tax Calendar & Deadlines', url: 'https://www.incometaxindia.gov.in/charts%20%20tables/tax%20calendar.htm' },
+      { name: 'Tax Calendar & Deadlines', url: 'https://eportal.incometax.gov.in/iec/foservices/#/TaxCalc/calender' },
       { name: 'Income Tax India (Official)', url: 'https://www.incometaxindia.gov.in' }
     ]
   },
@@ -109,10 +109,10 @@ const categories = [
     ],
     websites: [
       { name: 'Passport Seva Portal', url: 'https://www.passportindia.gov.in' },
-      { name: 'Track Passport Status', url: 'https://www.passportindia.gov.in/AppOnlineProject/statusTracker/trackStatusIn498' },
-      { name: 'Fee Calculator', url: 'https://www.passportindia.gov.in/AppOnlineProject/misc/feeCalculator' },
-      { name: 'Locate PSK/POPSK', url: 'https://www.passportindia.gov.in/AppOnlineProject/servlet/RPLocalPSK?stateCd=&distCd=&cityCd=' },
-      { name: 'Passport Seva Mobile App', url: 'https://www.passportindia.gov.in/MobileApp/MobileApp.html' }
+      { name: 'Track Passport Status', url: 'https://www.passportindia.gov.in/psp/trackApplicationService' },
+      { name: 'Locate PSK/POPSK', url: 'https://www.passportindia.gov.in' },
+      { name: 'mPassport Seva App', url: 'https://services2.passportindia.gov.in/psp/mPassportApp' },
+      { name: 'Passport Seva at Indian Embassies', url: 'https://mportal.passportindia.gov.in' }
     ]
   },
   {
@@ -221,7 +221,7 @@ const categories = [
     websites: [
       { name: 'NALSA (Legal Services)', url: 'https://nalsa.gov.in' },
       { name: 'e-Courts Services', url: 'https://ecourts.gov.in' },
-      { name: 'DLSA Directory', url: 'https://districts.nic.in' },
+      { name: 'Supreme Court Legal Services Committee', url: 'https://sclsc.gov.in' },
       { name: 'RTI Online', url: 'https://rtionline.gov.in' },
       { name: 'Consumer Helpline', url: 'https://consumerhelpline.gov.in' },
       { name: 'Bar Council of India', url: 'https://www.barcouncilofindia.org' }
@@ -397,7 +397,7 @@ const categories = [
       { name: 'Ministry of Health', url: 'https://www.mohfw.gov.in' },
       { name: 'Jan Aushadhi Kendra', url: 'https://janaushadhi.gov.in' },
       { name: 'CoWIN (Vaccination)', url: 'https://www.cowin.gov.in' },
-      { name: 'National Health Portal', url: 'https://www.nhp.gov.in' },
+      { name: 'Ayushman Bharat Digital Mission', url: 'https://abdm.gov.in' },
       { name: 'AIIMS Portal', url: 'https://www.aiims.edu' },
       { name: 'eSanjeevani (Telemedicine)', url: 'https://esanjeevani.mohfw.gov.in' }
     ]
@@ -459,7 +459,7 @@ const categories = [
       { name: 'NSDL (PAN)', url: 'https://www.tin-nsdl.com' },
       { name: 'Parivahan (Transport)', url: 'https://parivahan.gov.in' },
       { name: 'DigiLocker', url: 'https://www.digilocker.gov.in' },
-      { name: 'e-District Portal', url: 'https://edistrict.gov.in' },
+      { name: 'National Government Services Portal', url: 'https://services.india.gov.in' },
       { name: 'CPGRAMS (Grievances)', url: 'https://pgportal.gov.in' },
       { name: 'UMANG (Govt Services App)', url: 'https://web.umang.gov.in' }
     ]
@@ -566,7 +566,7 @@ const categories = [
     websites: [
       { name: 'National Consumer Helpline', url: 'https://consumerhelpline.gov.in' },
       { name: 'e-Daakhil (Online Complaint)', url: 'https://consumerhelpline.gov.in' },
-      { name: 'Department of Consumer Affairs', url: 'https://consumeraffairs.nic.in' },
+      { name: 'Department of Consumer Affairs', url: 'https://consumeraffairs.gov.in' },
       { name: 'Cyber Crime Portal', url: 'https://cybercrime.gov.in' },
       { name: 'Consumer VOICE', url: 'https://www.consumer-voice.org' }
     ]
@@ -619,12 +619,12 @@ const categories = [
       'Register complaint on Women Helpline app or NCRB portal'
     ],
     websites: [
-      { name: 'Women Helpline (181)', url: 'https://wcd.nic.in' },
-      { name: 'National Commission for Women', url: 'https://ncw.nic.in' },
+      { name: 'Women Helpline (181)', url: 'https://wcd.gov.in' },
+      { name: 'National Commission for Women', url: 'https://www.ncw.gov.in' },
       { name: 'NCRB (Crime Data)', url: 'https://ncrb.gov.in' },
-      { name: 'Ministry of Women & Child Development', url: 'https://wcd.nic.in' },
+      { name: 'Ministry of Women & Child Development', url: 'https://wcd.gov.in' },
       { name: 'SHe-Box (Online Complaint)', url: 'https://shebox.wcd.gov.in' },
-      { name: 'Legal Services Authority (Free Aid)', url: 'https://nalsa.nic.in' }
+      { name: 'Legal Services Authority (Free Aid)', url: 'https://nalsa.gov.in' }
     ]
   },
   {
@@ -730,11 +730,11 @@ const categories = [
     ],
     websites: [
       { name: 'E-Mutation / Land Records', url: 'https://dilrmp.gov.in/dilrmp' },
-      { name: 'State RERA Portals', url: 'https://www.rera.in' },
+      { name: 'State RERA Portals', url: 'https://rera.mohua.gov.in' },
       { name: 'E-Stamping (SHCIL)', url: 'https://www.shcilestamp.com' },
       { name: 'Land Records Portal', url: 'https://dilrmp.gov.in/dilrmp' },
-      { name: 'Sub-Registrar Guide', url: 'https://www.indiafilings.com/learn/tag/sub-registrar' },
-      { name: 'Legal Services Authority', url: 'https://nalsa.nic.in' }
+      { name: 'Sub-Registrar Guide', url: 'https://www.indiafilings.com' },
+      { name: 'Legal Services Authority', url: 'https://nalsa.gov.in' }
     ]
   },
   {
@@ -782,11 +782,10 @@ const categories = [
       'Keep all documents and reference numbers safe'
     ],
     websites: [
-      { name: 'e-FIR (NCRB)', url: 'https://ncrb.gov.in/en/e-fir' },
-      { name: 'NCRB (Crime Statistics)', url: 'https://ncrb.gov.in' },
+      { name: 'e-FIR (NCRB)', url: 'https://ncrb.gov.in' },
       { name: 'National Human Rights Commission', url: 'https://nhrc.nic.in' },
-      { name: 'NCRB (Crime Statistics)', url: 'https://ncrb.gov.in' },
-      { name: 'Legal Services Authority', url: 'https://nalsa.nic.in' }
+      { name: 'Legal Services Authority', url: 'https://nalsa.gov.in' },
+      { name: 'CBI (Complaints & FIRs)', url: 'https://cbi.gov.in' }
     ]
   },
   {
@@ -889,10 +888,10 @@ const categories = [
       'Know your rights: children MUST maintain parents under law'
     ],
     websites: [
-      { name: 'Elder Line (14567)', url: 'https://elderline.in' },
+      { name: 'Elder Line (14567)', url: 'https://www.dosje.gov.in/schemes-and-services/elderline/' },
       { name: 'Social Justice (Senior Citizens)', url: 'https://socialjustice.gov.in' },
       { name: 'Maintenance and Welfare of Parents Act', url: 'https://legislative.gov.in' },
-      { name: 'Legal Services Authority', url: 'https://nalsa.nic.in' },
+      { name: 'Legal Services Authority', url: 'https://nalsa.gov.in' },
       { name: 'National Portal for Senior Citizens', url: 'https://www.seniorcitizens.in' }
     ]
   },
@@ -947,7 +946,7 @@ const categories = [
     websites: [
       { name: 'EPFO Portal', url: 'https://www.epfindia.gov.in' },
       { name: 'ESI Corporation', url: 'https://www.esic.gov.in' },
-      { name: 'Chief Labour Commissioner', url: 'https://clc.nic.in' },
+      { name: 'Chief Labour Commissioner', url: 'https://clc.gov.in' },
       { name: 'Labour Court India', url: 'https://labour.gov.in' },
       { name: 'EPFiGMS (Grievance)', url: 'https://epfigms.gov.in' },
       { name: 'Skill India Portal', url: 'https://www.skillindia.gov.in' }
